@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pauleanderson Dr. Filmes — Cineasta Patrimonial · Manaus</title>
+<meta name="description" content="Produtora audiovisual de Manaus especializada em filmes documentais para casamentos, 15 anos, empresas e histórias de família. 23 anos de imagem. Ex-Record TV e A Crítica. Não é só apertar o REC.">
+<meta property="og:title" content="Pauleanderson Dr. Filmes — Cineasta Patrimonial · Manaus">
+<meta property="og:description" content="Não entregamos vídeo. Entregamos a forma de voltar para aquele dia. Filmes documentais para famílias e empresas.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://i.ytimg.com/vi/HG2aAqjltCQ/maxresdefault.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23080808'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23C7A76C' text-anchor='middle'%3EPD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --opera:#080808;
+  --champagne:#C7A76C;
+  --ivory:#F4F0E8;
+  --graphite:#242424;
+  --taupe:#8A7A68;
+  --white:#FAFAF7;
+  --hairline:rgba(199,167,108,.28);
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--opera);
+  color:var(--ivory);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:16px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:1px solid var(--champagne);outline-offset:3px}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.eyebrow{
+  font-family:var(--sans);
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--champagne);
+  margin-bottom:22px;
+}
+h2{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(2rem,4vw,3.1rem);
+  line-height:1.15;
+  letter-spacing:.01em;
+}
+.section{padding:110px 0}
+@media(max-width:720px){.section{padding:72px 0}}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 28px;
+  transition:background .4s,border-color .4s,padding .4s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(8,8,8,.92);
+  backdrop-filter:blur(10px);
+  border-bottom-color:var(--hairline);
+  padding:14px 28px;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mono{
+  width:38px;height:38px;
+  border:1px solid var(--champagne);
+  display:grid;place-items:center;
+  font-family:var(--serif);font-size:1rem;color:var(--champagne);
+  letter-spacing:.06em;
+}
+.brand-name{font-family:var(--serif);font-size:1.12rem;letter-spacing:.05em;color:var(--white)}
+.brand-name small{display:block;font-family:var(--sans);font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--taupe);margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);opacity:.75;transition:opacity .25s,color .25s}
+.nav-links a:hover{opacity:1;color:var(--champagne)}
+.nav-cta{
+  border:1px solid var(--champagne);color:var(--champagne);
+  padding:9px 20px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  transition:background .3s,color .3s;
+}
+.nav-cta:hover{background:var(--champagne);color:var(--opera)}
+@media(max-width:860px){.nav-links a:not(.nav-cta){display:none}}
+
+/* ---------- HERO ---------- */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
+  padding:140px 0 0;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 38%,transparent 30%,rgba(8,8,8,.72) 100%);
+}
+.hero-inner{position:relative;z-index:2;text-align:center;max-width:920px;margin:0 auto;padding:0 28px}
+.hero-eyebrow{
+  font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--champagne);
+  font-weight:500;margin-bottom:34px;
+}
+.hero h1{
+  font-family:var(--serif);
+  font-weight:300;
+  font-style:italic;
+  font-size:clamp(2.3rem,5.4vw,4.4rem);
+  line-height:1.18;
+  color:var(--white);
+  letter-spacing:.005em;
+  text-wrap:balance;
+}
+.hero-sub{
+  max-width:620px;margin:32px auto 0;
+  color:rgba(244,240,232,.78);
+  font-size:1.02rem;line-height:1.85;
+}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+.btn{
+  display:inline-block;
+  font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  padding:15px 34px;transition:all .3s;
+}
+.btn-solid{background:var(--champagne);color:var(--opera)}
+.btn-solid:hover{background:var(--ivory)}
+.btn-ghost{border:1px solid var(--hairline);color:var(--ivory)}
+.btn-ghost:hover{border-color:var(--champagne);color:var(--champagne)}
+.hero-cred{
+  margin-top:40px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);
+}
+
+/* film strip */
+.strip{position:relative;z-index:2;margin-top:70px;padding-bottom:34px}
+.strip-perf{
+  height:14px;max-width:100%;margin:0 auto;
+  background:repeating-linear-gradient(90deg,transparent 0 14px,rgba(199,167,108,.22) 14px 24px,transparent 24px 38px);
+  opacity:.6;
+}
+.strip-view{overflow:hidden;padding:12px 0;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.strip-track{display:flex;gap:12px;width:max-content;animation:strip 70s linear infinite}
+.strip-track img{
+  width:172px;height:97px;object-fit:cover;
+  border:1px solid rgba(199,167,108,.18);
+  opacity:.5;filter:grayscale(.35);
+}
+@keyframes strip{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){
+  .strip-track{animation:none;justify-content:center;flex-wrap:wrap;width:100%}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- MANIFESTO ---------- */
+.manifesto{text-align:center;border-top:1px solid rgba(199,167,108,.12)}
+.manifesto blockquote{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(1.7rem,3.4vw,2.7rem);
+  line-height:1.3;color:var(--white);max-width:860px;margin:0 auto;
+  text-wrap:balance;
+}
+.manifesto p{max-width:640px;margin:30px auto 0;color:rgba(244,240,232,.72)}
+
+/* ---------- NÚMEROS (banda editorial clara) ---------- */
+.numbers{background:var(--ivory);color:var(--graphite);padding:84px 0}
+.numbers .eyebrow{color:var(--taupe)}
+.numbers h2{color:var(--graphite)}
+.num-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:rgba(36,36,36,.14);border:1px solid rgba(36,36,36,.14);
+  margin-top:52px;
+}
+.num-cell{background:var(--ivory);padding:36px 26px;text-align:center}
+.num-cell b{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:2.6rem;line-height:1;color:var(--graphite);
+}
+.num-cell span{display:block;margin-top:12px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
+.num-selo{
+  margin-top:34px;text-align:center;
+  font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--graphite);
+}
+.num-selo::before,.num-selo::after{content:"—";color:var(--champagne);margin:0 14px}
+@media(max-width:860px){.num-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- FILMES ---------- */
+.filmes-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:14px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:34px 0 44px}
+.filter{
+  border:1px solid rgba(199,167,108,.25);
+  padding:9px 20px;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(244,240,232,.7);transition:all .25s;
+}
+.filter:hover{border-color:var(--champagne);color:var(--champagne)}
+.filter[aria-pressed="true"]{background:var(--champagne);border-color:var(--champagne);color:var(--opera)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card{
+  text-align:left;width:100%;
+  border:1px solid rgba(199,167,108,.14);
+  background:var(--graphite);
+  transition:border-color .3s,transform .35s;
+  display:flex;flex-direction:column;
+}
+.card:hover{border-color:var(--champagne);transform:translateY(-3px)}
+.card-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000}
+.card-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease,opacity .3s;opacity:.92}
+.card:hover .card-thumb img{transform:scale(1.045);opacity:1}
+.play{
+  position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .3s;
+  background:rgba(8,8,8,.28);
+}
+.card:hover .play,.card:focus-visible .play{opacity:1}
+.play span{
+  width:52px;height:52px;border:1px solid var(--champagne);border-radius:50%;
+  display:grid;place-items:center;background:rgba(8,8,8,.55);
+}
+.play span::after{content:"";border-left:12px solid var(--champagne);border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.card-meta{padding:16px 18px 18px}
+.card-meta strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.12rem;color:var(--white);line-height:1.3}
+.card-meta em{display:block;margin-top:6px;font-style:normal;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe)}
+.card.featured{grid-column:span 2}
+@media(max-width:600px){.card.featured{grid-column:span 1}}
+.badge{
+  position:absolute;top:14px;left:14px;z-index:2;
+  background:var(--champagne);color:var(--opera);
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;
+  padding:6px 12px;
+}
+.filmes-note{margin-top:36px;text-align:center;font-size:.8rem;color:var(--taupe)}
+.filmes-note a{color:var(--champagne);border-bottom:1px solid rgba(199,167,108,.4)}
+
+/* ---------- SOBRE ---------- */
+.sobre{background:var(--graphite)}
+.sobre-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:80px;align-items:center}
+@media(max-width:860px){.sobre-grid{grid-template-columns:1fr;gap:44px}}
+.sobre p+p{margin-top:20px}
+.sobre p{color:rgba(244,240,232,.8)}
+.sobre-quote{
+  border-left:1px solid var(--champagne);
+  padding:10px 0 10px 34px;
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.35;color:var(--white);
+}
+.sobre-quote cite{display:block;margin-top:18px;font-family:var(--sans);font-style:normal;font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--champagne)}
+
+/* ---------- MÉTODO ---------- */
+.metodo-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(199,167,108,.16);border:1px solid rgba(199,167,108,.16);margin-top:56px}
+.step{background:var(--opera);padding:34px 24px}
+.step b{display:block;font-family:var(--serif);font-size:.95rem;letter-spacing:.24em;color:var(--champagne);font-weight:400}
+.step h3{font-family:var(--serif);font-weight:400;font-size:1.35rem;color:var(--white);margin:14px 0 10px}
+.step p{font-size:.86rem;line-height:1.7;color:rgba(244,240,232,.66)}
+@media(max-width:960px){.metodo-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.metodo-steps{grid-template-columns:1fr}}
+
+/* ---------- SERVIÇOS ---------- */
+.servicos{background:var(--graphite)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+@media(max-width:860px){.svc-grid{grid-template-columns:1fr}}
+.svc{
+  border:1px solid rgba(199,167,108,.18);
+  background:var(--opera);
+  padding:40px 34px;display:flex;flex-direction:column;
+  transition:border-color .3s;
+}
+.svc:hover{border-color:var(--champagne)}
+.svc h3{font-family:var(--serif);font-weight:400;font-size:1.6rem;color:var(--white);margin-bottom:6px}
+.svc .svc-sub{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--champagne);margin-bottom:20px}
+.svc p{font-size:.92rem;color:rgba(244,240,232,.72);flex:1}
+.svc a{
+  margin-top:26px;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--champagne);
+  border-bottom:1px solid rgba(199,167,108,.4);align-self:flex-start;padding-bottom:3px;
+  transition:border-color .25s;
+}
+.svc a:hover{border-color:var(--champagne)}
+.svc-note{margin-top:36px;text-align:center;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe)}
+
+/* ---------- CONTATO ---------- */
+.contato{text-align:center;border-top:1px solid rgba(199,167,108,.12)}
+.contato h2{max-width:700px;margin:0 auto}
+.contato .lead{max-width:560px;margin:26px auto 0;color:rgba(244,240,232,.72)}
+.contato-actions{margin-top:44px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.contato-links{
+  margin-top:56px;display:flex;gap:14px 44px;justify-content:center;flex-wrap:wrap;
+  font-size:.8rem;letter-spacing:.08em;color:rgba(244,240,232,.7);
+}
+.contato-links a{border-bottom:1px solid transparent;transition:color .25s,border-color .25s;padding-bottom:2px}
+.contato-links a:hover{color:var(--champagne);border-bottom-color:var(--champagne)}
+.contato-links b{color:var(--champagne);font-weight:500;margin-right:8px;font-size:.64rem;letter-spacing:.24em;text-transform:uppercase}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid rgba(199,167,108,.14);padding:40px 0;text-align:center}
+footer p{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
+footer .sig{font-family:var(--serif);font-style:italic;font-size:1.15rem;letter-spacing:.03em;text-transform:none;color:var(--champagne);margin-bottom:14px}
+
+/* ---------- LIGHTBOX ---------- */
+.lb{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(8,8,8,.97);
+  display:none;align-items:center;justify-content:center;
+  padding:28px;
+}
+.lb.open{display:flex}
+.lb-frame{width:min(1100px,100%);aspect-ratio:16/9;border:1px solid var(--hairline)}
+.lb-frame iframe{width:100%;height:100%;border:0;display:block}
+.lb-close{
+  position:absolute;top:22px;right:26px;
+  width:44px;height:44px;border:1px solid var(--hairline);
+  color:var(--ivory);font-size:1.2rem;line-height:1;
+  display:grid;place-items:center;transition:all .25s;
+}
+.lb-close:hover{border-color:var(--champagne);color:var(--champagne)}
+.lb-title{
+  position:absolute;bottom:24px;left:0;right:0;text-align:center;
+  font-family:var(--serif);font-size:1.1rem;color:rgba(244,240,232,.85);
+}
+
+/* ---------- REVEAL ---------- */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* grain sutil */
+body::before{
+  content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.05;
+  background-image:radial-gradient(rgba(255,255,255,.35) .5px,transparent .5px);
+  background-size:3px 3px;
+}
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Navegação principal">
+  <a class="brand" href="#topo">
+    <span class="brand-mono" aria-hidden="true">PD</span>
+    <span class="brand-name">Pauleanderson Dr. Filmes<small>Cineasta Patrimonial</small></span>
+  </a>
+  <div class="nav-links">
+    <a href="#filmes">Filmes</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#metodo">Método</a>
+    <a href="#servicos">Serviços</a>
+    <a class="nav-cta" href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Vi%20seu%20portf%C3%B3lio%20e%20quero%20falar%20sobre%20um%20projeto." target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</nav>
+
+<header class="hero" id="topo">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Pauleanderson Dr. Filmes · Manaus, Amazonas</p>
+    <h1>Como transformar um momento em algo que continua existindo?</h1>
+    <p class="hero-sub">Há 23 anos faço essa pergunta de diferentes maneiras. A resposta são filmes documentais para famílias e empresas — a forma de voltar para aquele dia, daqui a 10, 20, 30 anos.</p>
+    <div class="hero-actions">
+      <a class="btn btn-solid" href="#filmes">Ver os filmes</a>
+      <a class="btn btn-ghost" href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Vi%20seu%20portf%C3%B3lio%20e%20quero%20falar%20sobre%20um%20projeto." target="_blank" rel="noopener">Falar no WhatsApp</a>
+    </div>
+    <p class="hero-cred">23 anos de imagem · Ex-Record TV e A Crítica</p>
+  </div>
+  <div class="strip" aria-hidden="true">
+    <div class="strip-perf"></div>
+    <div class="strip-view"><div class="strip-track" id="strip"></div></div>
+    <div class="strip-perf"></div>
+  </div>
+</header>
+
+<section class="section manifesto">
+  <div class="wrap reveal">
+    <p class="eyebrow" style="text-align:center">O que fazemos</p>
+    <blockquote>Não entregamos vídeo. Entregamos a forma de voltar para aquele dia.</blockquote>
+    <p>O fotógrafo registra o que acontece. O documentário revela o que significa. Trabalhamos com casamentos, festas de 15 anos, histórias de empresas e memórias de família — tudo aquilo que merece permanecer.</p>
+  </div>
+</section>
+
+<section class="numbers" aria-label="Credenciais">
+  <div class="wrap reveal">
+    <p class="eyebrow">Credenciais</p>
+    <h2>Um ofício construído em três décadas</h2>
+    <div class="num-grid">
+      <div class="num-cell"><b>23</b><span>Anos de imagem · desde 2003</span></div>
+      <div class="num-cell"><b>400+</b><span>Vídeos publicados</span></div>
+      <div class="num-cell"><b>1.000+</b><span>Produções realizadas</span></div>
+      <div class="num-cell"><b>6</b><span>Estados atendidos</span></div>
+    </div>
+    <p class="num-selo">Editor da série Vale do Garimpo — Record TV Manaus</p>
+  </div>
+</section>
+
+<section class="section" id="filmes">
+  <div class="wrap">
+    <div class="filmes-head reveal">
+      <div>
+        <p class="eyebrow">Portfólio</p>
+        <h2>Os filmes</h2>
+      </div>
+    </div>
+    <p class="reveal" style="max-width:560px;color:rgba(244,240,232,.7)">Uma seleção do acervo: documentários, eventos, empresas, imagem aérea e música. Clique para assistir.</p>
+
+    <div class="filters reveal" role="group" aria-label="Filtrar filmes por categoria">
+      <button class="filter" data-cat="todos" aria-pressed="true">Todos</button>
+      <button class="filter" data-cat="filmes" aria-pressed="false">Filmes e TV</button>
+      <button class="filter" data-cat="eventos" aria-pressed="false">Eventos</button>
+      <button class="filter" data-cat="empresas" aria-pressed="false">Empresas</button>
+      <button class="filter" data-cat="aereo" aria-pressed="false">Aéreo</button>
+      <button class="filter" data-cat="musica" aria-pressed="false">Música</button>
+    </div>
+
+    <div class="grid reveal" id="grid"></div>
+
+    <p class="filmes-note reveal">Acervo completo com mais de 400 vídeos publicados — <a href="https://www.youtube.com/channel/UCLnbK2XkSfPA1K6v0rGJ4AA" target="_blank" rel="noopener">canal no YouTube</a></p>
+  </div>
+</section>
+
+<section class="section sobre" id="sobre">
+  <div class="wrap sobre-grid reveal">
+    <div>
+      <p class="eyebrow">O cineasta</p>
+      <h2 style="margin-bottom:30px">Pauleanderson Souza</h2>
+      <p>Comecei onde meu pai começou. Caminhoneiro, com pouco dinheiro, ele fotografava a própria vida com uma câmera de 36 poses — e eu aprendi cedo que guardar a própria história é uma forma de existir.</p>
+      <p>Aos 16 anos aprendi a revelar fotografias no laboratório escuro, na luz vermelha. O ofício veio antes da profissão. Depois vieram a Record TV, o jornal A Crítica, mais de mil produções em seis estados — e a certeza de que o vídeo guarda mais que imagem: guarda voz, jeito de falar, silêncio.</p>
+      <p>Hoje faço pelas famílias e empresas o que faria pela minha: preservar aquilo que o tempo não devolve.</p>
+    </div>
+    <blockquote class="sobre-quote">Existem momentos que acontecem uma única vez.<cite>Pauleanderson Souza — Fundador</cite></blockquote>
+  </div>
+</section>
+
+<section class="section" id="metodo">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Método P.R.E.S.E.R.V.A.R.</p>
+      <h2>Como um momento vira patrimônio</h2>
+    </div>
+    <div class="metodo-steps reveal">
+      <div class="step"><b>01</b><h3>Escuta</h3><p>Conversa profunda: qual é a história? O que precisa permanecer?</p></div>
+      <div class="step"><b>02</b><h3>Investigação</h3><p>Entrevistas com as pessoas-chave e digitalização do arquivo existente — fotos e filmes antigos.</p></div>
+      <div class="step"><b>03</b><h3>Registro</h3><p>Captação cinematográfica dos momentos e lugares que contam a história.</p></div>
+      <div class="step"><b>04</b><h3>Construção</h3><p>Edição narrativa em capítulos, tratamento de cor e trilha licenciada.</p></div>
+      <div class="step"><b>05</b><h3>Preservação</h3><p>Entrega em 4K, versões para redes e arquivo guardado em duas mídias — digital e física.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section servicos" id="servicos">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Serviços</p>
+      <h2>Três formas de preservar</h2>
+    </div>
+    <div class="svc-grid reveal">
+      <article class="svc">
+        <h3>Filmes de Evento</h3>
+        <p class="svc-sub">Casamentos e 15 anos</p>
+        <p>Filme documentário do dia inteiro virando patrimônio de família: entrevistas íntimas, depoimentos de quem ama vocês, cerimônia e festa. Teaser de 60 segundos, cerimônia completa com áudio limpo e frames extraídos em 4K.</p>
+        <a href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Tenho%20interesse%20em%20um%20Filme%20de%20Evento%20(casamento%20ou%2015%20anos)." target="_blank" rel="noopener">Solicitar proposta</a>
+      </article>
+      <article class="svc">
+        <h3>Conteúdo para Empresas</h3>
+        <p class="svc-sub">Presença constante sem equipe interna</p>
+        <p>Uma tarde por mês no seu local: episódio de podcast, clipes curtos para redes sociais, fotos editadas e calendário editorial — o conteúdo do mês inteiro, com estratégia e qualidade cinematográfica.</p>
+        <a href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Tenho%20interesse%20no%20sistema%20de%20conte%C3%BAdo%20para%20empresas." target="_blank" rel="noopener">Solicitar proposta</a>
+      </article>
+      <article class="svc">
+        <h3>Filmes Patrimoniais</h3>
+        <p class="svc-sub">Famílias, empresas e instituições</p>
+        <p>Um documentário construído a partir de entrevistas, arquivo de família e momentos reais — para ser assistido pelas próximas gerações. A história da sua família, da sua empresa ou da sua instituição, preservada.</p>
+        <a href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Tenho%20interesse%20em%20um%20Filme%20Patrimonial." target="_blank" rel="noopener">Solicitar proposta</a>
+      </article>
+    </div>
+    <p class="svc-note reveal">Investimento sob proposta personalizada · validade de 15 dias</p>
+  </div>
+</section>
+
+<section class="section contato" id="contato">
+  <div class="wrap reveal">
+    <p class="eyebrow">Contato</p>
+    <h2>Vamos preservar a sua história?</h2>
+    <p class="lead">Conte o que precisa permanecer. Respondemos pelo WhatsApp ou e-mail, com proposta personalizada.</p>
+    <div class="contato-actions">
+      <a class="btn btn-solid" href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Vi%20seu%20portf%C3%B3lio%20e%20quero%20falar%20sobre%20um%20projeto." target="_blank" rel="noopener">Falar no WhatsApp</a>
+      <a class="btn btn-ghost" href="mailto:pauleandersongomes@gmail.com">Enviar e-mail</a>
+    </div>
+    <div class="contato-links">
+      <a href="https://wa.me/5592992411099" target="_blank" rel="noopener"><b>WhatsApp</b>(92) 99241-1099</a>
+      <a href="mailto:pauleandersongomes@gmail.com"><b>E-mail</b>pauleandersongomes@gmail.com</a>
+      <a href="https://www.instagram.com/pauleandersonsouza/" target="_blank" rel="noopener"><b>Instagram</b>@pauleandersonsouza</a>
+      <a href="https://www.youtube.com/channel/UCLnbK2XkSfPA1K6v0rGJ4AA" target="_blank" rel="noopener"><b>YouTube</b>Pauleanderson Gomes</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="sig">Não é só apertar o REC.</p>
+    <p>Pauleanderson Dr. Filmes · Manaus / AM · 2026</p>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Reprodutor de vídeo">
+  <button class="lb-close" id="lbClose" aria-label="Fechar vídeo">✕</button>
+  <div class="lb-frame" id="lbFrame"></div>
+  <p class="lb-title" id="lbTitle"></p>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var VIDEOS=[
+  {id:"HG2aAqjltCQ",t:"Vale do Garimpo — Episódio 1",c:"filmes",cat:"Documentário · Record TV",f:true},
+  {id:"5dLnS0dxPTw",t:"Amazoncoin",c:"filmes",cat:"Documentário · Fortaleza/CE"},
+  {id:"ugG36EG4jDI",t:"Jogador de Manaus ganha bolsa nos EUA",c:"filmes",cat:"Documentário"},
+  {id:"7YeH1StNW80",t:"Última Chance",c:"filmes",cat:"Curta-metragem autoral"},
+  {id:"73ZbbJ4gyy0",t:"Teaser — Festa de 15 Anos",c:"eventos",cat:"Eventos · Debutante"},
+  {id:"QUA_bhdF540",t:"Teaser — Filme de Casamento",c:"eventos",cat:"Eventos · Casamento"},
+  {id:"c94RnadWmy0",t:"Clínica Estética",c:"empresas",cat:"Vídeo marketing · Clínica"},
+  {id:"GhP6hCuan64",t:"Depoimento de Cliente — Clínica",c:"empresas",cat:"Institucional · Depoimento"},
+  {id:"VEN-6OcxNwA",t:"Institucional — Clínica",c:"empresas",cat:"Institucional"},
+  {id:"Qsxu8A9Ctl4",t:"Clínica — Natal",c:"empresas",cat:"Sazonal · Clínica"},
+  {id:"ntQxbK7kubs",t:"Institucional — Imobiliária",c:"empresas",cat:"Institucional · Imobiliária"},
+  {id:"0ZUgSXh43KA",t:"Imobiliária — Terrenos",c:"empresas",cat:"Vídeo marketing · Imobiliária"},
+  {id:"jjrcOfjYlzI",t:"Aéreas — Apartamentos",c:"empresas",cat:"Imobiliário · Drone"},
+  {id:"uY5Ie1BkEwc",t:"Suplementação — Brutos",c:"empresas",cat:"Vídeo marketing · Suplementação"},
+  {id:"8eK_RXF0H00",t:"Suplementação",c:"empresas",cat:"Vídeo marketing · Suplementação"},
+  {id:"DvDtCmJbW7k",t:"Salão de Beleza — Dani Silva",c:"empresas",cat:"Vídeo marketing · Beleza"},
+  {id:"_Dh5ziIieCE",t:"CT Michel",c:"empresas",cat:"Institucional"},
+  {id:"AlLgc5Z8n5A",t:"Institucional — Maquiagem",c:"empresas",cat:"Institucional · Beleza"},
+  {id:"E33bHhO3oAQ",t:"Amazon Boto",c:"empresas",cat:"Institucional"},
+  {id:"5wpNfVP8NzU",t:"Comercial — Empresta Fácil",c:"empresas",cat:"Comercial"},
+  {id:"OmnaAplIIOc",t:"Iza Penteados",c:"empresas",cat:"Vídeo marketing · Beleza"},
+  {id:"zkGRvPyfmPo",t:"Relatório Mensal — SindPFA/Brasília",c:"empresas",cat:"Corporativo · Relatório"},
+  {id:"GtbqTatlaMs",t:"Enchente — Careiro da Várzea",c:"aereo",cat:"Imagens de drone"},
+  {id:"p7wVSQHANAk",t:"Imagens de Drone",c:"aereo",cat:"Aéreo · Amazonas"},
+  {id:"SbNvk51l-50",t:"Clipe — Mariah Carvalho",c:"musica",cat:"Clipe musical"}
+];
+
+var grid=document.getElementById("grid");
+var thumb=function(v,qty){return "https://i.ytimg.com/vi/"+v.id+"/"+(qty||"hqdefault")+".jpg";};
+
+VIDEOS.forEach(function(v){
+  var b=document.createElement("button");
+  b.className="card"+(v.f?" featured":"");
+  b.dataset.cat=v.c;
+  b.setAttribute("aria-label","Assistir: "+v.t);
+  b.innerHTML=
+    '<div class="card-thumb">'+
+      (v.f?'<span class="badge">Como visto na Record</span>':'')+
+      '<img loading="lazy" src="'+thumb(v)+'" alt="Frame do filme '+v.t+'">'+
+      '<span class="play" aria-hidden="true"><span></span></span>'+
+    '</div>'+
+    '<div class="card-meta"><strong>'+v.t+'</strong><em>'+v.cat+'</em></div>';
+  b.addEventListener("click",function(){openLb(v);});
+  grid.appendChild(b);
+});
+
+/* film strip do hero */
+var strip=document.getElementById("strip");
+var stripSet=VIDEOS.slice(0,12);
+stripSet.concat(stripSet).forEach(function(v){
+  var img=document.createElement("img");
+  img.loading="lazy";
+  img.src=thumb(v,"mqdefault");
+  img.alt="";
+  strip.appendChild(img);
+});
+
+/* filtros */
+var filters=document.querySelectorAll(".filter");
+filters.forEach(function(f){
+  f.addEventListener("click",function(){
+    filters.forEach(function(o){o.setAttribute("aria-pressed","false");});
+    f.setAttribute("aria-pressed","true");
+    var cat=f.dataset.cat;
+    grid.querySelectorAll(".card").forEach(function(c){
+      c.style.display=(cat==="todos"||c.dataset.cat===cat)?"":"none";
+    });
+  });
+});
+
+/* lightbox */
+var lb=document.getElementById("lb"),
+    lbFrame=document.getElementById("lbFrame"),
+    lbTitle=document.getElementById("lbTitle"),
+    lbClose=document.getElementById("lbClose"),
+    lastFocus=null;
+
+function openLb(v){
+  lastFocus=document.activeElement;
+  lbFrame.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0" title="'+v.t+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+  lbTitle.textContent=v.t;
+  lb.classList.add("open");
+  document.body.style.overflow="hidden";
+  lbClose.focus();
+}
+function closeLb(){
+  lb.classList.remove("open");
+  lbFrame.innerHTML="";
+  document.body.style.overflow="";
+  if(lastFocus){lastFocus.focus();}
+}
+lbClose.addEventListener("click",closeLb);
+lb.addEventListener("click",function(e){if(e.target===lb){closeLb();}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&lb.classList.contains("open")){closeLb();}});
+
+/* nav */
+var nav=document.getElementById("nav");
+var onScroll=function(){nav.classList.toggle("scrolled",window.scrollY>60);};
+window.addEventListener("scroll",onScroll,{passive:true});
+onScroll();
+
+/* reveal on scroll */
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}
+    });
+  },{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
+}else{
+  document.querySelectorAll(".reveal").forEach(function(el){el.classList.add("in");});
+}
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"Pauleanderson Dr. Filmes",
+  "description":"Produtora audiovisual especializada em filmes documentais para casamentos, 15 anos, empresas e histórias de família. Cineasta Patrimonial em Manaus.",
+  "founder":{"@type":"Person","name":"Pauleanderson Souza","jobTitle":"Cineasta Patrimonial"},
+  "areaServed":"Brasil",
+  "address":{"@type":"PostalAddress","addressLocality":"Manaus","addressRegion":"AM","addressCountry":"BR"},
+  "telephone":"+55-92-99241-1099",
+  "email":"pauleandersongomes@gmail.com",
+  "sameAs":[
+    "https://www.instagram.com/pauleandersonsouza/",
+    "https://www.youtube.com/channel/UCLnbK2XkSfPA1K6v0rGJ4AA"
+  ]
+}
+</script>
+</body>
+</html>
