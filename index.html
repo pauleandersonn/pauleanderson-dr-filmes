@@ -241,6 +241,9 @@ nav.scrolled{
 }
 .filmes-note{margin-top:36px;text-align:center;font-size:.8rem;color:var(--taupe)}
 .filmes-note a{color:var(--champagne);border-bottom:1px solid rgba(199,167,108,.4)}
+.filmes-empty{margin-top:36px;padding:34px 28px;text-align:center;font-size:.86rem;line-height:1.8;color:rgba(244,240,232,.72);border:1px dashed rgba(199,167,108,.35)}
+.filmes-empty[hidden]{display:none}
+.filmes-empty a{color:var(--champagne);border-bottom:1px solid rgba(199,167,108,.4)}
 
 /* ---------- SOBRE ---------- */
 .sobre{background:var(--graphite)}
@@ -404,18 +407,22 @@ body::before{
         <h2>Os filmes</h2>
       </div>
     </div>
-    <p class="reveal" style="max-width:560px;color:rgba(244,240,232,.7)">Uma seleção do acervo: documentários, eventos, empresas, imagem aérea e música. Clique para assistir.</p>
+    <p class="reveal" style="max-width:560px;color:rgba(244,240,232,.7)">O acervo separado por nicho: casamento, 15 anos, infantis, clipes, cinema e publicidade. Clique para assistir.</p>
 
-    <div class="filters reveal" role="group" aria-label="Filtrar filmes por categoria">
+    <div class="filters reveal" role="group" aria-label="Filtrar filmes por nicho">
       <button class="filter" data-cat="todos" aria-pressed="true">Todos</button>
-      <button class="filter" data-cat="filmes" aria-pressed="false">Filmes e TV</button>
-      <button class="filter" data-cat="eventos" aria-pressed="false">Eventos</button>
-      <button class="filter" data-cat="empresas" aria-pressed="false">Empresas</button>
-      <button class="filter" data-cat="aereo" aria-pressed="false">Aéreo</button>
-      <button class="filter" data-cat="musica" aria-pressed="false">Música</button>
+      <button class="filter" data-cat="doc-casamento" aria-pressed="false">Documentário de Casamento</button>
+      <button class="filter" data-cat="casamento" aria-pressed="false">Filmagem em Casamento</button>
+      <button class="filter" data-cat="quinze" aria-pressed="false">15 Anos</button>
+      <button class="filter" data-cat="infantil" aria-pressed="false">Filmes Infantis</button>
+      <button class="filter" data-cat="clipes" aria-pressed="false">Clipes Musicais</button>
+      <button class="filter" data-cat="cinema" aria-pressed="false">Cinema</button>
+      <button class="filter" data-cat="publicidade" aria-pressed="false">Publicidade</button>
     </div>
 
     <div class="grid reveal" id="grid"></div>
+
+    <p class="filmes-empty reveal" id="gridEmpty" role="status" hidden>Este nicho ainda não tem vídeos publicados aqui — as primeiras produções chegam em breve. Quer encomendar? <a href="https://wa.me/5592992411099?text=Ol%C3%A1%2C%20Pauleanderson%21%20Tenho%20interesse%20em%20um%20filme%20do%20nicho%20que%20est%C3%A1%20buscando." target="_blank" rel="noopener">Fale comigo no WhatsApp</a>.</p>
 
     <p class="filmes-note reveal">Acervo completo com mais de 400 vídeos publicados — <a href="https://www.youtube.com/channel/UCLnbK2XkSfPA1K6v0rGJ4AA" target="_blank" rel="noopener">canal no YouTube</a></p>
   </div>
@@ -516,31 +523,31 @@ body::before{
 "use strict";
 
 var VIDEOS=[
-  {id:"HG2aAqjltCQ",t:"Vale do Garimpo — Episódio 1",c:"filmes",cat:"Documentário · Record TV",f:true},
-  {id:"5dLnS0dxPTw",t:"Amazoncoin",c:"filmes",cat:"Documentário · Fortaleza/CE"},
-  {id:"ugG36EG4jDI",t:"Jogador de Manaus ganha bolsa nos EUA",c:"filmes",cat:"Documentário"},
-  {id:"7YeH1StNW80",t:"Última Chance",c:"filmes",cat:"Curta-metragem autoral"},
-  {id:"73ZbbJ4gyy0",t:"Teaser — Festa de 15 Anos",c:"eventos",cat:"Eventos · Debutante"},
-  {id:"QUA_bhdF540",t:"Teaser — Filme de Casamento",c:"eventos",cat:"Eventos · Casamento"},
-  {id:"c94RnadWmy0",t:"Clínica Estética",c:"empresas",cat:"Vídeo marketing · Clínica"},
-  {id:"GhP6hCuan64",t:"Depoimento de Cliente — Clínica",c:"empresas",cat:"Institucional · Depoimento"},
-  {id:"VEN-6OcxNwA",t:"Institucional — Clínica",c:"empresas",cat:"Institucional"},
-  {id:"Qsxu8A9Ctl4",t:"Clínica — Natal",c:"empresas",cat:"Sazonal · Clínica"},
-  {id:"ntQxbK7kubs",t:"Institucional — Imobiliária",c:"empresas",cat:"Institucional · Imobiliária"},
-  {id:"0ZUgSXh43KA",t:"Imobiliária — Terrenos",c:"empresas",cat:"Vídeo marketing · Imobiliária"},
-  {id:"jjrcOfjYlzI",t:"Aéreas — Apartamentos",c:"empresas",cat:"Imobiliário · Drone"},
-  {id:"uY5Ie1BkEwc",t:"Suplementação — Brutos",c:"empresas",cat:"Vídeo marketing · Suplementação"},
-  {id:"8eK_RXF0H00",t:"Suplementação",c:"empresas",cat:"Vídeo marketing · Suplementação"},
-  {id:"DvDtCmJbW7k",t:"Salão de Beleza — Dani Silva",c:"empresas",cat:"Vídeo marketing · Beleza"},
-  {id:"_Dh5ziIieCE",t:"CT Michel",c:"empresas",cat:"Institucional"},
-  {id:"AlLgc5Z8n5A",t:"Institucional — Maquiagem",c:"empresas",cat:"Institucional · Beleza"},
-  {id:"E33bHhO3oAQ",t:"Amazon Boto",c:"empresas",cat:"Institucional"},
-  {id:"5wpNfVP8NzU",t:"Comercial — Empresta Fácil",c:"empresas",cat:"Comercial"},
-  {id:"OmnaAplIIOc",t:"Iza Penteados",c:"empresas",cat:"Vídeo marketing · Beleza"},
-  {id:"zkGRvPyfmPo",t:"Relatório Mensal — SindPFA/Brasília",c:"empresas",cat:"Corporativo · Relatório"},
-  {id:"GtbqTatlaMs",t:"Enchente — Careiro da Várzea",c:"aereo",cat:"Imagens de drone"},
-  {id:"p7wVSQHANAk",t:"Imagens de Drone",c:"aereo",cat:"Aéreo · Amazonas"},
-  {id:"SbNvk51l-50",t:"Clipe — Mariah Carvalho",c:"musica",cat:"Clipe musical"}
+  {id:"HG2aAqjltCQ",t:"Vale do Garimpo — Episódio 1",c:"cinema",cat:"Cinema · Documentário · Record TV",f:true},
+  {id:"5dLnS0dxPTw",t:"Amazoncoin",c:"cinema",cat:"Cinema · Documentário · Fortaleza/CE"},
+  {id:"ugG36EG4jDI",t:"Jogador de Manaus ganha bolsa nos EUA",c:"cinema",cat:"Cinema · Documentário"},
+  {id:"7YeH1StNW80",t:"Última Chance",c:"cinema",cat:"Cinema · Curta-metragem autoral"},
+  {id:"GtbqTatlaMs",t:"Enchente — Careiro da Várzea",c:"cinema",cat:"Cinema · Documental · Drone"},
+  {id:"QUA_bhdF540",t:"Teaser — Filme de Casamento",c:"casamento",cat:"Filmagem em Casamento · Filme"},
+  {id:"73ZbbJ4gyy0",t:"Teaser — Festa de 15 Anos",c:"quinze",cat:"15 Anos · Debutante"},
+  {id:"SbNvk51l-50",t:"Clipe — Mariah Carvalho",c:"clipes",cat:"Clipe Musical"},
+  {id:"c94RnadWmy0",t:"Clínica Estética",c:"publicidade",cat:"Publicidade · Clínica"},
+  {id:"GhP6hCuan64",t:"Depoimento de Cliente — Clínica",c:"publicidade",cat:"Publicidade · Depoimento"},
+  {id:"VEN-6OcxNwA",t:"Institucional — Clínica",c:"publicidade",cat:"Publicidade · Institucional"},
+  {id:"Qsxu8A9Ctl4",t:"Clínica — Natal",c:"publicidade",cat:"Publicidade · Sazonal"},
+  {id:"ntQxbK7kubs",t:"Institucional — Imobiliária",c:"publicidade",cat:"Publicidade · Imobiliária"},
+  {id:"0ZUgSXh43KA",t:"Imobiliária — Terrenos",c:"publicidade",cat:"Publicidade · Imobiliária"},
+  {id:"jjrcOfjYlzI",t:"Aéreas — Apartamentos",c:"publicidade",cat:"Publicidade · Imobiliário · Drone"},
+  {id:"uY5Ie1BkEwc",t:"Suplementação — Brutos",c:"publicidade",cat:"Publicidade · Suplementação"},
+  {id:"8eK_RXF0H00",t:"Suplementação",c:"publicidade",cat:"Publicidade · Suplementação"},
+  {id:"DvDtCmJbW7k",t:"Salão de Beleza — Dani Silva",c:"publicidade",cat:"Publicidade · Beleza"},
+  {id:"_Dh5ziIieCE",t:"CT Michel",c:"publicidade",cat:"Publicidade · Institucional"},
+  {id:"AlLgc5Z8n5A",t:"Institucional — Maquiagem",c:"publicidade",cat:"Publicidade · Beleza"},
+  {id:"E33bHhO3oAQ",t:"Amazon Boto",c:"publicidade",cat:"Publicidade · Institucional"},
+  {id:"5wpNfVP8NzU",t:"Comercial — Empresta Fácil",c:"publicidade",cat:"Publicidade · Comercial"},
+  {id:"OmnaAplIIOc",t:"Iza Penteados",c:"publicidade",cat:"Publicidade · Beleza"},
+  {id:"zkGRvPyfmPo",t:"Relatório Mensal — SindPFA/Brasília",c:"publicidade",cat:"Publicidade · Corporativo"},
+  {id:"p7wVSQHANAk",t:"Imagens de Drone",c:"publicidade",cat:"Publicidade · Aéreo"}
 ];
 
 var grid=document.getElementById("grid");
@@ -573,16 +580,20 @@ stripSet.concat(stripSet).forEach(function(v){
   strip.appendChild(img);
 });
 
-/* filtros */
-var filters=document.querySelectorAll(".filter");
+/* filtros por nicho */
+var filters=document.querySelectorAll(".filter"),
+    gridEmpty=document.getElementById("gridEmpty");
 filters.forEach(function(f){
   f.addEventListener("click",function(){
     filters.forEach(function(o){o.setAttribute("aria-pressed","false");});
     f.setAttribute("aria-pressed","true");
-    var cat=f.dataset.cat;
+    var cat=f.dataset.cat,visiveis=0;
     grid.querySelectorAll(".card").forEach(function(c){
-      c.style.display=(cat==="todos"||c.dataset.cat===cat)?"":"none";
+      var mostra=(cat==="todos"||c.dataset.cat===cat);
+      c.style.display=mostra?"":"none";
+      if(mostra)visiveis++;
     });
+    gridEmpty.hidden=visiveis>0;
   });
 });
 
