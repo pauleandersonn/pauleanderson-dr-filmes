@@ -407,14 +407,14 @@ body::before{
         <h2>Os filmes</h2>
       </div>
     </div>
-    <p class="reveal" style="max-width:560px;color:rgba(244,240,232,.7)">O acervo separado por nicho: casamento, 15 anos, infantis, clipes, cinema e publicidade. Clique para assistir.</p>
+    <p class="reveal" style="max-width:560px;color:rgba(244,240,232,.7)">O acervo separado por nicho: documentário de casamento, casamento, 15 anos, aniversários, clipes, cinema e publicidade. Clique para assistir.</p>
 
     <div class="filters reveal" role="group" aria-label="Filtrar filmes por nicho">
       <button class="filter" data-cat="todos" aria-pressed="true">Todos</button>
       <button class="filter" data-cat="doc-casamento" aria-pressed="false">Documentário de Casamento</button>
       <button class="filter" data-cat="casamento" aria-pressed="false">Filmagem em Casamento</button>
       <button class="filter" data-cat="quinze" aria-pressed="false">15 Anos</button>
-      <button class="filter" data-cat="infantil" aria-pressed="false">Filmes Infantis</button>
+      <button class="filter" data-cat="aniversarios" aria-pressed="false">Aniversários</button>
       <button class="filter" data-cat="clipes" aria-pressed="false">Clipes Musicais</button>
       <button class="filter" data-cat="cinema" aria-pressed="false">Cinema</button>
       <button class="filter" data-cat="publicidade" aria-pressed="false">Publicidade</button>
@@ -523,6 +523,9 @@ body::before{
 "use strict";
 
 var VIDEOS=[
+  {id:"VzSid1eSwDY",t:"Monike &amp; Gustavo | Filme Documental de Casamento",c:"doc-casamento",cat:"Documentário de Casamento · Filme"},
+  {id:"ZPqLNmLJHYs",t:"Nayara &amp; Jean | O Filme Documentário de Casamento",c:"doc-casamento",cat:"Documentário de Casamento · Filme"},
+  {id:"btASwJBlTig",t:"Jantar com Padrinhos - Pré Wedding",c:"doc-casamento",cat:"Documentário de Casamento · Teaser"},
   {id:"HG2aAqjltCQ",t:"Vale do Garimpo — Episódio 1",c:"cinema",cat:"Cinema · Documentário · Record TV",f:true},
   {id:"5dLnS0dxPTw",t:"Amazoncoin",c:"cinema",cat:"Cinema · Documentário · Fortaleza/CE"},
   {id:"ugG36EG4jDI",t:"Jogador de Manaus ganha bolsa nos EUA",c:"cinema",cat:"Cinema · Documentário"},
@@ -556,8 +559,8 @@ var VIDEOS=[
   {id:"M-s4OpYjTj8",t:"Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
   {id:"rjX3KBhEFcI",t:"Casamento Marcia Teaser",c:"casamento",cat:"Casamento · Teaser"},
   {id:"n3A9GsiAL1E",t:"Corte Casamento Carol e Leandro",c:"casamento",cat:"Casamento"},
-  {id:"Q3zNJ_9nNJQ",t:"Eia &Amp; Ludmilson | O Filme Completo de Casamento",c:"casamento",cat:"Casamento · Filme"},
-  {id:"ifW4g-LUSnU",t:"Leia &Amp; Ludmilson | Teaser Oficial de Casamento",c:"casamento",cat:"Casamento · Teaser"},
+  {id:"Q3zNJ_9nNJQ",t:"Eia &amp; Ludmilson | O Filme Completo de Casamento",c:"casamento",cat:"Casamento · Filme"},
+  {id:"ifW4g-LUSnU",t:"Leia &amp; Ludmilson | Teaser Oficial de Casamento",c:"casamento",cat:"Casamento · Teaser"},
   {id:"ymiOMG5ZRPA",t:"Animação de Introdução para Casamento | Elegância e Emoção na Sua História de Amor",c:"casamento",cat:"Casamento"},
   {id:"73ZbbJ4gyy0",t:"Teaser — Festa de 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
   {id:"t2nkn_jYGrk",t:"Vanessa 15 Anos",c:"quinze",cat:"15 Anos"},
@@ -600,6 +603,13 @@ var VIDEOS=[
   {id:"0Tkp3gr09us",t:"15 Anos das Gêmeas | uma Conexão Única em Dobro",c:"quinze",cat:"15 Anos"},
   {id:"3PzxbkkhcTI",t:"Teaser - Laís Aniversário de 18 anos",c:"quinze",cat:"15 Anos · Teaser"},
   {id:"iEZXxiwss3U",t:"Maria Júlia 15 Anos | Teaser Oficial",c:"quinze",cat:"15 Anos · Teaser"},
+  {id:"G2lh_HrePyY",t:"40 Anos da Perla",c:"aniversarios",cat:"Aniversário"},
+  {id:"iLU1H8EhXVc",t:"Niver Nair - 50 Anos",c:"aniversarios",cat:"Aniversário"},
+  {id:"KNvjJlqLjYs",t:"Adailto 55 Anos - Filmes Completo",c:"aniversarios",cat:"Aniversário · Filme"},
+  {id:"x9y6lKkRpHg",t:"Aniversário 80 Anos",c:"aniversarios",cat:"Aniversário"},
+  {id:"Hel3IkFeyqw",t:"40 Anos da Kátia",c:"aniversarios",cat:"Aniversário"},
+  {id:"q9SD59Yu3pM",t:"Calmi - 80 Anos",c:"aniversarios",cat:"Aniversário"},
+  {id:"EoemEHw6PYs",t:"Teaser Adaildo - Aniversário de 55 Anos",c:"aniversarios",cat:"Aniversário · Teaser"},
   {id:"SbNvk51l-50",t:"Clipe — Mariah Carvalho",c:"clipes",cat:"Clipe Musical"},
   {id:"c94RnadWmy0",t:"Clínica Estética",c:"publicidade",cat:"Publicidade · Clínica"},
   {id:"GhP6hCuan64",t:"Depoimento de Cliente — Clínica",c:"publicidade",cat:"Publicidade · Depoimento"},
