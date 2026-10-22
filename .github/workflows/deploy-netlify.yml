@@ -1,0 +1,34 @@
+name: Deploy no Netlify
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-netlify
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Netlify CLI
+        run: npm install -g netlify-cli@26
+
+      - name: Deploy em produção
+        run: >
+          netlify deploy
+          --no-build
+          --prod
+          --dir .
+          --site fcb82dd8-aefa-4261-9e29-ea8f5689671d
+          --auth "$NETLIFY_AUTH_TOKEN"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
