@@ -236,6 +236,23 @@ nav.scrolled{
 .card-meta em{display:block;margin-top:6px;font-style:normal;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe)}
 .card.featured{grid-column:span 2}
 @media(max-width:600px){.card.featured{grid-column:span 1}}
+/* arrastar para reordenar */
+.card{cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.card img{-webkit-user-drag:none;-moz-user-drag:none}
+.card.dragging{
+  transition:none;cursor:grabbing;pointer-events:none;
+  border-color:var(--champagne);
+  box-shadow:0 26px 64px rgba(0,0,0,.6);
+  opacity:.97;
+}
+.card-ph{
+  background:rgba(199,167,108,.06);
+  border:1px dashed rgba(199,167,108,.55);
+  pointer-events:none;
+}
+.card-ph>*{visibility:hidden}
+body.is-dragging{user-select:none;-webkit-user-select:none}
+body.is-dragging,body.is-dragging *{cursor:grabbing!important}
 .badge{
   position:absolute;top:14px;left:14px;z-index:2;
   background:var(--champagne);color:var(--opera);
@@ -648,23 +665,163 @@ var VIDEOS=[
 ];
 
 var grid=document.getElementById("grid");
+var ORDER_KEY="pd_pf_order_v1";
+var suppressClick=false;
 var thumb=function(v,qty){return "https://i.ytimg.com/vi/"+v.id+"/"+(qty||"hqdefault")+".jpg";};
+
+/* ordem personalizada (arrastar) aplicada antes de montar os cards */
+(function(){
+  try{
+    var s=JSON.parse(localStorage.getItem(ORDER_KEY)||"null");
+    if(!Array.isArray(s)||!s.length)return;
+    var pos={},i;
+    for(i=0;i<VIDEOS.length;i++){var k=VIDEOS[i].id;(pos[k]=pos[k]||[]).push(i);}
+    var used={},out=[];
+    s.forEach(function(id){
+      var p=pos[id];if(!p)return;
+      var j=0;while(j<p.length&&used[p[j]])j++;
+      if(j<p.length){used[p[j]]=1;out.push(VIDEOS[p[j]]);}
+    });
+    for(i=0;i<VIDEOS.length;i++){if(!used[i]){used[i]=1;out.push(VIDEOS[i]);}}
+    VIDEOS=out;
+  }catch(e){}
+})();
 
 VIDEOS.forEach(function(v){
   var b=document.createElement("button");
   b.className="card"+(v.f?" featured":"");
   b.dataset.cat=v.c;
+  b.dataset.id=v.id;
   b.setAttribute("aria-label","Assistir: "+v.t);
   b.innerHTML=
     '<div class="card-thumb">'+
       (v.f?'<span class="badge">Como visto na Record</span>':'')+
-      '<img loading="lazy" src="'+thumb(v)+'" alt="Frame do filme '+v.t+'">'+
+      '<img loading="lazy" draggable="false" src="'+thumb(v)+'" alt="Frame do filme '+v.t+'">'+
       '<span class="play" aria-hidden="true"><span></span></span>'+
     '</div>'+
     '<div class="card-meta"><strong>'+v.t+'</strong><em>'+v.cat+'</em></div>';
-  b.addEventListener("click",function(){openLb(v);});
+  b.addEventListener("click",function(){
+    if(suppressClick){suppressClick=false;return;}
+    openLb(v);
+  });
   grid.appendChild(b);
 });
+
+/* ---- arrastar para reordenar os cards do portfólio ---- */
+(function(){
+  if(!grid)return;
+  var card=null,ph=null,startX=0,startY=0,active=false,armed=false,timer=null;
+
+  function salvar(){
+    try{
+      var ids=[];
+      Array.prototype.forEach.call(grid.querySelectorAll(".card:not(.card-ph)"),function(c){
+        if(c.dataset&&c.dataset.id)ids.push(c.dataset.id);
+      });
+      localStorage.setItem(ORDER_KEY,JSON.stringify(ids));
+    }catch(e){}
+  }
+  function iniciar(){
+    var r=card.getBoundingClientRect();
+    ph=document.createElement("div");
+    ph.className="card card-ph"+(card.classList.contains("featured")?" featured":"");
+    ph.setAttribute("aria-hidden","true");
+    ph.innerHTML=card.innerHTML;
+    grid.insertBefore(ph,card);
+    card.style.position="fixed";
+    card.style.left=r.left+"px";
+    card.style.top=r.top+"px";
+    card.style.width=r.width+"px";
+    card.style.height=r.height+"px";
+    card.style.zIndex="70";
+    card.style.margin="0";
+    card.style.transform="translate(0px,0px)";
+    card.classList.add("dragging");
+    document.body.classList.add("is-dragging");
+    active=true;
+  }
+  function posicionarPh(x,y){
+    if(!ph)return;
+    var el=document.elementFromPoint(x,y);
+    if(!el||!el.closest)return;
+    var c=el.closest(".card:not(.card-ph)");
+    /* slot vazio, fresta ou fora do grid: mantém onde está */
+    if(!c||c===card||!grid.contains(c)||!c.offsetParent)return;
+    /* filhos que ocupam célula (fora o card arrastado e os ocultos pelo filtro) */
+    var kids=grid.children,arr=[],i;
+    for(i=0;i<kids.length;i++){
+      if(kids[i]===card)continue;
+      if(kids[i].className.indexOf("card-ph")<0&&!kids[i].offsetParent)continue;
+      arr.push(kids[i]);
+    }
+    var t=arr.indexOf(c);
+    if(t<0)return;
+    /* o slot passa a ocupar exatamente a célula do card sob o ponteiro */
+    var ref=null;
+    for(i=0;i<arr.length;i++){
+      if(arr[i]===ph)continue;
+      if(t===0){ref=arr[i];break;}
+      t--;
+    }
+    grid.insertBefore(ph,ref);
+  }
+  function soltar(){
+    if(!card)return;
+    if(ph){
+      grid.insertBefore(card,ph);
+      ph.parentNode.removeChild(ph);
+      ph=null;
+    }
+    card.style.position="";card.style.left="";card.style.top="";
+    card.style.width="";card.style.height="";card.style.transform="";
+    card.style.zIndex="";card.style.margin="";
+    card.classList.remove("dragging");
+    document.body.classList.remove("is-dragging");
+    suppressClick=true;
+    salvar();
+    card=null;active=false;armed=false;
+  }
+  function down(e){
+    if(card)return;
+    if(e.pointerType==="mouse"&&e.button!==0)return;
+    if(!e.target||!e.target.closest)return;
+    var c=e.target.closest(".card:not(.card-ph)");
+    if(!c||!grid.contains(c))return;
+    suppressClick=false;
+    card=c;startX=e.clientX;startY=e.clientY;active=false;
+    if(e.pointerType==="mouse"){armed=true;}
+    else{armed=false;clearTimeout(timer);timer=setTimeout(function(){armed=true;},350);}
+    document.addEventListener("pointermove",move);
+    document.addEventListener("pointerup",up);
+    document.addEventListener("pointercancel",up);
+  }
+  function move(e){
+    if(!card)return;
+    var dx=e.clientX-startX,dy=e.clientY-startY;
+    if(!active){
+      if(!armed)return;
+      if(Math.abs(dx)<7&&Math.abs(dy)<7)return;
+      iniciar();
+    }
+    card.style.transform="translate("+dx+"px,"+dy+"px)";
+    posicionarPh(e.clientX,e.clientY);
+  }
+  function up(){
+    clearTimeout(timer);
+    document.removeEventListener("pointermove",move);
+    document.removeEventListener("pointerup",up);
+    document.removeEventListener("pointercancel",up);
+    if(active)soltar();
+    else{card=null;armed=false;}
+  }
+  grid.addEventListener("pointerdown",down);
+  document.addEventListener("touchmove",function(e){
+    if(active||armed){if(e.cancelable)e.preventDefault();}
+  },{passive:false});
+  document.addEventListener("contextmenu",function(e){
+    if(active||armed)e.preventDefault();
+  });
+})();
 
 /* film strip do hero */
 var strip=document.getElementById("strip");
