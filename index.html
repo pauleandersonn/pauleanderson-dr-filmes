@@ -250,8 +250,16 @@ nav.scrolled{
 .card-meta em{display:block;margin-top:6px;font-style:normal;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe)}
 .card.featured{grid-column:span 2}
 @media(max-width:600px){.card.featured{grid-column:span 1}}
-/* arrastar para reordenar */
-.card{cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+/* arrastar para reordenar — só no modo edição do dono (#editar) */
+.card{cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+body.modo-editar .card{cursor:grab}
+#editHint{
+  position:fixed;left:16px;bottom:16px;z-index:60;
+  background:rgba(10,10,10,.92);border:1px solid var(--champagne);color:var(--white);
+  font-size:.72rem;letter-spacing:.08em;padding:10px 14px;max-width:280px;line-height:1.5;
+  transition:opacity .4s ease;pointer-events:none;
+}
+#editHint.fora{opacity:0}
 .card img{-webkit-user-drag:none;-moz-user-drag:none}
 .card.dragging{
   transition:none;cursor:grabbing;pointer-events:none;
@@ -461,6 +469,7 @@ body::before{
       <button class="tab" data-cat="clipes" aria-pressed="false">Clipes Musicais<span class="n"></span></button>
       <button class="tab" data-cat="cinema" aria-pressed="false">Cinema<span class="n"></span></button>
       <button class="tab" data-cat="publicidade" aria-pressed="false">Publicidade<span class="n"></span></button>
+      <button class="tab" data-cat="outros" aria-pressed="false">Outros<span class="n"></span></button>
     </div>
 
     <div class="grid reveal" id="grid"></div>
@@ -575,6 +584,21 @@ var VIDEOS=[
   {id:"ugG36EG4jDI",t:"Jogador de Manaus ganha bolsa nos EUA",c:"cinema",cat:"Cinema · Documentário"},
   {id:"7YeH1StNW80",t:"Última Chance",c:"cinema",cat:"Cinema · Curta-metragem autoral"},
   {id:"GtbqTatlaMs",t:"Enchente — Careiro da Várzea",c:"cinema",cat:"Cinema · Documental · Drone"},
+	  {id:"QuJB7ENo9YQ",t:"Luca Vídeo Portifolio Jogadas",c:"cinema",cat:"Cinema"},
+	  {id:"DSN9hUWXPHw",t:"Jailton - Melhores Momentos com Identificação",c:"cinema",cat:"Cinema"},
+	  {id:"aeA1JKLuE8g",t:"Bastidores de Manaus x Volta redonda",c:"cinema",cat:"Cinema"},
+	  {id:"-2QscRO4AtA",t:"Os batidores do Jogo - Manaus x Altos",c:"cinema",cat:"Cinema"},
+	  {id:"k3NpXFCpVdM",t:"Maior Cheia em Cacau Pireira - Amazonas",c:"cinema",cat:"Cinema"},
+	  {id:"-hXYufw0OvY",t:"Doc. pessoal_Dia do meu aniversário_Parte 01",c:"cinema",cat:"Cinema"},
+	  {id:"bmMkxpETp9M",t:"Film Short - com as lindas Gêmeas Lorena e Milena",c:"cinema",cat:"Cinema"},
+	  {id:"FaUeyPJQ1xY",t:"Curta Metragem - Laboratório Experimental de Cinema",c:"cinema",cat:"Cinema"},
+	  {id:"DmX-enImgms",t:"Curta Metragem - o Fotógrafo em Ação/ Luap",c:"cinema",cat:"Cinema"},
+	  {id:"1xYDj7CzyMs",t:"Next Jogo 01",c:"cinema",cat:"Cinema"},
+	  {id:"W6D1WgpVKWQ",t:"Filme Documentário - o Teatro Me Encontrou",c:"cinema",cat:"Cinema · Filme"},
+	  {id:"MSqXRYaTEg4",t:"Luca Vídeo Selecionado",c:"cinema",cat:"Cinema"},
+	  {id:"2v3WTqzr75o",t:"Maestro Davi - Teaser Doc",c:"cinema",cat:"Cinema · Teaser"},
+	  {id:"_ZYfI6TchyI",t:"Mini Documentário - Sala Estudo",c:"cinema",cat:"Cinema"},
+	  {id:"YuqJYrxxQME",t:"Curta Metragem - Laboratória Experimental de Cinema/ Luap Studio",c:"cinema",cat:"Cinema"},
   {id:"QUA_bhdF540",t:"Teaser — Filme de Casamento",c:"casamento",cat:"Casamento · Teaser"},
   {id:"2avPIq_QEAw",t:"Filme Documentário - Casamento de Carolinne e Emerson",c:"casamento",cat:"Casamento · Filme"},
   {id:"fwcgPXo_6O0",t:"Adauton e Rebeca 10 11 Final",c:"casamento",cat:"Casamento"},
@@ -607,6 +631,88 @@ var VIDEOS=[
   {id:"ifW4g-LUSnU",t:"Leia &amp; Ludmilson | Teaser Oficial de Casamento",c:"casamento",cat:"Casamento · Teaser"},
   {id:"ymiOMG5ZRPA",t:"Animação de Introdução para Casamento | Elegância e Emoção na Sua História de Amor",c:"casamento",cat:"Casamento"},
 	  {id:"OEUJ3fe3-_8",t:"Izabella e Gabriel · Teaser",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"66Cw8gssvc0",t:"Casamento de Júnior e Natália - Vídeo Completo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"CxzoTJry3AM",t:"Debora e Jairo Teaser",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"BPssFY0x7mQ",t:"Filme de casamento a moda antiga - Suellem e Laercio",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"gzuaf42ZPj0",t:"Luziele e Luis Casamento Completo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"R-aCMCtRUzU",t:"Filme teaser do Casamento André e Laís",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"kFPUWTyKkmU",t:"Casamento Completo João e Daniele 1",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"1SfYgEO71BU",t:"Casamento Rafael e Sandra",c:"casamento",cat:"Casamento"},
+	  {id:"q899KepkdBs",t:"Filme Casamento que entrou para história - Anne e Kaleb",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"pfK0Ir7ktsY",t:"Casamento em umas das cachoeira mais bonitas do Brasil!",c:"casamento",cat:"Casamento"},
+	  {id:"KNKQ3FbOyXI",t:"Filme em casamento completo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"-YrRqCBgP4o",t:"Claudia e Robson Filme de Casamento Completo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"uM0W3Gno0ek",t:"Filme de casamento emocionante",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"j9fQes8xV0Y",t:"Filme Completo Marina e Carlo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"dDGvXDkEskw",t:"Assista até o Final e se emocione - Filme Resumo do casamento do André e da Laís (Duas Câmeras)",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"sLcf-zhjIGM",t:"Serafim &amp; Winny - Homengem",c:"casamento",cat:"Casamento"},
+	  {id:"CxuXK_dB95U",t:"Ruiciane Lucas - Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"c3NA7gCyvzA",t:"Wedding day - Teaser de casamento",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"qVjItybLuHE",t:"Teaser Pré Wedding Pauleanderson e Gabriele",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"EH5A9IIAHOc",t:"Casamento - Amanda &amp; Francisco",c:"casamento",cat:"Casamento"},
+	  {id:"4OJfSGMB9AA",t:"Filme Casamento",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"f4z2whe0oiA",t:"Teaser Flávia e David",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"SlaMHMhl-z4",t:"Filme Casamento Marcelo Raquel - Depoimentos Família",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"6Xj6ZlEpWds",t:"Filme de casamento completo - Rafel e Tanize",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"f77anHeEGXM",t:"Ruiciane Lucas - Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"7KIQv8kkkZI",t:"Casamento completo - Adailto e Natália",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"tw3n5ImU-8A",t:"Teaser - Eleni e Will Vídeo - Casamento",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"AdvH_QyaGMc",t:"Laís e Gabriel Teaser",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"_PVEbgveo1o",t:"Pré -Wedding Day - Anderson &amp; Raquel",c:"casamento",cat:"Casamento"},
+	  {id:"hXQuS_LfLcA",t:"Lucas e Gabi _ Homenagem",c:"casamento",cat:"Casamento"},
+	  {id:"uXw4lG4RTR8",t:"Filme de Casamento - Nicole e Felipe",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"IHF1sSetiXw",t:"Filme do Casamento da Dani e Reginaldo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"RcKbofUskAY",t:"Pré Wedding - Fran &amp; José",c:"casamento",cat:"Casamento"},
+	  {id:"35tizysQGW4",t:"Filme chocante de Casamento - Felipe e Amanda",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"UxycD7DAUEc",t:"Casamenot de Pauleane e Tiago",c:"casamento",cat:"Casamento"},
+	  {id:"jtfqZ_TA8rM",t:"Filme Casamento Completo Adonias e Ana",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"J2fH2UULynw",t:"Teaser Casamento João e Daniele",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"lyHVaTsG6J0",t:"Filme em casamento - Thais e Henrrique",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"hatNEzaLYps",t:"Teaser Casamento para Instagram Lorem &amp; Murilo",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"6eHwH_Fw4Cc",t:"Teaser Casamento - Marcelo e Raquel",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"rll-tkHNuZM",t:"Filme de Casamento - Milena e Tiago",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"Q3Rsc9OhckQ",t:"Teaser Casamento Lindo",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"5w4eZnouUoU",t:"Filme Pré Wedding Emocionante",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"Ww0uQL0EnSQ",t:"Teaser - casamento Ana e Airton",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"bC4xys5zJC8",t:"Filme de Casamento - José e Ingrind",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"DI1vaTBbqFY",t:"Eleni e Will - Que Casamento Lindo!",c:"casamento",cat:"Casamento"},
+	  {id:"FNm9pC9Mk10",t:"Filme de Casamento Sergio e Patricia",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"UaY_0ghafQU",t:"Pré Wedding- Amanda &amp; Nicholas - &quot;Amor em Foco: o Pré-Wedding da Nossa História&quot;",c:"casamento",cat:"Casamento"},
+	  {id:"YTziMaYdoBQ",t:"Fran e Jose - Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"Gt_5oNRf2WM",t:"Jamima e Maria",c:"casamento",cat:"Casamento"},
+	  {id:"jiB81sGUtPc",t:"Vídeo Pré Wedding Pauleanderson e Gabriele",c:"casamento",cat:"Casamento"},
+	  {id:"3oOMLHjF00U",t:"Casamento Lindo em Manaus",c:"casamento",cat:"Casamento"},
+	  {id:"IxJq5Znm58k",t:"Filme Completo de Casamento - Thais &amp; Adonai Completo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"sxR3MZYxRt8",t:"Teaser casamento - Aline e Iguatemir",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"Wa6vu8AlefU",t:"Jessica e Adriano - Wedding Day",c:"casamento",cat:"Casamento"},
+	  {id:"lIUN5DzdE4g",t:"Teaser Oficial - Casamento de Júnior e Natália",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"N385MdNm90w",t:"Teaser casamento - Adaiton e Natália",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"KStfNcwrekE",t:"Filme em casamento - Rodrigo e Larissa",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"HOsDJxqeWTw",t:"Teaser - Filme de Casamento Fabi Andre",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"jfm8uWpBFXI",t:"Teaser - Casamento - Nicholas e Amanda",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"tD0y6L5pGTE",t:"Filme em Boldas de Casamento de 50 anos",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"2ph7_YkEd7U",t:"Filme de Casamento - Taylor e Ester",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"aqnIKGs6__M",t:"Filme Casamento - Felipe e Amanda",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"Of5LxnI_wN8",t:"Filme em Casamento",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"oWChg-jmS5Y",t:"Wedding Day - Teaser : Cristiano &amp; Dije",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"wsEUVqzE0b4",t:"Teaser Casamento - Sandro e Nayandra",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"df3J2PSy9DI",t:"Filme de Casamento - Josivan &amp; Jenifer",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"3sBB7P4c1sA",t:"Filmes de casamento de Lucas e Dayane",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"tsWqFdE__bk",t:"Filme de casamento Lorem e Murilo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"-iW7oG7In6Q",t:"Filme de Casamento de Lorenn e Murilo - Luap Filmes",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"4hs8sbN0mVs",t:"Vídeo de fotos - Pedido de casamento",c:"casamento",cat:"Casamento"},
+	  {id:"DHETCzM1fvY",t:"Filme de Casamento Vanessa e Cleiton - Luap Studio",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"QgAA2JXAmbA",t:"Coleção Vídeo de Fotos Pré Casamento",c:"casamento",cat:"Casamento"},
+	  {id:"coKUcbYD_jo",t:"Teaser Filme de Casamento Thais &amp; Adonai",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"pCKwS3H1Dy8",t:"Histórias de Casamento - Vanessa e Cleiton",c:"casamento",cat:"Casamento"},
+	  {id:"EVXzCBlEhag",t:"Pré Wedding - Jantar com Padrinhos",c:"casamento",cat:"Casamento"},
+	  {id:"kNEHbVRL4EM",t:"Filme em Casamento - Ane e Ricardo",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"lG7eVt39U6I",t:"Teaser casamento _ Luziele e Luiz",c:"casamento",cat:"Casamento · Teaser"},
+	  {id:"ndNc6XeUwys",t:"Filme em Casamento",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"zgkwTbs56QE",t:"Filme de Casamento Fabi &amp; Andre",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"GlnoEMT_4eQ",t:"Filme de Casamento",c:"casamento",cat:"Casamento · Filme"},
+	  {id:"rGNKJceO8EQ",t:"Marcele e Felipe",c:"casamento",cat:"Casamento"},
+	  {id:"pCXVMV09fRs",t:"Teaser - Mairia Luiza 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
   {id:"73ZbbJ4gyy0",t:"Teaser — Festa de 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
   {id:"t2nkn_jYGrk",t:"Vanessa 15 Anos",c:"quinze",cat:"15 Anos"},
   {id:"ME20n7Wt5w8",t:"Beatriz 15 Anos Completo",c:"quinze",cat:"15 Anos · Filme"},
@@ -650,6 +756,19 @@ var VIDEOS=[
   {id:"iEZXxiwss3U",t:"Maria Júlia 15 Anos | Teaser Oficial",c:"quinze",cat:"15 Anos · Teaser"},
 	  {id:"KoUx6YVjims",t:"Larissa | 15 anos – Uma noite para recordar",c:"quinze",cat:"15 Anos"},
 	  {id:"haZGE3zo5Ak",t:"Larissa | 15 anos – Um sonho, uma história",c:"quinze",cat:"15 Anos"},
+	  {id:"rjAKJb-4Z1M",t:"Maria Luisa - filme dos meus 15 anos",c:"quinze",cat:"15 Anos · Filme"},
+	  {id:"9OPTH21gnQM",t:"Filme - 15 anos de Sarah",c:"quinze",cat:"15 Anos · Filme"},
+	  {id:"aBn619OsCxs",t:"15 Maria Julia Completo",c:"quinze",cat:"15 Anos · Filme"},
+	  {id:"f_jg9XK1Vk0",t:"15 anos Maria Luiza completo",c:"quinze",cat:"15 Anos · Filme"},
+	  {id:"vQzML4OI44E",t:"Festa de 15 anos",c:"quinze",cat:"15 Anos"},
+	  {id:"3GiC6QzgCWI",t:"Vitoria 15 Anos - Completo",c:"quinze",cat:"15 Anos · Filme"},
+	  {id:"mQebNrShrUg",t:"Teaser Vitoria 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
+	  {id:"MNIJ-eP6GdI",t:"15 Maria Julia Teaser",c:"quinze",cat:"15 Anos · Teaser"},
+	  {id:"dwNGTNzQ9dE",t:"Teaser Laís 18 anos",c:"quinze",cat:"18 Anos · Teaser"},
+	  {id:"T2EviQvaz28",t:"18 Anos Yasmin Teaser Balada",c:"quinze",cat:"18 Anos · Teaser"},
+	  {id:"rPRKHaPbE2c",t:"15 Anos Gemêas Teaser",c:"quinze",cat:"15 Anos · Teaser"},
+	  {id:"WvjrmY5RKjw",t:"Filme de 15 anos Lia - Luap Studio",c:"quinze",cat:"15 Anos · Filme"},
+	  {id:"9o4u6pkwSp0",t:"Teaser Léticia 18 Anos",c:"quinze",cat:"18 Anos · Teaser"},
   {id:"G2lh_HrePyY",t:"40 Anos da Perla",c:"aniversarios",cat:"Aniversário"},
   {id:"iLU1H8EhXVc",t:"Niver Nair - 50 Anos",c:"aniversarios",cat:"Aniversário"},
   {id:"KNvjJlqLjYs",t:"Adailto 55 Anos - Filmes Completo",c:"aniversarios",cat:"Aniversário · Filme"},
@@ -658,7 +777,48 @@ var VIDEOS=[
   {id:"q9SD59Yu3pM",t:"Calmi - 80 Anos",c:"aniversarios",cat:"Aniversário"},
   {id:"EoemEHw6PYs",t:"Teaser Adaildo - Aniversário de 55 Anos",c:"aniversarios",cat:"Aniversário · Teaser"},
 	  {id:"IDsbhTaJNIg",t:"Mariana 60 Anos | Aniversário",c:"aniversarios",cat:"Aniversário"},
+	  {id:"czJsxup2xbI",t:"Teaser | Súri 1 Ano – Um Pequeno Grande Amor!",c:"aniversarios",cat:"Aniversário · Teaser"},
+	  {id:"X_HBJFSHoO0",t:"Filme em Aniversário de 50 Anos - Vídeo Teaser",c:"aniversarios",cat:"Aniversário · Teaser"},
+	  {id:"GQ_25IfFf7A",t:"Súri 1 Ano – Um Mundo de Amor e Descobertas!",c:"aniversarios",cat:"Aniversário"},
+	  {id:"BDf9tozPs8w",t:"Laura Liz fez 1 aninho",c:"aniversarios",cat:"Aniversário"},
+	  {id:"Ikih55egKfk",t:"Aniversario Cauper - Versão 2",c:"aniversarios",cat:"Aniversário"},
+	  {id:"Pufp4-ntjgw",t:"Filme Completo - Aniversário temático 60 Anos",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"Cj7jz1qro8s",t:"Filme - Aniversário temático de 60 Anos - Teaser",c:"aniversarios",cat:"Aniversário · Teaser"},
+	  {id:"MouZzDRXEUw",t:"Filme de aniversário de 1 aninho - Ricardo",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"BGmkgie7JN8",t:"Filme infantil Teaser João Guilherme",c:"aniversarios",cat:"Aniversário · Infantil"},
+	  {id:"vhazlsybPFU",t:"Festa temática Shurek e Fiona - Filme aniversário - Zaion 1 aninho",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"_fMd_64WnSY",t:"Filme em Aniversário Adulto - Frank",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"8-fGx6iY5Zw",t:"Vídeo melhores momentos em Aniversário",c:"aniversarios",cat:"Aniversário"},
+	  {id:"7un5LFffwdg",t:"Filme anivesário - Maria Luiza - 1 aninho (Mâe Thatcher))",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"finIdO7ySfE",t:"Documentário Maria Chama 90 Anos",c:"aniversarios",cat:"Aniversário"},
+	  {id:"fuUpzG07wIQ",t:"filme festa infantil - Dominic",c:"aniversarios",cat:"Aniversário · Infantil"},
+	  {id:"6uYaR9kLX0k",t:"Filme aniversário Infantil - Helena 2 aninhos",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"sIe4ba7L8x0",t:"Nilce 60 Anos",c:"aniversarios",cat:"Aniversário"},
+	  {id:"qYEknnvpFFo",t:"Aniversário de 1 ano - Danielzinho",c:"aniversarios",cat:"Aniversário"},
+	  {id:"qTbsbD2V0iE",t:"Teaser 1 min. Filme de aniversário de 2 aninhos Helena",c:"aniversarios",cat:"Aniversário · Teaser"},
+	  {id:"jgC4XeZrClc",t:"Aniversário Infantil",c:"aniversarios",cat:"Aniversário"},
+	  {id:"pMWTOTWWyzM",t:"Filme em Aniversário - Arthur 1 aninho",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"8fUIGEnaTuk",t:"Teaser Bryan - 1 Aninho",c:"aniversarios",cat:"Aniversário · Teaser"},
+	  {id:"rC7zKXtuebg",t:"Filme em aniversário - Cadu - 2 Aninho",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"41V1RCVVUWg",t:"Nilce 60 Anos",c:"aniversarios",cat:"Aniversário"},
+	  {id:"4rcetK8uXnw",t:"Filme Infantil - Ivan",c:"aniversarios",cat:"Aniversário · Infantil"},
+	  {id:"fABuZX0lRJI",t:"Zac 1 Anos - Filme em aniversário",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"GYuiYtfBjwk",t:"teaser samuel",c:"aniversarios",cat:"Aniversário · Infantil"},
+	  {id:"5VYpSHDbF9M",t:"Vídeo infantil de aniversário de 2 aninhos!",c:"aniversarios",cat:"Aniversário"},
+	  {id:"GV0HFBYp2DI",t:"Filme Infantil - Samuel",c:"aniversarios",cat:"Aniversário · Infantil"},
+	  {id:"hjZmgejLT4I",t:"Filme Infantil - Heitor",c:"aniversarios",cat:"Aniversário · Infantil"},
+	  {id:"r32oFLwqhIc",t:"Maestro Davi - Festa de Aniversário",c:"aniversarios",cat:"Aniversário"},
+	  {id:"YcH2bHyygEA",t:"Niver Infantil - Irmães",c:"aniversarios",cat:"Aniversário"},
+	  {id:"nVxU_hwXQEw",t:"Filme em aniversário - Talita Teaser",c:"aniversarios",cat:"Aniversário · Teaser"},
+	  {id:"YshHHSLVwVU",t:"Filme Aniverários de 30 Anos - Luap Filmes",c:"aniversarios",cat:"Aniversário · Filme"},
+	  {id:"1ht6c3M9EAI",t:"Arthur Bryan_vídeo_documentário",c:"aniversarios",cat:"Aniversário · Infantil"},
   {id:"SbNvk51l-50",t:"Clipe — Mariah Carvalho",c:"clipes",cat:"Clipe Musical"},
+	  {id:"h5CaFpD4FrI",t:"(Clipe) a maior cheia do Amazonas - 2021 - Prod.: Pauleanderson",c:"clipes",cat:"Clipes Musicais"},
+	  {id:"SP71sSJ8sy0",t:"Vídeo dança - teatro Amazonas",c:"clipes",cat:"Clipes Musicais"},
+	  {id:"bSRpYs6yegI",t:"Vídeo Dança - Projeto Melhor Idade - Manaus",c:"clipes",cat:"Clipes Musicais"},
+	  {id:"eviOEyJLOsQ",t:"Eu Só Quero Tua Presença Theo Rubia e Casa Worship Ao Vivo",c:"clipes",cat:"Clipes Musicais"},
+	  {id:"hFQ6BwoemiQ",t:"Vídeo Dança - Ponta Negra",c:"clipes",cat:"Clipes Musicais"},
+	  {id:"d5Q83sTIEXw",t:"Making of de Projeto dança - Melhores momentos",c:"clipes",cat:"Clipes Musicais"},
   {id:"c94RnadWmy0",t:"Clínica Estética",c:"publicidade",cat:"Publicidade · Clínica"},
   {id:"GhP6hCuan64",t:"Depoimento de Cliente — Clínica",c:"publicidade",cat:"Publicidade · Depoimento"},
   {id:"VEN-6OcxNwA",t:"Institucional — Clínica",c:"publicidade",cat:"Publicidade · Institucional"},
@@ -690,15 +850,63 @@ var VIDEOS=[
   {id:"fawcN8x0ypk",t:"Toledo Sollar - Teaser Inauguração",c:"publicidade",cat:"Publicidade · Teaser"},
   {id:"p_8dd5-8kR0",t:"Inauguração Loja Carinha de Anjo - Teaser",c:"publicidade",cat:"Publicidade · Teaser"},
 	  {id:"txovb1Atgq0",t:"Cremam | Jubileu de Ouro – 50 anos de dedicação à Medicina",c:"publicidade",cat:"Publicidade · Institucional"},
-	  {id:"v13f39g6JSU",t:"Pousada Amazônica",c:"publicidade",cat:"Publicidade"}
+	  {id:"v13f39g6JSU",t:"Pousada Amazônica",c:"publicidade",cat:"Publicidade"},
+	  {id:"5zd4cot-AeE",t:"Vídeo Divulgação - Guaraná da Amazonia",c:"publicidade",cat:"Publicidade"},
+	  {id:"GiWqLucOcpc",t:"Teaser Home Office",c:"publicidade",cat:"Publicidade · Teaser"},
+	  {id:"2xJuB73VQpg",t:"Confra Eldorado Completo",c:"publicidade",cat:"Publicidade · Filme"},
+	  {id:"7xyAOG_O_Kg",t:"Teaser Confra Elforado",c:"publicidade",cat:"Publicidade · Teaser"},
+	  {id:"f64t20NDZ54",t:"Video Marketing - Imobiliaria - Terrenos 4",c:"publicidade",cat:"Publicidade"},
+	  {id:"1RDbo0SdnVc",t:"Vídeo Divugação Fusion Academy",c:"publicidade",cat:"Publicidade"},
+	  {id:"PDJVavULmz8",t:"Vídeo Marketing - Luap Studio",c:"publicidade",cat:"Publicidade"},
+	  {id:"5Z6gukMXbMw",t:"Salão de Festas",c:"publicidade",cat:"Publicidade"},
+	  {id:"fD0yEbsf-Qk",t:"Vídeo Marketing - 2018",c:"publicidade",cat:"Publicidade"},
+	  {id:"v4yaFy8ls2Q",t:"Vídeo Marketing 2017 - Comercial de Fotografia Luap Studio",c:"publicidade",cat:"Publicidade"},
+	  {id:"Vn1yKUDw46w",t:"Filme de Formatura Abc - 2020",c:"outros",cat:"Outros · Formatura"},
+	  {id:"KPGlDGYQ5mA",t:"Como usar um Check List para Vender mais no Instagram",c:"outros",cat:"Outros · Aula"},
+	  {id:"92V7Tp7UUC0",t:"Cerimônia de Formatura do Exército 2024 - Vídeo Completo",c:"outros",cat:"Outros · Formatura"},
+	  {id:"cppi6Bse_6s",t:"Aula 01 - Marketing pessoal - o Que é Marketing Pessoal?",c:"outros",cat:"Outros · Aula"},
+	  {id:"udK7QSDlAMI",t:"Teaser - Baile Formatura Fisioterapia",c:"outros",cat:"Outros · Formatura"},
+	  {id:"dtTG4t-STd8",t:"Formatura - teaser",c:"outros",cat:"Outros · Formatura"},
+	  {id:"3le0i2E226w",t:"Revelado o segredo: cartão interativo em 1 minuto",c:"outros",cat:"Outros · Aula"},
+	  {id:"0n0hGS8AE38",t:"Serie - Caminhando com Deus - Como Construir um ambiente de crescimento espiritual 001",c:"outros",cat:"Outros · Fé"},
+	  {id:"jWbdx-_qGxI",t:"Teaser Versão 2 Vida em Equilibrio",c:"outros",cat:"Outros"},
+	  {id:"hlEoXN52s8g",t:"5 Linguagens de amor - Desenvolvendo o Amor",c:"outros",cat:"Outros · Palestra"},
+	  {id:"-PCQyc7sSb8",t:"Filmagem em Colação Grau Rh - Unip",c:"outros",cat:"Outros · Formatura"},
+	  {id:"_Vgp3lvTHJA",t:"Teaser Formatura Exército",c:"outros",cat:"Outros · Formatura"},
+	  {id:"dpokgSwilPU",t:"Apresentação - Escola - Melhores momentos",c:"outros",cat:"Outros"},
+	  {id:"-QFutUVPwD4",t:"Aula Edição Básica na Prática - 01Lightroom",c:"outros",cat:"Outros · Aula"},
+	  {id:"1aVBb0iKA2k",t:"Vida em Equilibrio Teaser2",c:"outros",cat:"Outros"},
+	  {id:"_hOXpMI7fcQ",t:"Vídeo de apresentação teatral - Cabaré",c:"outros",cat:"Outros · Teatro"},
+	  {id:"F5E3VBnhLYg",t:"Cópia de Aula hack do Mkt digital",c:"outros",cat:"Outros · Aula"},
+	  {id:"kpG0A-eRyHo",t:"Dia das Mães Rosda",c:"outros",cat:"Outros"},
+	  {id:"lSry9QFFDRY",t:"Cópia de Aula hack do Mkt digital",c:"outros",cat:"Outros · Aula"},
+	  {id:"e28pgP076NE",t:"Curso de Designer Digitais - Dia 14 de Outubro - Cartão de Visita",c:"outros",cat:"Outros · Aula"},
+	  {id:"yO1ueo8qy1c",t:"Post's profissionais em 1 minuto",c:"outros",cat:"Outros · Aula"},
+	  {id:"_ZmNGGT7A1g",t:"Vídeo Depoimento 2 - Formatura",c:"outros",cat:"Outros · Formatura"},
+	  {id:"NhWjOhKgN-E",t:"Filme Aprentação Palhaços",c:"outros",cat:"Outros · Teatro"},
+	  {id:"Bv6OioakF5U",t:"Vídeo Depoimento - Formatura",c:"outros",cat:"Outros · Formatura"},
+	  {id:"6tod4XbErOY",t:"Produção de Vídeo para You Tuber´s",c:"outros",cat:"Outros · Aula"},
+	  {id:"5Pgu9PCp4RU",t:"Palestra Horizontal",c:"outros",cat:"Outros"},
+	  {id:"e6GADn6WG3E",t:"Cópia de Programação de postagem",c:"outros",cat:"Outros · Rascunho"}
 ];
 
 /* ordem original (por views) — o drag do dono reordena VIDEOS, o mais visto de cada nicho continua valendo esta lista */
 var ORDEM=VIDEOS.slice();
 
 var grid=document.getElementById("grid");
-var ORDER_KEY="pd_pf_order_v1";
+var ORDER_KEY="pd_pf_order_v2"; /* v2: acervo antigo entrou, ordem antiga do navegador é descartada */
 var suppressClick=false;
+/* reordenar é do dono: só liga com #editar (ou ?editar=1) na URL */
+var EDICAO=location.hash==="#editar"||/[?&]editar=1(&|$)/.test(location.search);
+if(EDICAO){
+  document.body.classList.add("modo-editar");
+  var hint=document.createElement("div");
+  hint.id="editHint";
+  hint.textContent="Modo edição: arraste os cards para reordenar. A ordem fica salva neste navegador.";
+  document.body.appendChild(hint);
+  setTimeout(function(){hint.classList.add("fora");},6000);
+  setTimeout(function(){if(hint.parentNode)hint.parentNode.removeChild(hint);},6600);
+}
 var thumb=function(v,qty){return "https://i.ytimg.com/vi/"+v.id+"/"+(qty||"hqdefault")+".jpg";};
 
 /* ordem personalizada (arrastar) aplicada antes de montar os cards */
@@ -739,9 +947,9 @@ VIDEOS.forEach(function(v){
   grid.appendChild(b);
 });
 
-/* ---- arrastar para reordenar os cards do portfólio ---- */
+/* ---- arrastar para reordenar os cards do portfólio (só modo edição) ---- */
 (function(){
-  if(!grid)return;
+  if(!grid||!EDICAO)return;
   var card=null,ph=null,startX=0,startY=0,active=false,armed=false,timer=null;
 
   function salvar(){
@@ -894,7 +1102,7 @@ function marcaMaisVisto(cat){
 }
 /* nicho na URL: clicar numa aba grava #15-anos, #doc-de-casamento etc.
    Abrir um desses links ativa a aba direto e rola pro portfólio */
-var CAT2SLUG={"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade"};
+var CAT2SLUG={"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
 var SLUG2CAT={};
 Object.keys(CAT2SLUG).forEach(function(k){SLUG2CAT[CAT2SLUG[k]]=k;});
 function setFiltro(cat){
