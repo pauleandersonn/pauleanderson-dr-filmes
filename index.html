@@ -885,20 +885,39 @@ function marcaMaisVisto(cat){
   var thumb=card.querySelector(".card-thumb");
   if(thumb)thumb.insertAdjacentHTML("afterbegin",'<span class="badge-hit">Mais assistido</span>');
 }
+/* nicho na URL: clicar numa aba grava #15-anos, #doc-de-casamento etc.
+   Abrir um desses links ativa a aba direto e rola pro portfólio */
+var CAT2SLUG={"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade"};
+var SLUG2CAT={};
+Object.keys(CAT2SLUG).forEach(function(k){SLUG2CAT[CAT2SLUG[k]]=k;});
+function setFiltro(cat){
+  filters.forEach(function(o){o.setAttribute("aria-pressed",o.dataset.cat===cat?"true":"false");});
+  var visiveis=0;
+  grid.querySelectorAll(".card").forEach(function(c){
+    var mostra=(cat==="todos"||c.dataset.cat===cat);
+    c.style.display=mostra?"":"none";
+    if(mostra)visiveis++;
+  });
+  gridEmpty.hidden=visiveis>0;
+  marcaMaisVisto(cat);
+}
 filters.forEach(function(f){
   f.addEventListener("click",function(){
-    filters.forEach(function(o){o.setAttribute("aria-pressed","false");});
-    f.setAttribute("aria-pressed","true");
-    var cat=f.dataset.cat,visiveis=0;
-    grid.querySelectorAll(".card").forEach(function(c){
-      var mostra=(cat==="todos"||c.dataset.cat===cat);
-      c.style.display=mostra?"":"none";
-      if(mostra)visiveis++;
-    });
-    gridEmpty.hidden=visiveis>0;
-    marcaMaisVisto(cat);
+    var cat=f.dataset.cat;
+    setFiltro(cat);
+    var slug=CAT2SLUG[cat];
+    if(history.replaceState){
+      if(slug)history.replaceState(null,"","#"+slug);
+      else history.replaceState(null,"",location.pathname+location.search);
+    }
   });
 });
+var pedido=SLUG2CAT[(location.hash||"").slice(1)];
+if(pedido){
+  setFiltro(pedido);
+  var secaoFilmes=document.getElementById("filmes");
+  if(secaoFilmes)secaoFilmes.scrollIntoView();
+}
 
 /* lightbox */
 var lb=document.getElementById("lb"),
