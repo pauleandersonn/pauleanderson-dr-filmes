@@ -273,6 +273,14 @@ body.is-dragging,body.is-dragging *{cursor:grabbing!important}
   font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;
   padding:6px 12px;
 }
+.badge-hit{
+  position:absolute;top:14px;right:14px;z-index:2;
+  border:1px solid rgba(199,167,108,.65);
+  background:rgba(8,8,8,.85);color:var(--champagne);
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;
+  padding:6px 12px;
+  pointer-events:none;
+}
 .filmes-note{margin-top:36px;text-align:center;font-size:.8rem;color:var(--taupe)}
 .filmes-note a{color:var(--champagne);border-bottom:1px solid rgba(199,167,108,.4)}
 .filmes-empty{margin-top:36px;padding:34px 28px;text-align:center;font-size:.86rem;line-height:1.8;color:rgba(244,240,232,.72);border:1px dashed rgba(199,167,108,.35)}
@@ -678,6 +686,9 @@ var VIDEOS=[
   {id:"p_8dd5-8kR0",t:"Inauguração Loja Carinha de Anjo - Teaser",c:"publicidade",cat:"Publicidade · Teaser"}
 ];
 
+/* ordem original (por views) — o drag do dono reordena VIDEOS, o mais visto de cada nicho continua valendo esta lista */
+var ORDEM=VIDEOS.slice();
+
 var grid=document.getElementById("grid");
 var ORDER_KEY="pd_pf_order_v1";
 var suppressClick=false;
@@ -858,6 +869,22 @@ filters.forEach(function(f){
     cont.textContent=c==="todos"?VIDEOS.length:VIDEOS.filter(function(v){return v.c===c}).length;
   }
 });
+/* selo "Mais assistido" no primeiro card do nicho (ordem original por views) */
+function marcaMaisVisto(cat){
+  grid.querySelectorAll(".card-hit").forEach(function(c){
+    c.classList.remove("card-hit");
+    var b=c.querySelector(".badge-hit");
+    if(b&&b.parentNode)b.parentNode.removeChild(b);
+  });
+  if(cat==="todos")return;
+  var alvo=ORDEM.filter(function(v){return v.c===cat})[0];
+  if(!alvo)return;
+  var card=grid.querySelector('.card[data-id="'+alvo.id+'"]');
+  if(!card)return;
+  card.classList.add("card-hit");
+  var thumb=card.querySelector(".card-thumb");
+  if(thumb)thumb.insertAdjacentHTML("afterbegin",'<span class="badge-hit">Mais assistido</span>');
+}
 filters.forEach(function(f){
   f.addEventListener("click",function(){
     filters.forEach(function(o){o.setAttribute("aria-pressed","false");});
@@ -869,6 +896,7 @@ filters.forEach(function(f){
       if(mostra)visiveis++;
     });
     gridEmpty.hidden=visiveis>0;
+    marcaMaisVisto(cat);
   });
 });
 
