@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="/videos.json" as="fetch" crossorigin>
 <style>
 :root{
   --opera:#080808;
@@ -40,6 +41,15 @@ img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 :focus-visible{outline:1px solid var(--champagne);outline-offset:3px}
+
+.skip-link{
+  position:absolute;top:-100%;left:16px;z-index:100;
+  background:var(--champagne);color:var(--opera);
+  padding:8px 16px;font-weight:500;font-size:.72rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:top .3s;
+}
+.skip-link:focus{top:16px}
 
 .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
 .eyebrow{
@@ -94,7 +104,25 @@ nav.scrolled{
   transition:background .3s,color .3s;
 }
 .nav-cta:hover{background:var(--champagne);color:var(--opera)}
-@media(max-width:860px){.nav-links a:not(.nav-cta){display:none}}
+.nav-toggle{
+  display:none;flex-direction:column;gap:5px;
+  width:28px;height:22px;justify-content:center;
+}
+.nav-toggle span{display:block;height:2px;background:var(--ivory);transition:.3s}
+@media(max-width:860px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:fixed;inset:0 0 0 auto;
+    background:rgba(8,8,8,.98);
+    flex-direction:column;padding:120px 28px 40px;gap:24px;
+    transform:translateX(100%);transition:transform .4s;
+  }
+  .nav-links.open{transform:none}
+  .nav-links a:not(.nav-cta){display:block}
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
 
 /* ---------- HERO ---------- */
 .hero{
@@ -289,6 +317,14 @@ body.is-dragging,body.is-dragging *{cursor:grabbing!important}
   padding:6px 12px;
   pointer-events:none;
 }
+.load-more{
+  display:block;width:100%;text-align:center;margin-top:32px;
+  padding:16px 32px;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  border:1px solid var(--hairline);color:var(--ivory);background:transparent;
+  transition:all .3s;
+}
+.load-more:hover{border-color:var(--champagne);color:var(--champagne)}
+.load-more[hidden]{display:none}
 .filmes-note{margin-top:36px;text-align:center;font-size:.8rem;color:var(--taupe)}
 .filmes-note a{color:var(--champagne);border-bottom:1px solid rgba(199,167,108,.4)}
 .filmes-empty{margin-top:36px;padding:34px 28px;text-align:center;font-size:.86rem;line-height:1.8;color:rgba(244,240,232,.72);border:1px dashed rgba(199,167,108,.35)}
@@ -346,7 +382,7 @@ body.is-dragging,body.is-dragging *{cursor:grabbing!important}
 .contato .lead{max-width:560px;margin:26px auto 0;color:rgba(244,240,232,.72)}
 .contato-actions{margin-top:44px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .contato-links{
-  margin-top:56px;display:flex;gap:14px 44px;justify-content:center;flex-wrap:wrap;
+  margin-top:56px;display:flex;gap:14px 44px;justify_content:center;flex-wrap:wrap;
   font-size:.8rem;letter-spacing:.08em;color:rgba(244,240,232,.7);
 }
 .contato-links a{border-bottom:1px solid transparent;transition:color .25s,border-color .25s;padding-bottom:2px}
@@ -357,6 +393,14 @@ body.is-dragging,body.is-dragging *{cursor:grabbing!important}
 footer{border-top:1px solid rgba(199,167,108,.14);padding:40px 0;text-align:center}
 footer p{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
 footer .sig{font-family:var(--serif);font-style:italic;font-size:1.15rem;letter-spacing:.03em;text-transform:none;color:var(--champagne);margin-bottom:14px}
+.edit-toggle{
+  display:none;margin-top:20px;padding:10px 20px;
+  border:1px solid var(--hairline);color:var(--ivory);background:transparent;
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  transition:all .3s;
+}
+.edit-toggle:hover{border-color:var(--champagne);color:var(--champagne)}
+.edit-toggle[hidden]{display:none}
 
 /* ---------- LIGHTBOX ---------- */
 .lb{
@@ -366,7 +410,7 @@ footer .sig{font-family:var(--serif);font-style:italic;font-size:1.15rem;letter-
   padding:28px;
 }
 .lb.open{display:flex}
-.lb-frame{width:min(1100px,100%);aspect-ratio:16/9;border:1px solid var(--hairline)}
+.lb-frame{width:min(1100px,100%);aspect-ratio:16/9;border:1px solid var(--hairline);position:relative}
 .lb-frame iframe{width:100%;height:100%;border:0;display:block}
 .lb-close{
   position:absolute;top:22px;right:26px;
@@ -375,6 +419,21 @@ footer .sig{font-family:var(--serif);font-style:italic;font-size:1.15rem;letter-
   display:grid;place-items:center;transition:all .25s;
 }
 .lb-close:hover{border-color:var(--champagne);color:var(--champagne)}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:56px;height:56px;border:1px solid var(--hairline);
+  color:var(--ivory);font-size:1.5rem;line-height:1;
+  display:grid;place-items:center;transition:all .25s;opacity:.7;
+  background:rgba(8,8,8,.6);
+}
+.lb-nav:hover{opacity:1;border-color:var(--champagne);color:var(--champagne)}
+.lb-prev{left:22px}
+.lb-next{right:22px}
+@media(max-width:720px){
+  .lb-nav{width:44px;height:44px;font-size:1.2rem}
+  .lb-prev{left:12px}
+  .lb-next{right:12px}
+}
 .lb-title{
   position:absolute;bottom:24px;left:0;right:0;text-align:center;
   font-family:var(--serif);font-size:1.1rem;color:rgba(244,240,232,.85);
@@ -395,12 +454,17 @@ body::before{
 </head>
 <body>
 
+<a href="#main" class="skip-link">Pular para o conteúdo principal</a>
+
 <nav id="nav" aria-label="Navegação principal">
   <a class="brand" href="#topo">
     <span class="brand-mono" aria-hidden="true">PD</span>
     <span class="brand-name">Pauleanderson Dr. Filmes<small>Cineasta Patrimonial</small></span>
   </a>
-  <div class="nav-links">
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks" role="navigation">
     <a href="#filmes">Filmes</a>
     <a href="#sobre">Sobre</a>
     <a href="#metodo">Método</a>
@@ -426,6 +490,8 @@ body::before{
     <div class="strip-perf"></div>
   </div>
 </header>
+
+<main id="main">
 
 <section class="section manifesto">
   <div class="wrap reveal">
@@ -473,6 +539,8 @@ body::before{
     </div>
 
     <div class="grid reveal" id="grid"></div>
+
+    <button class="load-more" id="loadMore" hidden>Carregar mais</button>
 
     <p class="filmes-empty reveal" id="gridEmpty" role="status" hidden>Este nicho ainda não tem vídeos publicados aqui — as primeiras produções chegam em breve. Quer encomendar? <a href="https://wa.me/5592999870427?text=Ol%C3%A1%2C%20Pauleanderson%21%20Tenho%20interesse%20em%20um%20filme%20do%20nicho%20que%20est%C3%A1%20buscando." target="_blank" rel="noopener">Fale comigo no WhatsApp</a>.</p>
 
@@ -557,422 +625,53 @@ body::before{
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
     <p class="sig">Não é só apertar o REC.</p>
     <p>Pauleanderson Dr. Filmes · Manaus / AM · 2026</p>
+    <button class="edit-toggle" id="editToggle" hidden aria-label="Ativar modo edição">✎ Reordenar portfólio</button>
   </div>
 </footer>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Reprodutor de vídeo">
   <button class="lb-close" id="lbClose" aria-label="Fechar vídeo">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Vídeo anterior">‹</button>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Próximo vídeo">›</button>
   <div class="lb-frame" id="lbFrame"></div>
   <p class="lb-title" id="lbTitle"></p>
 </div>
 
 <script>
-(function(){
+(async function(){
 "use strict";
 
-var VIDEOS=[
-	  {id:"GKVpMHDmrp8",t:"Pré-Wedding | O Amor antes do Sim",c:"doc-casamento",cat:"Documentário de Casamento"},
-	  {id:"btASwJBlTig",t:"Jantar com Padrinhos - Pré Wedding",c:"doc-casamento",cat:"Documentário de Casamento · Teaser"},
-	  {id:"ZPqLNmLJHYs",t:"Nayara &amp; Jean | O Filme Documentário de Casamento",c:"doc-casamento",cat:"Documentário de Casamento · Filme"},
-	  {id:"VzSid1eSwDY",t:"Monike &amp; Gustavo | Filme Documental de Casamento",c:"doc-casamento",cat:"Documentário de Casamento · Filme"},
-	  {id:"1xYDj7CzyMs",t:"Next Jogo 01",c:"cinema",cat:"Cinema"},
-	  {id:"DSN9hUWXPHw",t:"Jailton - Melhores Momentos com Identificação",c:"cinema",cat:"Cinema"},
-	  {id:"MSqXRYaTEg4",t:"Luca Vídeo Selecionado",c:"cinema",cat:"Cinema"},
-	  {id:"HG2aAqjltCQ",t:"Vale do Garimpo — Episódio 1",c:"cinema",cat:"Cinema · Documentário · Record TV",f:true},
-	  {id:"QuJB7ENo9YQ",t:"Luca Vídeo Portifolio Jogadas",c:"cinema",cat:"Cinema"},
-	  {id:"2v3WTqzr75o",t:"Maestro Davi - Teaser Doc",c:"cinema",cat:"Cinema · Teaser"},
-	  {id:"aeA1JKLuE8g",t:"Bastidores de Manaus x Volta redonda",c:"cinema",cat:"Cinema"},
-	  {id:"-2QscRO4AtA",t:"Os batidores do Jogo - Manaus x Altos",c:"cinema",cat:"Cinema"},
-	  {id:"_ZYfI6TchyI",t:"Mini Documentário - Sala Estudo",c:"cinema",cat:"Cinema"},
-	  {id:"-hXYufw0OvY",t:"Doc. pessoal_Dia do meu aniversário_Parte 01",c:"cinema",cat:"Cinema"},
-	  {id:"ugG36EG4jDI",t:"Jogador de Manaus ganha bolsa nos EUA",c:"cinema",cat:"Cinema · Documentário"},
-	  {id:"bmMkxpETp9M",t:"Film Short - com as lindas Gêmeas Lorena e Milena",c:"cinema",cat:"Cinema"},
-	  {id:"W6D1WgpVKWQ",t:"Filme Documentário - o Teatro Me Encontrou",c:"cinema",cat:"Cinema · Filme"},
-	  {id:"FaUeyPJQ1xY",t:"Curta Metragem - Laboratório Experimental de Cinema",c:"cinema",cat:"Cinema"},
-	  {id:"YuqJYrxxQME",t:"Curta Metragem - Laboratória Experimental de Cinema/ Luap Studio",c:"cinema",cat:"Cinema"},
-	  {id:"DmX-enImgms",t:"Curta Metragem - o Fotógrafo em Ação/ Luap",c:"cinema",cat:"Cinema"},
-	  {id:"GtbqTatlaMs",t:"Enchente — Careiro da Várzea",c:"cinema",cat:"Cinema · Documental · Drone"},
-	  {id:"k3NpXFCpVdM",t:"Maior Cheia em Cacau Pireira - Amazonas",c:"cinema",cat:"Cinema"},
-	  {id:"2mDVromqbk4",t:"História da Fotografia na Amazônia",c:"cinema",cat:"Cinema"},
-	  {id:"wBwm_tGeCpw",t:"Curta Metragem - o Médico",c:"cinema",cat:"Cinema"},
-	  {id:"E8jEQb3XSwg",t:"Curta Última Chance de Pauleanderson Gomes",c:"cinema",cat:"Cinema"},
-	  {id:"lA3bQmRmN0w",t:"Mini Curta - Falta de Boa Vontade",c:"cinema",cat:"Cinema"},
-	  {id:"e09NK4D4jRc",t:"Vídeo momentos família - History Love",c:"cinema",cat:"Cinema"},
-	  {id:"5dLnS0dxPTw",t:"Amazoncoin",c:"cinema",cat:"Cinema · Documentário · Fortaleza/CE"},
-	  {id:"jQWFRljQ2X8",t:"Vida de Fotógrafo - Como eu me vejo!",c:"cinema",cat:"Cinema"},
-	  {id:"W3273HoPty4",t:"Prepara Brasil Manaus Flash Mob",c:"cinema",cat:"Cinema"},
-	  {id:"GyuwTb5U9FE",t:"Prepara Brasil Manaus Ação Carrinho",c:"cinema",cat:"Cinema"},
-	  {id:"NCKtLbSaDug",t:"Prepara Brasil (manaus) Ação do Barro",c:"cinema",cat:"Cinema"},
-	  {id:"kzEzLvuVmIs",t:"Cia de Arte Cristã - Visita a Comunidade Indígena Beija-flor",c:"cinema",cat:"Cinema"},
-	  {id:"7YeH1StNW80",t:"Última Chance",c:"cinema",cat:"Cinema · Curta-metragem autoral"},
-	  {id:"OEUJ3fe3-_8",t:"Izabella e Gabriel · Teaser",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"Q3zNJ_9nNJQ",t:"Eia &amp; Ludmilson | O Filme Completo de Casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"ifW4g-LUSnU",t:"Leia &amp; Ludmilson | Teaser Oficial de Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"Gt_5oNRf2WM",t:"Jamima e Maria",c:"casamento",cat:"Casamento"},
-	  {id:"EVXzCBlEhag",t:"Pré Wedding - Jantar com Padrinhos",c:"casamento",cat:"Casamento"},
-	  {id:"rjX3KBhEFcI",t:"Casamento Marcia Teaser",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"UxycD7DAUEc",t:"Casamenot de Pauleane e Tiago",c:"casamento",cat:"Casamento"},
-	  {id:"M-s4OpYjTj8",t:"Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"H9EIQhD81NQ",t:"helaiton e luana completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"ywZy3iEbI5E",t:"Teaser Casamento Luana e Elaiton",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"n3A9GsiAL1E",t:"Corte Casamento Carol e Leandro",c:"casamento",cat:"Casamento"},
-	  {id:"TugJTvmlTmQ",t:"Casamento - André e Clarisse",c:"casamento",cat:"Casamento"},
-	  {id:"XMJTeP7hB1o",t:"O Casamento de André e Clarice | 03.05.2025 | Emoção e Amor em Cada Detalhe",c:"casamento",cat:"Casamento"},
-	  {id:"ymiOMG5ZRPA",t:"Animação de Introdução para Casamento | Elegância e Emoção na Sua História de Amor",c:"casamento",cat:"Casamento"},
-	  {id:"fwcgPXo_6O0",t:"Adauton e Rebeca 10 11 Final",c:"casamento",cat:"Casamento"},
-	  {id:"P8-NEa169Yw",t:"Adalton e Rebeca Filmes Casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"JTpW17WMpVI",t:"Casamento - Debora e Jairo",c:"casamento",cat:"Casamento"},
-	  {id:"CxzoTJry3AM",t:"Debora e Jairo Teaser",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"4mN_cawJzAQ",t:"Bruna &amp; Daniel – O Início de Uma Eternidade",c:"casamento",cat:"Casamento"},
-	  {id:"44JkvmTtZ1c",t:"Casamentojenifer e Phillio Completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"teGeV-oZpSk",t:"Teaser Casamentojenifer e Phillip",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"CgVusQIQj5w",t:"Casamento Compelto - Bela Flora",c:"casamento",cat:"Casamento"},
-	  {id:"jvi0RWAKbdY",t:"Casamento Rafael - Manaus/ Amazonas",c:"casamento",cat:"Casamento"},
-	  {id:"HJBjDcR_Tmc",t:"Teaser Casamento Bela Flora",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"GPcJAA0Y5SM",t:"Teaser Carolinne e Emerson",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"sxLF591tFQM",t:"Casamento Gabriel e Laís - Completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"lkRk_ppllU8",t:"Flávia e David completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"2avPIq_QEAw",t:"Filme Documentário - Casamento de Carolinne e Emerson",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"UiJVELFtrJo",t:"Beatriz e Everton - Casamento Minimalista",c:"casamento",cat:"Casamento"},
-	  {id:"AdvH_QyaGMc",t:"Laís e Gabriel Teaser",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"xct29mTHbZM",t:"Teaser Carolinne e Emerson",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"gmZzY2Xczok",t:"Filme do Casamento da Fernanda e Joab",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"Q3Rsc9OhckQ",t:"Teaser Casamento Lindo",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"3oOMLHjF00U",t:"Casamento Lindo em Manaus",c:"casamento",cat:"Casamento"},
-	  {id:"f4z2whe0oiA",t:"Teaser Flávia e David",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"qVjItybLuHE",t:"Teaser Pré Wedding Pauleanderson e Gabriele",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"jiB81sGUtPc",t:"Vídeo Pré Wedding Pauleanderson e Gabriele",c:"casamento",cat:"Casamento"},
-	  {id:"1SfYgEO71BU",t:"Casamento Rafael e Sandra",c:"casamento",cat:"Casamento"},
-	  {id:"66Cw8gssvc0",t:"Casamento de Júnior e Natália - Vídeo Completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"lIUN5DzdE4g",t:"Teaser Oficial - Casamento de Júnior e Natália",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"6Xj6ZlEpWds",t:"Filme de casamento completo - Rafel e Tanize",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"7KIQv8kkkZI",t:"Casamento completo - Adailto e Natália",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"jtfqZ_TA8rM",t:"Filme Casamento Completo Adonias e Ana",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"5w4eZnouUoU",t:"Filme Pré Wedding Emocionante",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"N385MdNm90w",t:"Teaser casamento - Adaiton e Natália",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"gzuaf42ZPj0",t:"Luziele e Luis Casamento Completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"J2fH2UULynw",t:"Teaser Casamento João e Daniele",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"lG7eVt39U6I",t:"Teaser casamento _ Luziele e Luiz",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"kFPUWTyKkmU",t:"Casamento Completo João e Daniele 1",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"Ww0uQL0EnSQ",t:"Teaser - casamento Ana e Airton",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"jfm8uWpBFXI",t:"Teaser - Casamento - Nicholas e Amanda",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"DI1vaTBbqFY",t:"Eleni e Will - Que Casamento Lindo!",c:"casamento",cat:"Casamento"},
-	  {id:"tw3n5ImU-8A",t:"Teaser - Eleni e Will Vídeo - Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"UaY_0ghafQU",t:"Pré Wedding- Amanda &amp; Nicholas - &quot;Amor em Foco: o Pré-Wedding da Nossa História&quot;",c:"casamento",cat:"Casamento"},
-	  {id:"35tizysQGW4",t:"Filme chocante de Casamento - Felipe e Amanda",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"aqnIKGs6__M",t:"Filme Casamento - Felipe e Amanda",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"IHF1sSetiXw",t:"Filme do Casamento da Dani e Reginaldo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"pfK0Ir7ktsY",t:"Casamento em umas das cachoeira mais bonitas do Brasil!",c:"casamento",cat:"Casamento"},
-	  {id:"dDGvXDkEskw",t:"Assista até o Final e se emocione - Filme Resumo do casamento do André e da Laís (Duas Câmeras)",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"R-aCMCtRUzU",t:"Filme teaser do Casamento André e Laís",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"q899KepkdBs",t:"Filme Casamento que entrou para história - Anne e Kaleb",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"uM0W3Gno0ek",t:"Filme de casamento emocionante",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"BPssFY0x7mQ",t:"Filme de casamento a moda antiga - Suellem e Laercio",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"j9fQes8xV0Y",t:"Filme Completo Marina e Carlo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"4OJfSGMB9AA",t:"Filme Casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"sLcf-zhjIGM",t:"Serafim &amp; Winny - Homengem",c:"casamento",cat:"Casamento"},
-	  {id:"hXQuS_LfLcA",t:"Lucas e Gabi _ Homenagem",c:"casamento",cat:"Casamento"},
-	  {id:"MjghaI4vApQ",t:"Filme Casamento Final",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"-YrRqCBgP4o",t:"Claudia e Robson Filme de Casamento Completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"UzivAwOeeF8",t:"Marcele e Felipe - Vídeo de Casamento",c:"casamento",cat:"Casamento"},
-	  {id:"gr0uOU61CfU",t:"Casamento - Filme",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"o_tVgTgCNbw",t:"Filme Teaser - Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"lyHVaTsG6J0",t:"Filme em casamento - Thais e Henrrique",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"tD0y6L5pGTE",t:"Filme em Boldas de Casamento de 50 anos",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"KNKQ3FbOyXI",t:"Filme em casamento completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"KStfNcwrekE",t:"Filme em casamento - Rodrigo e Larissa",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"kNEHbVRL4EM",t:"Filme em Casamento - Ane e Ricardo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"Of5LxnI_wN8",t:"Filme em Casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"rGNKJceO8EQ",t:"Marcele e Felipe",c:"casamento",cat:"Casamento"},
-	  {id:"ndNc6XeUwys",t:"Filme em Casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"f77anHeEGXM",t:"Ruiciane Lucas - Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"EH5A9IIAHOc",t:"Casamento - Amanda &amp; Francisco",c:"casamento",cat:"Casamento"},
-	  {id:"RcKbofUskAY",t:"Pré Wedding - Fran &amp; José",c:"casamento",cat:"Casamento"},
-	  {id:"6eHwH_Fw4Cc",t:"Teaser Casamento - Marcelo e Raquel",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"Wa6vu8AlefU",t:"Jessica e Adriano - Wedding Day",c:"casamento",cat:"Casamento"},
-	  {id:"c3NA7gCyvzA",t:"Wedding day - Teaser de casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"oWChg-jmS5Y",t:"Wedding Day - Teaser : Cristiano &amp; Dije",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"SlaMHMhl-z4",t:"Filme Casamento Marcelo Raquel - Depoimentos Família",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"YTziMaYdoBQ",t:"Fran e Jose - Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"CxuXK_dB95U",t:"Ruiciane Lucas - Teaser Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"sxR3MZYxRt8",t:"Teaser casamento - Aline e Iguatemir",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"wsEUVqzE0b4",t:"Teaser Casamento - Sandro e Nayandra",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"FNm9pC9Mk10",t:"Filme de Casamento Sergio e Patricia",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"rll-tkHNuZM",t:"Filme de Casamento - Milena e Tiago",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"uXw4lG4RTR8",t:"Filme de Casamento - Nicole e Felipe",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"df3J2PSy9DI",t:"Filme de Casamento - Josivan &amp; Jenifer",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"3sBB7P4c1sA",t:"Filmes de casamento de Lucas e Dayane",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"QgAA2JXAmbA",t:"Coleção Vídeo de Fotos Pré Casamento",c:"casamento",cat:"Casamento"},
-	  {id:"QUA_bhdF540",t:"Teaser — Filme de Casamento",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"_PVEbgveo1o",t:"Pré -Wedding Day - Anderson &amp; Raquel",c:"casamento",cat:"Casamento"},
-	  {id:"bC4xys5zJC8",t:"Filme de Casamento - José e Ingrind",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"tsWqFdE__bk",t:"Filme de casamento Lorem e Murilo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"hatNEzaLYps",t:"Teaser Casamento para Instagram Lorem &amp; Murilo",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"IxJq5Znm58k",t:"Filme Completo de Casamento - Thais &amp; Adonai Completo",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"4hs8sbN0mVs",t:"Vídeo de fotos - Pedido de casamento",c:"casamento",cat:"Casamento"},
-	  {id:"coKUcbYD_jo",t:"Teaser Filme de Casamento Thais &amp; Adonai",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"HOsDJxqeWTw",t:"Teaser - Filme de Casamento Fabi Andre",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"zgkwTbs56QE",t:"Filme de Casamento Fabi &amp; Andre",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"2ph7_YkEd7U",t:"Filme de Casamento - Taylor e Ester",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"GlnoEMT_4eQ",t:"Filme de Casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"DHETCzM1fvY",t:"Filme de Casamento Vanessa e Cleiton - Luap Studio",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"-iW7oG7In6Q",t:"Filme de Casamento de Lorenn e Murilo - Luap Filmes",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"pCKwS3H1Dy8",t:"Histórias de Casamento - Vanessa e Cleiton",c:"casamento",cat:"Casamento"},
-	  {id:"VJgk0_UgWIE",t:"Sessão de Fotos Externa e Interna",c:"casamento",cat:"Casamento"},
-	  {id:"2Zkt5YYCEZE",t:"Taylor &amp; Ester - Vídeo de Fotos (DEmostração) - Casamento",c:"casamento",cat:"Casamento · Fotos"},
-	  {id:"Sle9zNfgZZw",t:"Proposta de Orçamento - Karina e Brayan",c:"casamento",cat:"Casamento"},
-	  {id:"tM7FK6_B2Ro",t:"Casamento Completo - Thais &amp; Adonai",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"UP-eBAqUoEA",t:"Casamento de Israel &amp; Rebeca",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"Rqcv4Q_jmmQ",t:"Melhor Teaser de Casamento no Formato Cinema - Thais Adonai",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"EVihCBXd8WQ",t:"Melhor Teaser de Casamento do Ano de 2020 - By Pauleanderson",c:"casamento",cat:"Casamento · Teaser"},
-	  {id:"M_NhN-1H5ss",t:"Vídeo de Casamento",c:"casamento",cat:"Casamento"},
-	  {id:"Ii-ViMzCsKE",t:"Vídeo de Fotos Slideshow Casamento",c:"casamento",cat:"Casamento · Fotos"},
-	  {id:"5OmqCKdhmQA",t:"Vídeo de Casamento - Vídeo Divulgação",c:"casamento",cat:"Casamento"},
-	  {id:"Haq4nA8gTso",t:"Vídeo Homenagem",c:"casamento",cat:"Casamento"},
-	  {id:"TVlmORJ08pc",t:"Vídeo de casamento (fui o frelancer) - Crédito - Eliz Marklouf",c:"casamento",cat:"Casamento"},
-	  {id:"5fWLbxMYKZM",t:"Incrível Vídeo de casamento",c:"casamento",cat:"Casamento · Filme"},
-	  {id:"KoUx6YVjims",t:"Larissa | 15 anos – Uma noite para recordar",c:"quinze",cat:"15 Anos"},
-	  {id:"haZGE3zo5Ak",t:"Larissa | 15 anos – Um sonho, uma história",c:"quinze",cat:"15 Anos"},
-	  {id:"moda-ooGf6c",t:"Letícia 15 Anos | O Filme Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"Y_HK9-BFzHM",t:"15 Anos das Gêmeas | O Filme Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"P5g4L9FrH54",t:"Maria Júlia 15 Anos | O Filme Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"f4K3W-WsJY8",t:"Sofia 15 Anos | O Filme Oficial",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"0Tkp3gr09us",t:"15 Anos das Gêmeas | uma Conexão Única em Dobro",c:"quinze",cat:"15 Anos"},
-	  {id:"iEZXxiwss3U",t:"Maria Júlia 15 Anos | Teaser Oficial",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"T2EviQvaz28",t:"18 Anos Yasmin Teaser Balada",c:"quinze",cat:"18 Anos · Teaser"},
-	  {id:"aBn619OsCxs",t:"15 Maria Julia Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"MNIJ-eP6GdI",t:"15 Maria Julia Teaser",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"rPRKHaPbE2c",t:"15 Anos Gemêas Teaser",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"zC7e_k6ktRQ",t:"15 Anos - Teaser",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"SSMKr2OfhFA",t:"15 anos da Vitória",c:"quinze",cat:"15 Anos"},
-	  {id:"yp3reFveOT4",t:"Teaser 15 Anos Maria Luiza",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"CSHcfo6SrbU",t:"Teaser 15 Anos Juliana",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"f_jg9XK1Vk0",t:"15 anos Maria Luiza completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"FqSahe21Vfw",t:"Teaser - 15 Anos Maria Luiza",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"i41pMktXHm8",t:"Joanna - 15 Anos",c:"quinze",cat:"15 Anos"},
-	  {id:"t2nkn_jYGrk",t:"Vanessa 15 Anos",c:"quinze",cat:"15 Anos"},
-	  {id:"XkgQzhZL-1o",t:"Sophia 15 + 1 anos",c:"quinze",cat:"15 Anos"},
-	  {id:"PM2pHyTnrbA",t:"15 anos Maria Luiza",c:"quinze",cat:"15 Anos"},
-	  {id:"yw-75B7Jfeo",t:"Vanessa 15 Anos Completo 1",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"BLfwe7GdbxM",t:"Heloá 15 Anos – Um Sonho Que Se Torna Realidade",c:"quinze",cat:"15 Anos"},
-	  {id:"rVh4zIgqQSc",t:"15 anos Luiza Viviane",c:"quinze",cat:"15 Anos"},
-	  {id:"-eOl4tDaPNc",t:"15 Anos Mayra",c:"quinze",cat:"15 Anos"},
-	  {id:"PqiN6RcnGTM",t:"15 anos Teaser - Mayra",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"yT0YGrE4mRI",t:"Isadora 15 anos completo2",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"gwBazrzw6O4",t:"15 anos Julia Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"AhJDK6TIk8s",t:"Teaser Julia 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"LPg5yanWzkY",t:"Giovana Completo 15 anos",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"Iip4xJ65SB4",t:"Teaser Giovana 15 anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"ZAgDwIRZ5AQ",t:"Isadora Sarah 15 Anos - Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"ME20n7Wt5w8",t:"Beatriz 15 Anos Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"AvIuBs6Q1-M",t:"Isadora 15 anos completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"L5m-q3Cp7sY",t:"15 Anos Teaser - Isadora",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"Pi-LZgxKOOI",t:"Teaser 15 Anos Beatriz",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"3GiC6QzgCWI",t:"Vitoria 15 Anos - Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"mQebNrShrUg",t:"Teaser Vitoria 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"2wOjJdofofI",t:"Filme Completo - Anna Julia 15 anos",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"suUeDPZ_VyI",t:"15 Anos Jamily - Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"FNzIoZ7LypQ",t:"15 Anos Valéria Completo",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"VPTbUdsSV2E",t:"15 Anos Valéria Divulgação",c:"quinze",cat:"15 Anos"},
-	  {id:"Il_5GELTVeQ",t:"Teaser - Laís 18 anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"9o4u6pkwSp0",t:"Teaser Léticia 18 Anos",c:"quinze",cat:"18 Anos · Teaser"},
-	  {id:"dwNGTNzQ9dE",t:"Teaser Laís 18 anos",c:"quinze",cat:"18 Anos · Teaser"},
-	  {id:"TM7TlrKFZ6Y",t:"Uma História de Superação - Vitória 15 Anos",c:"quinze",cat:"15 Anos"},
-	  {id:"aMdzM0V32WA",t:"Um Vídeo para A História - Teaser 15 Anos Vítoria",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"x8lSRPzRC9M",t:"Filme de Festa de 15 Anos Mais Esperado da História - Fernanda 15 Anos",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"3PzxbkkhcTI",t:"Teaser - Laís Aniversário de 18 anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"rjAKJb-4Z1M",t:"Maria Luisa - filme dos meus 15 anos",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"pCXVMV09fRs",t:"Teaser - Mairia Luiza 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"9OPTH21gnQM",t:"Filme - 15 anos de Sarah",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"vQzML4OI44E",t:"Festa de 15 anos",c:"quinze",cat:"15 Anos"},
-	  {id:"73ZbbJ4gyy0",t:"Teaser — Festa de 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"WvjrmY5RKjw",t:"Filme de 15 anos Lia - Luap Studio",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"g93GmXAas-c",t:"15 Anos Ana Julia",c:"quinze",cat:"15 Anos"},
-	  {id:"iULZG1LPpdY",t:"B.Roll em Festa de 15 Anos",c:"quinze",cat:"15 Anos"},
-	  {id:"iUDz4Re8rWk",t:"Teaser da Festa de 15 Anos Ana Julia",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"U70u0soQc5o",t:"Vídeo de Divulgação 15 Anos",c:"quinze",cat:"15 Anos · Teaser"},
-	  {id:"6cFB1aloWJQ",t:"Vídeo de Festa de 15 anos de gêmeas",c:"quinze",cat:"15 Anos"},
-	  {id:"e7QNBeszbPM",t:"Slide Show 15 Anos",c:"quinze",cat:"15 Anos"},
-	  {id:"1u74hEb_qKw",t:"Letícia 15 Anos | O Filme Oficial",c:"quinze",cat:"15 Anos · Filme"},
-	  {id:"IDsbhTaJNIg",t:"Mariana 60 Anos | Aniversário",c:"aniversarios",cat:"Aniversário"},
-	  {id:"KNvjJlqLjYs",t:"Adailto 55 Anos - Filmes Completo",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"EoemEHw6PYs",t:"Teaser Adaildo - Aniversário de 55 Anos",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"finIdO7ySfE",t:"Documentário Maria Chama 90 Anos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"BDf9tozPs8w",t:"Laura Liz fez 1 aninho",c:"aniversarios",cat:"Aniversário"},
-	  {id:"Hel3IkFeyqw",t:"40 Anos da Kátia",c:"aniversarios",cat:"Aniversário"},
-	  {id:"G2lh_HrePyY",t:"40 Anos da Perla",c:"aniversarios",cat:"Aniversário"},
-	  {id:"8fUIGEnaTuk",t:"Teaser Bryan - 1 Aninho",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"GQ_25IfFf7A",t:"Súri 1 Ano – Um Mundo de Amor e Descobertas!",c:"aniversarios",cat:"Aniversário"},
-	  {id:"czJsxup2xbI",t:"Teaser | Súri 1 Ano – Um Pequeno Grande Amor!",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"Ikih55egKfk",t:"Aniversario Cauper - Versão 2",c:"aniversarios",cat:"Aniversário"},
-	  {id:"x9y6lKkRpHg",t:"Aniversário 80 Anos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"q9SD59Yu3pM",t:"Calmi - 80 Anos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"iLU1H8EhXVc",t:"Niver Nair - 50 Anos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"YcH2bHyygEA",t:"Niver Infantil - Irmães",c:"aniversarios",cat:"Aniversário"},
-	  {id:"41V1RCVVUWg",t:"Nilce 60 Anos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"r32oFLwqhIc",t:"Maestro Davi - Festa de Aniversário",c:"aniversarios",cat:"Aniversário"},
-	  {id:"jgC4XeZrClc",t:"Aniversário Infantil",c:"aniversarios",cat:"Aniversário"},
-	  {id:"sIe4ba7L8x0",t:"Nilce 60 Anos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"X_HBJFSHoO0",t:"Filme em Aniversário de 50 Anos - Vídeo Teaser",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"Pufp4-ntjgw",t:"Filme Completo - Aniversário temático 60 Anos",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"7un5LFffwdg",t:"Filme anivesário - Maria Luiza - 1 aninho (Mâe Thatcher))",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"vhazlsybPFU",t:"Festa temática Shurek e Fiona - Filme aniversário - Zaion 1 aninho",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"Cj7jz1qro8s",t:"Filme - Aniversário temático de 60 Anos - Teaser",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"GYuiYtfBjwk",t:"teaser samuel",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"nVxU_hwXQEw",t:"Filme em aniversário - Talita Teaser",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"BGmkgie7JN8",t:"Filme infantil Teaser João Guilherme",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"4rcetK8uXnw",t:"Filme Infantil - Ivan",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"GV0HFBYp2DI",t:"Filme Infantil - Samuel",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"fuUpzG07wIQ",t:"filme festa infantil - Dominic",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"hjZmgejLT4I",t:"Filme Infantil - Heitor",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"qYEknnvpFFo",t:"Aniversário de 1 ano - Danielzinho",c:"aniversarios",cat:"Aniversário"},
-	  {id:"pMWTOTWWyzM",t:"Filme em Aniversário - Arthur 1 aninho",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"6uYaR9kLX0k",t:"Filme aniversário Infantil - Helena 2 aninhos",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"fABuZX0lRJI",t:"Zac 1 Anos - Filme em aniversário",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"MouZzDRXEUw",t:"Filme de aniversário de 1 aninho - Ricardo",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"qTbsbD2V0iE",t:"Teaser 1 min. Filme de aniversário de 2 aninhos Helena",c:"aniversarios",cat:"Aniversário · Teaser"},
-	  {id:"rC7zKXtuebg",t:"Filme em aniversário - Cadu - 2 Aninho",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"_fMd_64WnSY",t:"Filme em Aniversário Adulto - Frank",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"YshHHSLVwVU",t:"Filme Aniverários de 30 Anos - Luap Filmes",c:"aniversarios",cat:"Aniversário · Filme"},
-	  {id:"1ht6c3M9EAI",t:"Arthur Bryan_vídeo_documentário",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"8-fGx6iY5Zw",t:"Vídeo melhores momentos em Aniversário",c:"aniversarios",cat:"Aniversário"},
-	  {id:"5VYpSHDbF9M",t:"Vídeo infantil de aniversário de 2 aninhos!",c:"aniversarios",cat:"Aniversário"},
-	  {id:"niT3A6eVi7U",t:"Vídeo da festa de aniversário de 1 Ano do Theo",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"PDkJDR8EKcY",t:"Vídeo Teaser do Theo de 1 Ano",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"sNcvNzaW4CU",t:"1 Aninho do Artur - Vídeo Documentário",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"YwK27r2sEgg",t:"Aniversário de 1 aninho do Artur - 92.99241-1099",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"FrFHHplTu24",t:"Vídeo - Catarina 1 Ano",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"lj_VKV1pAAk",t:"Vídeo Aniversário de 1 Ano - José Inacio",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"an_S2hw1FOA",t:"Vídeo de Aniversário Infantil - Helena 1 Ano",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"zvEIUkt_K4I",t:"Vídeo de 1 Ano - Ana Clara",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"x5p_iYJ8n-U",t:"Vídeo em Aniversário - Beatriz 5 Anos",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"5ls1UiL_ZrE",t:"Vídeo em Eventos - 1 Aninho - Marjoreh",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"oSVTGEXtvFQ",t:"Vídeo Aniversário Infantil",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"42CM1cxI5rg",t:"Vídeo de aniversário de 1 aninho - Vídeo divulgação",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"eWQ4ubzS3wo",t:"Vídeo divulgação aniversário de 1 ano - Zac 1 Aninho",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"JFwTSPtnt_s",t:"Vídeo de 1 aninho",c:"aniversarios",cat:"Aniversário · Infantil"},
-	  {id:"EX6u8IG4f4I",t:"Aniversário da Maria Eduarda - Vídeo de Fotos",c:"aniversarios",cat:"Aniversário"},
-	  {id:"eviOEyJLOsQ",t:"Eu Só Quero Tua Presença Theo Rubia e Casa Worship Ao Vivo",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"SP71sSJ8sy0",t:"Vídeo dança - teatro Amazonas",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"hFQ6BwoemiQ",t:"Vídeo Dança - Ponta Negra",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"bSRpYs6yegI",t:"Vídeo Dança - Projeto Melhor Idade - Manaus",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"h5CaFpD4FrI",t:"(Clipe) a maior cheia do Amazonas - 2021 - Prod.: Pauleanderson",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"d5Q83sTIEXw",t:"Making of de Projeto dança - Melhores momentos",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"r8Q9Anl5Nz4",t:"Vídeo Clipe Musical - Sheila Silva",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"VAt2uJg6d4M",t:"Música com Letra",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"Qi24IZnzItc",t:"Vídeo de Dança",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"QlckGh--8qA",t:"Vídeo Clipe - Ser crente contagia",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"Nw-ciDutoII",t:"Vídeo Clipe - Os Crente",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"KXVvzjVi3fk",t:"Vídeo Clipe - Quebrando tradições",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"SbNvk51l-50",t:"Clipe — Mariah Carvalho",c:"clipes",cat:"Clipe Musical"},
-	  {id:"4hbLIEvxJdY",t:"Vídeo Clipe - 15 anos",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"6txJVEINQ_c",t:"Derrubandos Muralhas",c:"clipes",cat:"Clipes Musicais"},
-	  {id:"txovb1Atgq0",t:"Cremam | Jubileu de Ouro – 50 anos de dedicação à Medicina",c:"publicidade",cat:"Publicidade · Institucional"},
-	  {id:"v13f39g6JSU",t:"Pousada Amazônica",c:"publicidade",cat:"Publicidade"},
-	  {id:"p_8dd5-8kR0",t:"Inauguração Loja Carinha de Anjo - Teaser",c:"publicidade",cat:"Publicidade · Teaser"},
-	  {id:"fawcN8x0ypk",t:"Toledo Sollar - Teaser Inauguração",c:"publicidade",cat:"Publicidade · Teaser"},
-	  {id:"LWHdl0y_KrI",t:"Vídeo divulgação - Espaço Sonia Maria",c:"publicidade",cat:"Publicidade"},
-	  {id:"2xJuB73VQpg",t:"Confra Eldorado Completo",c:"publicidade",cat:"Publicidade · Filme"},
-	  {id:"7xyAOG_O_Kg",t:"Teaser Confra Elforado",c:"publicidade",cat:"Publicidade · Teaser"},
-	  {id:"1RDbo0SdnVc",t:"Vídeo Divugação Fusion Academy",c:"publicidade",cat:"Publicidade"},
-	  {id:"5zd4cot-AeE",t:"Vídeo Divulgação - Guaraná da Amazonia",c:"publicidade",cat:"Publicidade"},
-	  {id:"VEN-6OcxNwA",t:"Institucional — Clínica",c:"publicidade",cat:"Publicidade · Institucional"},
-	  {id:"GhP6hCuan64",t:"Depoimento de Cliente — Clínica",c:"publicidade",cat:"Publicidade · Depoimento"},
-	  {id:"C5Dwo83oP64",t:"Vídeo Institucional - Sindicato",c:"publicidade",cat:"Publicidade"},
-	  {id:"5Z6gukMXbMw",t:"Salão de Festas",c:"publicidade",cat:"Publicidade"},
-	  {id:"Qsxu8A9Ctl4",t:"Clínica — Natal",c:"publicidade",cat:"Publicidade · Sazonal"},
-	  {id:"zkGRvPyfmPo",t:"Relatório Mensal — SindPFA/Brasília",c:"publicidade",cat:"Publicidade · Corporativo"},
-	  {id:"_Dh5ziIieCE",t:"CT Michel",c:"publicidade",cat:"Publicidade · Institucional"},
-	  {id:"bCB_QQJ-soQ",t:"Vídeo marketing Academia",c:"publicidade",cat:"Publicidade"},
-	  {id:"E33bHhO3oAQ",t:"Amazon Boto",c:"publicidade",cat:"Publicidade · Institucional"},
-	  {id:"c94RnadWmy0",t:"Clínica Estética",c:"publicidade",cat:"Publicidade · Clínica"},
-	  {id:"8eK_RXF0H00",t:"Suplementação",c:"publicidade",cat:"Publicidade · Suplementação"},
-	  {id:"uY5Ie1BkEwc",t:"Suplementação — Brutos",c:"publicidade",cat:"Publicidade · Suplementação"},
-	  {id:"f64t20NDZ54",t:"Video Marketing - Imobiliaria - Terrenos 4",c:"publicidade",cat:"Publicidade"},
-	  {id:"k-BZpMjVgZc",t:"Video Marketing - Imobiliaria - Terrenos 3",c:"publicidade",cat:"Publicidade"},
-	  {id:"RmfxGYVAO_Y",t:"Video Marketing - Imobiliaria - Terrenos 2",c:"publicidade",cat:"Publicidade"},
-	  {id:"0ZUgSXh43KA",t:"Imobiliária — Terrenos",c:"publicidade",cat:"Publicidade · Imobiliária"},
-	  {id:"5wpNfVP8NzU",t:"Comercial — Empresta Fácil",c:"publicidade",cat:"Publicidade · Comercial"},
-	  {id:"NkB_G_k6j8w",t:"Vídeo relatório para empresas - Estilo Jornalístico",c:"publicidade",cat:"Publicidade"},
-	  {id:"Z_CdNSZ0yus",t:"Imagens aéreas da Maior cheio do amazonas 2021",c:"publicidade",cat:"Publicidade"},
-	  {id:"xFW7tKqH16o",t:"Video Divulgação Drone",c:"publicidade",cat:"Publicidade"},
-	  {id:"aUqubDgFyqc",t:"Ponta Negra - Manaus/ Am - Luap Studio",c:"publicidade",cat:"Publicidade"},
-	  {id:"v4yaFy8ls2Q",t:"Vídeo Marketing 2017 - Comercial de Fotografia Luap Studio",c:"publicidade",cat:"Publicidade"},
-	  {id:"fD0yEbsf-Qk",t:"Vídeo Marketing - 2018",c:"publicidade",cat:"Publicidade"},
-	  {id:"PDJVavULmz8",t:"Vídeo Marketing - Luap Studio",c:"publicidade",cat:"Publicidade"},
-	  {id:"GiWqLucOcpc",t:"Teaser Home Office",c:"publicidade",cat:"Publicidade · Teaser"},
-	  {id:"7-O8fuW2Cug",t:"Comercial - Salão de Beleza",c:"publicidade",cat:"Publicidade"},
-	  {id:"yzwhK3Gbyl0",t:"Vídeo Marketing Divulgação - Home Office",c:"publicidade",cat:"Publicidade"},
-	  {id:"OmnaAplIIOc",t:"Iza Penteados",c:"publicidade",cat:"Publicidade · Beleza"},
-	  {id:"p7wVSQHANAk",t:"Imagens de Drone",c:"publicidade",cat:"Publicidade · Aéreo"},
-	  {id:"SmPXVrcy3Ug",t:"Vídeo Marketing - Aula de contra baixo elétrico",c:"publicidade",cat:"Publicidade"},
-	  {id:"AlLgc5Z8n5A",t:"Institucional — Maquiagem",c:"publicidade",cat:"Publicidade · Beleza"},
-	  {id:"R2meFAcqGY0",t:"Confra - Mfg",c:"publicidade",cat:"Publicidade"},
-	  {id:"tCu05AvUG7A",t:"Campanha institucional - Barcelos 2020",c:"publicidade",cat:"Publicidade · Campanha"},
-	  {id:"Wlj9S_0sWMc",t:"Vídeo Emocionante - Campanha política - 2020",c:"publicidade",cat:"Publicidade · Campanha"},
-	  {id:"D5kFYeL4D5k",t:"Vídeo emocionante de campanha política - Barcelos",c:"publicidade",cat:"Publicidade · Campanha"},
-	  {id:"Jg8t9jKUs1g",t:"Vídeo para Campanha politica - Emocionante",c:"publicidade",cat:"Publicidade · Campanha"},
-	  {id:"zQj2OQ_m_Sw",t:"Vídeo Imobiliário - Manaus/Am",c:"publicidade",cat:"Publicidade · Imobiliária"},
-	  {id:"ntQxbK7kubs",t:"Institucional — Imobiliária",c:"publicidade",cat:"Publicidade · Imobiliária"},
-	  {id:"G63pqx_XncE",t:"Institucional Imobiliária",c:"publicidade",cat:"Publicidade · Imobiliária"},
-	  {id:"nObMjuh6jpk",t:"Vídeo de Divulgação - Luap Apresentação",c:"publicidade",cat:"Publicidade"},
-	  {id:"wdRyCPhwna0",t:"Vídeo Comercial de Fotografia Luap Studio",c:"publicidade",cat:"Publicidade"},
-	  {id:"COaE5q9qHN0",t:"Vídeo de Drone - Divulgação - Luap Studio Filmes",c:"publicidade",cat:"Publicidade · Aéreo"},
-	  {id:"2mUNRa0K6fg",t:"Vídeo Institucional - Arquitetura",c:"publicidade",cat:"Publicidade · Institucional"},
-	  {id:"DvDtCmJbW7k",t:"Salão de Beleza — Dani Silva",c:"publicidade",cat:"Publicidade · Beleza"},
-	  {id:"jjrcOfjYlzI",t:"Aéreas — Apartamentos",c:"publicidade",cat:"Publicidade · Imobiliário · Drone"},
-	  {id:"Wt56TygzyTI",t:"Aava 2016 - Empório",c:"publicidade",cat:"Publicidade"},
-	  {id:"jWbdx-_qGxI",t:"Teaser Versão 2 Vida em Equilibrio",c:"outros",cat:"Outros"},
-	  {id:"1aVBb0iKA2k",t:"Vida em Equilibrio Teaser2",c:"outros",cat:"Outros"},
-	  {id:"5Pgu9PCp4RU",t:"Palestra Horizontal",c:"outros",cat:"Outros"},
-	  {id:"kpG0A-eRyHo",t:"Dia das Mães Rosda",c:"outros",cat:"Outros"},
-	  {id:"92V7Tp7UUC0",t:"Cerimônia de Formatura do Exército 2024 - Vídeo Completo",c:"outros",cat:"Outros · Formatura"},
-	  {id:"_Vgp3lvTHJA",t:"Teaser Formatura Exército",c:"outros",cat:"Outros · Formatura"},
-	  {id:"cppi6Bse_6s",t:"Aula 01 - Marketing pessoal - o Que é Marketing Pessoal?",c:"outros",cat:"Outros · Aula"},
-	  {id:"_ZmNGGT7A1g",t:"Vídeo Depoimento 2 - Formatura",c:"outros",cat:"Outros · Formatura"},
-	  {id:"Bv6OioakF5U",t:"Vídeo Depoimento - Formatura",c:"outros",cat:"Outros · Formatura"},
-	  {id:"-PCQyc7sSb8",t:"Filmagem em Colação Grau Rh - Unip",c:"outros",cat:"Outros · Formatura"},
-	  {id:"F5E3VBnhLYg",t:"Cópia de Aula hack do Mkt digital",c:"outros",cat:"Outros · Aula"},
-	  {id:"lSry9QFFDRY",t:"Cópia de Aula hack do Mkt digital",c:"outros",cat:"Outros · Aula"},
-	  {id:"0n0hGS8AE38",t:"Serie - Caminhando com Deus - Como Construir um ambiente de crescimento espiritual 001",c:"outros",cat:"Outros · Fé"},
-	  {id:"e6GADn6WG3E",t:"Cópia de Programação de postagem",c:"outros",cat:"Outros · Rascunho"},
-	  {id:"-QFutUVPwD4",t:"Aula Edição Básica na Prática - 01Lightroom",c:"outros",cat:"Outros · Aula"},
-	  {id:"hlEoXN52s8g",t:"5 Linguagens de amor - Desenvolvendo o Amor",c:"outros",cat:"Outros · Palestra"},
-	  {id:"dtTG4t-STd8",t:"Formatura - teaser",c:"outros",cat:"Outros · Formatura"},
-	  {id:"udK7QSDlAMI",t:"Teaser - Baile Formatura Fisioterapia",c:"outros",cat:"Outros · Formatura"},
-	  {id:"e28pgP076NE",t:"Curso de Designer Digitais - Dia 14 de Outubro - Cartão de Visita",c:"outros",cat:"Outros · Aula"},
-	  {id:"3le0i2E226w",t:"Revelado o segredo: cartão interativo em 1 minuto",c:"outros",cat:"Outros · Aula"},
-	  {id:"yO1ueo8qy1c",t:"Post's profissionais em 1 minuto",c:"outros",cat:"Outros · Aula"},
-	  {id:"_hOXpMI7fcQ",t:"Vídeo de apresentação teatral - Cabaré",c:"outros",cat:"Outros · Teatro"},
-	  {id:"dpokgSwilPU",t:"Apresentação - Escola - Melhores momentos",c:"outros",cat:"Outros"},
-	  {id:"Vn1yKUDw46w",t:"Filme de Formatura Abc - 2020",c:"outros",cat:"Outros · Formatura"},
-	  {id:"NhWjOhKgN-E",t:"Filme Aprentação Palhaços",c:"outros",cat:"Outros · Teatro"},
-	  {id:"6tod4XbErOY",t:"Produção de Vídeo para You Tuber´s",c:"outros",cat:"Outros · Aula"},
-	  {id:"KPGlDGYQ5mA",t:"Como usar um Check List para Vender mais no Instagram",c:"outros",cat:"Outros · Aula"},
-	  {id:"yi8CDk0HkYo",t:"Facebook na Prática - Curso de marketing digital dentro das redes sociais",c:"outros",cat:"Outros · Aula"},
-	  {id:"p8qftFSEi9Y",t:"Making Of Abc Formatura 2020",c:"outros",cat:"Outros · Formatura"},
-	  {id:"Aq1c62hch5g",t:"Filmagem Making Of Formando do Abc 2020",c:"outros",cat:"Outros · Formatura"},
-	  {id:"hKag7Nk5Y-I",t:"Vídeo Teaser de Aniversário de Igreja - Homens da Missão",c:"outros",cat:"Outros · Fé"},
-	  {id:"QBf4Qzk8ub4",t:"Vídeo Teaser Aniversário de Igreja - Mgf 14 anos",c:"outros",cat:"Outros · Fé"},
-	  {id:"62eAzkoos4g",t:"Vídeo de Formatura Abc",c:"outros",cat:"Outros · Formatura"},
-	  {id:"ZGS6DuWJX5Q",t:"Vídeo Divulgação Card Interativo",c:"outros",cat:"Outros · Aula"},
-	  {id:"cxWit9fB3EA",t:"Viagem a Brasília: Convenção G12 Brasil",c:"outros",cat:"Outros · Fé"},
-	  {id:"-Vvr04AIUJA",t:"Vídeo Regar - Manaus",c:"outros",cat:"Outros"},
-	  {id:"fHPCQ6OxcKk",t:"Chamada Encontro com Deus em Maio de 2014 - Comunidade Apostólica Aprisco",c:"outros",cat:"Outros · Fé"}
-];
+/* ===== ESTADO GLOBAL ===== */
+var VIDEOS = [];
+var ORDEM = [];
+var grid = document.getElementById("grid");
+var ORDER_KEY = "pd_pf_order_v3";
+var suppressClick = false;
+var EDICAO = location.hash==="#editar"||/[?&]editar=1(&|$)/.test(location.search);
+var PAGE_SIZE = 24;
+var renderedCount = 0;
+var currentFilter = "todos";
+var currentLightboxIndex = -1;
 
-/* copia de seguranca da array (usada pelo drag) */
-var ORDEM=VIDEOS.slice();
+/* ===== ELEMENTOS DOM ===== */
+var filters = document.querySelectorAll(".tab");
+var gridEmpty = document.getElementById("gridEmpty");
+var loadMoreBtn = document.getElementById("loadMore");
+var lb = document.getElementById("lb");
+var lbFrame = document.getElementById("lbFrame");
+var lbTitle = document.getElementById("lbTitle");
+var lbClose = document.getElementById("lbClose");
+var lbPrev = document.getElementById("lbPrev");
+var lbNext = document.getElementById("lbNext");
+var lastFocus = null;
 
-var grid=document.getElementById("grid");
-var ORDER_KEY="pd_pf_order_v3"; /* v3: reim ordenado por recência, ordem antiga do navegador é descartada */
-var suppressClick=false;
-/* reordenar é do dono: só liga com #editar (ou ?editar=1) na URL */
-var EDICAO=location.hash==="#editar"||/[?&]editar=1(&|$)/.test(location.search);
+/* ===== EDIÇÃO MODO ===== */
 if(EDICAO){
   document.body.classList.add("modo-editar");
   var hint=document.createElement("div");
@@ -982,276 +681,396 @@ if(EDICAO){
   setTimeout(function(){hint.classList.add("fora");},6000);
   setTimeout(function(){if(hint.parentNode)hint.parentNode.removeChild(hint);},6600);
 }
-var thumb=function(v,qty){return "https://i.ytimg.com/vi/"+v.id+"/"+(qty||"hqdefault")+".jpg";};
 
-/* ordem personalizada (arrastar) aplicada antes de montar os cards */
-(function(){
+/* ===== EDIT TOGGLE NO FOOTER ===== */
+var editToggle = document.getElementById("editToggle");
+if(localStorage.getItem(ORDER_KEY)){
+  editToggle.hidden = false;
+}
+editToggle.addEventListener("click", function(){
+  location.hash = "#editar";
+});
+
+/* ===== MENSAGENS VAZIAS POR NICHO ===== */
+var emptyMsgs = {
+  "doc-casamento": "Seu documentário de casamento começa com uma conversa.",
+  "quinze": "15 anos: a transição que merece virar filme.",
+  "casamento": "Cada casamento tem uma história única.",
+  "aniversarios": "Aniversários que merecem virar memória eterna.",
+  "clipes": "Clipe musical para sua música ganhar imagem.",
+  "cinema": "Documentários autorais com alma amazônica.",
+  "publicidade": "Sua marca contada com cinema de verdade.",
+  "outros": "Conteúdos especiais que fogem do padrão."
+};
+
+/* ===== THUMBNAIL HELPER ===== */
+function thumb(v, qty){
+  return "https://i.ytimg.com/vi/"+v.id+"/"+(qty||"hqdefault")+".jpg";
+}
+
+/* ===== CARREGAR VIDEOS.JSON ===== */
+async function loadVideos(){
   try{
-    var s=JSON.parse(localStorage.getItem(ORDER_KEY)||"null");
-    if(!Array.isArray(s)||!s.length)return;
-    var pos={},i;
-    for(i=0;i<VIDEOS.length;i++){var k=VIDEOS[i].id;(pos[k]=pos[k]||[]).push(i);}
-    var used={},out=[];
-    s.forEach(function(id){
-      var p=pos[id];if(!p)return;
-      var j=0;while(j<p.length&&used[p[j]])j++;
-      if(j<p.length){used[p[j]]=1;out.push(VIDEOS[p[j]]);}
-    });
-    for(i=0;i<VIDEOS.length;i++){if(!used[i]){used[i]=1;out.push(VIDEOS[i]);}}
-    VIDEOS=out;
-  }catch(e){}
-})();
+    var res = await fetch("/videos.json", {credentials:"same-origin"});
+    VIDEOS = await res.json();
+    ORDEM = VIDEOS.slice();
+    initApp();
+  }catch(e){
+    console.error("Falha ao carregar videos.json", e);
+    grid.innerHTML = '<p style="text-align:center;color:var(--taupe);padding:40px">Erro ao carregar portfólio. Recarregue a página.</p>';
+  }
+}
 
-VIDEOS.forEach(function(v){
-  var b=document.createElement("button");
-  b.className="card"+(v.f?" featured":"");
-  b.dataset.cat=v.c;
-  b.dataset.id=v.id;
-  b.setAttribute("aria-label","Assistir: "+v.t);
-  b.innerHTML=
-    '<div class="card-thumb">'+
-      (v.f?'<span class="badge">Como visto na Record</span>':'')+
-      '<img loading="lazy" draggable="false" src="'+thumb(v)+'" alt="Frame do filme '+v.t+'">'+
-      '<span class="play" aria-hidden="true"><span></span></span>'+
-    '</div>'+
-    '<div class="card-meta"><strong>'+v.t+'</strong><em>'+v.cat+'</em></div>';
-  b.addEventListener("click",function(){
-    if(suppressClick){suppressClick=false;return;}
-    openLb(v);
-  });
-  grid.appendChild(b);
-});
-
-/* ---- arrastar para reordenar os cards do portfólio (só modo edição) ---- */
-(function(){
-  if(!grid||!EDICAO)return;
-  var card=null,ph=null,startX=0,startY=0,active=false,armed=false,timer=null;
-
-  function salvar(){
+/* ===== INICIALIZAÇÃO PRINCIPAL ===== */
+function initApp(){
+  /* ordem personalizada (arrastar) aplicada antes de montar os cards */
+  (function(){
     try{
-      var ids=[];
-      Array.prototype.forEach.call(grid.querySelectorAll(".card:not(.card-ph)"),function(c){
-        if(c.dataset&&c.dataset.id)ids.push(c.dataset.id);
+      var s = JSON.parse(localStorage.getItem(ORDER_KEY)||"null");
+      if(!Array.isArray(s)||!s.length) return;
+      var pos = {}, i;
+      for(i=0;i<VIDEOS.length;i++){ var k=VIDEOS[i].id; (pos[k]=pos[k]||[]).push(i); }
+      var used = {}, out = [];
+      s.forEach(function(id){
+        var p = pos[id]; if(!p) return;
+        var j = 0; while(j<p.length && used[p[j]]) j++;
+        if(j<p.length){ used[p[j]]=1; out.push(VIDEOS[p[j]]); }
       });
-      localStorage.setItem(ORDER_KEY,JSON.stringify(ids));
+      for(i=0;i<VIDEOS.length;i++){ if(!used[i]){ used[i]=1; out.push(VIDEOS[i]); } }
+      VIDEOS = out;
     }catch(e){}
-  }
-  function iniciar(){
-    var r=card.getBoundingClientRect();
-    ph=document.createElement("div");
-    ph.className="card card-ph"+(card.classList.contains("featured")?" featured":"");
-    ph.setAttribute("aria-hidden","true");
-    ph.innerHTML=card.innerHTML;
-    grid.insertBefore(ph,card);
-    card.style.position="fixed";
-    card.style.left=r.left+"px";
-    card.style.top=r.top+"px";
-    card.style.width=r.width+"px";
-    card.style.height=r.height+"px";
-    card.style.zIndex="70";
-    card.style.margin="0";
-    card.style.transform="translate(0px,0px)";
-    card.classList.add("dragging");
-    document.body.classList.add("is-dragging");
-    active=true;
-  }
-  function posicionarPh(x,y){
-    if(!ph)return;
-    var el=document.elementFromPoint(x,y);
-    if(!el||!el.closest)return;
-    var c=el.closest(".card:not(.card-ph)");
-    /* slot vazio, fresta ou fora do grid: mantém onde está */
-    if(!c||c===card||!grid.contains(c)||!c.offsetParent)return;
-    /* filhos que ocupam célula (fora o card arrastado e os ocultos pelo filtro) */
-    var kids=grid.children,arr=[],i;
-    for(i=0;i<kids.length;i++){
-      if(kids[i]===card)continue;
-      if(kids[i].className.indexOf("card-ph")<0&&!kids[i].offsetParent)continue;
-      arr.push(kids[i]);
+  })();
+
+  /* contagem nas abas */
+  filters.forEach(function(f){
+    var cont = f.querySelector(".n");
+    if(cont){
+      var c = f.dataset.cat;
+      cont.textContent = c==="todos"?VIDEOS.length:VIDEOS.filter(function(v){return v.c===c}).length;
     }
-    var t=arr.indexOf(c);
-    if(t<0)return;
-    /* o slot passa a ocupar exatamente a célula do card sob o ponteiro */
-    var ref=null;
-    for(i=0;i<arr.length;i++){
-      if(arr[i]===ph)continue;
-      if(t===0){ref=arr[i];break;}
-      t--;
-    }
-    grid.insertBefore(ph,ref);
-  }
-  function soltar(){
-    if(!card)return;
-    if(ph){
-      grid.insertBefore(card,ph);
-      ph.parentNode.removeChild(ph);
-      ph=null;
-    }
-    card.style.position="";card.style.left="";card.style.top="";
-    card.style.width="";card.style.height="";card.style.transform="";
-    card.style.zIndex="";card.style.margin="";
-    card.classList.remove("dragging");
-    document.body.classList.remove("is-dragging");
-    suppressClick=true;
-    salvar();
-    card=null;active=false;armed=false;
-  }
-  function down(e){
-    if(card)return;
-    if(e.pointerType==="mouse"&&e.button!==0)return;
-    if(!e.target||!e.target.closest)return;
-    var c=e.target.closest(".card:not(.card-ph)");
-    if(!c||!grid.contains(c))return;
-    suppressClick=false;
-    card=c;startX=e.clientX;startY=e.clientY;active=false;
-    if(e.pointerType==="mouse"){armed=true;}
-    else{armed=false;clearTimeout(timer);timer=setTimeout(function(){armed=true;},350);}
-    document.addEventListener("pointermove",move);
-    document.addEventListener("pointerup",up);
-    document.addEventListener("pointercancel",up);
-  }
-  function move(e){
-    if(!card)return;
-    var dx=e.clientX-startX,dy=e.clientY-startY;
-    if(!active){
-      if(!armed)return;
-      if(Math.abs(dx)<7&&Math.abs(dy)<7)return;
-      iniciar();
-    }
-    card.style.transform="translate("+dx+"px,"+dy+"px)";
-    posicionarPh(e.clientX,e.clientY);
-  }
-  function up(){
-    clearTimeout(timer);
-    document.removeEventListener("pointermove",move);
-    document.removeEventListener("pointerup",up);
-    document.removeEventListener("pointercancel",up);
-    if(active)soltar();
-    else{card=null;armed=false;}
-  }
-  grid.addEventListener("pointerdown",down);
-  document.addEventListener("touchmove",function(e){
-    if(active||armed){if(e.cancelable)e.preventDefault();}
-  },{passive:false});
-  document.addEventListener("contextmenu",function(e){
-    if(active||armed)e.preventDefault();
   });
-})();
 
-/* film strip do hero */
-var strip=document.getElementById("strip");
-var stripSet=VIDEOS.slice(0,12);
-stripSet.concat(stripSet).forEach(function(v){
-  var img=document.createElement("img");
-  img.loading="lazy";
-  img.src=thumb(v,"mqdefault");
-  img.alt="";
-  strip.appendChild(img);
-});
+  /* render primeira página */
+  setFiltro(currentFilter);
 
-/* abas por nicho, com contagem por nicho */
-var filters=document.querySelectorAll(".tab"),
-    gridEmpty=document.getElementById("gridEmpty");
-filters.forEach(function(f){
-  var cont=f.querySelector(".n");
-  if(cont){
-    var c=f.dataset.cat;
-    cont.textContent=c==="todos"?VIDEOS.length:VIDEOS.filter(function(v){return v.c===c}).length;
+  /* film strip do hero */
+  var strip = document.getElementById("strip");
+  var stripSet = VIDEOS.slice(0,12);
+  stripSet.concat(stripSet).forEach(function(v){
+    var img = document.createElement("img");
+    img.loading = "lazy";
+    img.src = thumb(v,"mqdefault");
+    img.alt = "";
+    strip.appendChild(img);
+  });
+
+  /* lightbox nav */
+  lbPrev.addEventListener("click", function(){ navLightbox(-1); });
+  lbNext.addEventListener("click", function(){ navLightbox(1); });
+  lbClose.addEventListener("click", closeLb);
+  lb.addEventListener("click", function(e){ if(e.target===lb) closeLb(); });
+  document.addEventListener("keydown", function(e){
+    if(!lb.classList.contains("open")) return;
+    if(e.key==="Escape") closeLb();
+    if(e.key==="ArrowRight") navLightbox(1);
+    if(e.key==="ArrowLeft") navLightbox(-1);
+  });
+
+  /* nav scroll */
+  var nav = document.getElementById("nav");
+  var onScroll = function(){ nav.classList.toggle("scrolled", window.scrollY>60); };
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* mobile nav toggle */
+  var toggle = document.querySelector(".nav-toggle");
+  var links = document.getElementById("navLinks");
+  toggle.addEventListener("click", function(){
+    var open = links.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open);
+  });
+  links.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      links.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  /* reveal on scroll */
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    },{threshold:.12});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  }else{
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
   }
+
+  /* load more button */
+  loadMoreBtn.addEventListener("click", function(){
+    renderChunk(currentFilter);
+  });
+
+  /* filtro por hash na URL */
+  var CAT2SLUG = {"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
+  var SLUG2CAT = {};
+  Object.keys(CAT2SLUG).forEach(function(k){ SLUG2CAT[CAT2SLUG[k]]=k; });
+  var pedido = SLUG2CAT[(location.hash||"").slice(1)];
+  if(pedido){
+    setFiltro(pedido);
+    var secaoFilmes = document.getElementById("filmes");
+    if(secaoFilmes) secaoFilmes.scrollIntoView();
+  }
+}
+
+/* ===== RENDERIZAÇÃO DE CARDS ===== */
+function renderChunk(cat){
+  var filtered = cat==="todos" ? VIDEOS : VIDEOS.filter(function(v){ return v.c===cat; });
+  var chunk = filtered.slice(renderedCount, renderedCount + PAGE_SIZE);
+
+  chunk.forEach(function(v){
+    var b = document.createElement("button");
+    b.className = "card" + (v.f ? " featured" : "");
+    b.dataset.cat = v.c;
+    b.dataset.id = v.id;
+    b.setAttribute("aria-label", "Assistir: " + v.t);
+    b.innerHTML =
+      '<div class="card-thumb">'+
+        (v.f ? '<span class="badge">Como visto na Record</span>' : '') +
+        '<img loading="lazy" draggable="false" src="'+thumb(v)+'" alt="Frame do filme '+v.t+'">'+
+        '<span class="play" aria-hidden="true"><span></span></span>'+
+      '</div>'+
+      '<div class="card-meta"><strong>'+v.t+'</strong><em>'+v.cat+'</em></div>';
+    b.addEventListener("click", function(){
+      if(suppressClick){ suppressClick=false; return; }
+      openLb(v);
+    });
+    grid.appendChild(b);
+  });
+
+  renderedCount += chunk.length;
+
+  if(renderedCount >= filtered.length){
+    loadMoreBtn.hidden = true;
+  }else{
+    loadMoreBtn.hidden = false;
+  }
+
+  /* re-aplicar selo "Mais assistido" se necessário */
+  marcaMaisVisto(currentFilter);
+}
+
+/* ===== FILTRO E RESET PAGINAÇÃO ===== */
+function setFiltro(cat){
+  currentFilter = cat;
+  renderedCount = 0;
+  grid.innerHTML = "";
+
+  filters.forEach(function(o){
+    o.setAttribute("aria-pressed", o.dataset.cat===cat ? "true" : "false");
+  });
+
+  renderChunk(cat);
+
+  var visiveis = cat==="todos" ? VIDEOS.length : VIDEOS.filter(function(v){ return v.c===cat; }).length;
+  gridEmpty.hidden = visiveis > 0;
+
+  if(!gridEmpty.hidden){
+    var msg = emptyMsgs[cat] || "Este nicho ainda não tem vídeos publicados aqui.";
+    var link = gridEmpty.querySelector("a");
+    link.textContent = "Solicitar orçamento";
+    link.href = "https://wa.me/5592999870427?text=" + encodeURIComponent("Olá, Pauleanderson! " + msg);
+    gridEmpty.childNodes[0].textContent = msg + " ";
+  }
+
+  marcaMaisVisto(cat);
+}
+
+filters.forEach(function(f){
+  f.addEventListener("click", function(){
+    var cat = f.dataset.cat;
+    setFiltro(cat);
+    var CAT2SLUG = {"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
+    var slug = CAT2SLUG[cat];
+    if(history.replaceState){
+      if(slug) history.replaceState(null, "", "#"+slug);
+      else history.replaceState(null, "", location.pathname+location.search);
+    }
+  });
 });
-/* selo "Mais assistido" — ids fixados (mais vistos por nicho, ate uma nova ordenacao) */
-var MAIS_VISTOS={"doc-casamento":"VzSid1eSwDY",cinema:"HG2aAqjltCQ",casamento:"QUA_bhdF540",quinze:"pCXVMV09fRs",aniversarios:"G2lh_HrePyY",clipes:"SbNvk51l-50",publicidade:"c94RnadWmy0",outros:"Vn1yKUDw46w"};
+
+/* ===== SELO "MAIS ASSISTIDO" ===== */
+var MAIS_VISTOS = {"doc-casamento":"VzSid1eSwDY","cinema":"HG2aAqjltCQ","casamento":"QUA_bhdF540","quinze":"pCXVMV09fRs","aniversarios":"G2lh_HrePyY","clipes":"SbNvk51l-50","publicidade":"c94RnadWmy0","outros":"Vn1yKUDw46w"};
+
 function marcaMaisVisto(cat){
   grid.querySelectorAll(".card-hit").forEach(function(c){
     c.classList.remove("card-hit");
-    var b=c.querySelector(".badge-hit");
-    if(b&&b.parentNode)b.parentNode.removeChild(b);
+    var b = c.querySelector(".badge-hit");
+    if(b && b.parentNode) b.parentNode.removeChild(b);
   });
-  if(cat==="todos")return;
-  var alvoId=MAIS_VISTOS[cat];
-  if(!alvoId)return;
-  var card=grid.querySelector('.card[data-id="'+alvoId+'"]');
-  if(!card)return;
+  if(cat==="todos") return;
+  var alvoId = MAIS_VISTOS[cat];
+  if(!alvoId) return;
+  var card = grid.querySelector('.card[data-id="'+alvoId+'"]');
+  if(!card) return;
   card.classList.add("card-hit");
-  var thumb=card.querySelector(".card-thumb");
-  if(thumb)thumb.insertAdjacentHTML("afterbegin",'<span class="badge-hit">Mais assistido</span>');
+  var thumbEl = card.querySelector(".card-thumb");
+  if(thumbEl) thumbEl.insertAdjacentHTML("afterbegin", '<span class="badge-hit">Mais assistido</span>');
 }
-/* nicho na URL: clicar numa aba grava #15-anos, #doc-de-casamento etc.
-   Abrir um desses links ativa a aba direto e rola pro portfólio */
-var CAT2SLUG={"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
-var SLUG2CAT={};
-Object.keys(CAT2SLUG).forEach(function(k){SLUG2CAT[CAT2SLUG[k]]=k;});
-function setFiltro(cat){
-  filters.forEach(function(o){o.setAttribute("aria-pressed",o.dataset.cat===cat?"true":"false");});
-  var visiveis=0;
-  grid.querySelectorAll(".card").forEach(function(c){
-    var mostra=(cat==="todos"||c.dataset.cat===cat);
-    c.style.display=mostra?"":"none";
-    if(mostra)visiveis++;
-  });
-  gridEmpty.hidden=visiveis>0;
-  marcaMaisVisto(cat);
-}
-filters.forEach(function(f){
-  f.addEventListener("click",function(){
-    var cat=f.dataset.cat;
-    setFiltro(cat);
-    var slug=CAT2SLUG[cat];
-    if(history.replaceState){
-      if(slug)history.replaceState(null,"","#"+slug);
-      else history.replaceState(null,"",location.pathname+location.search);
+
+/* ===== ARRASTAR PARA REORDENAR (MODO EDIÇÃO) ===== */
+(function(){
+  if(!grid || !EDICAO) return;
+  var card = null, ph = null, startX = 0, startY = 0, active = false, armed = false, timer = null;
+
+  function salvar(){
+    try{
+      var ids = [];
+      Array.prototype.forEach.call(grid.querySelectorAll(".card:not(.card-ph)"), function(c){
+        if(c.dataset && c.dataset.id) ids.push(c.dataset.id);
+      });
+      localStorage.setItem(ORDER_KEY, JSON.stringify(ids));
+      editToggle.hidden = false;
+    }catch(e){}
+  }
+
+  function iniciar(){
+    var r = card.getBoundingClientRect();
+    ph = document.createElement("div");
+    ph.className = "card card-ph" + (card.classList.contains("featured") ? " featured" : "");
+    ph.setAttribute("aria-hidden", "true");
+    ph.innerHTML = card.innerHTML;
+    grid.insertBefore(ph, card);
+    card.style.position = "fixed";
+    card.style.left = r.left + "px";
+    card.style.top = r.top + "px";
+    card.style.width = r.width + "px";
+    card.style.height = r.height + "px";
+    card.style.zIndex = "70";
+    card.style.margin = "0";
+    card.style.transform = "translate(0px,0px)";
+    card.classList.add("dragging");
+    document.body.classList.add("is-dragging");
+    active = true;
+  }
+
+  function posicionarPh(x, y){
+    if(!ph) return;
+    var el = document.elementFromPoint(x, y);
+    if(!el || !el.closest) return;
+    var c = el.closest(".card:not(.card-ph)");
+    if(!c || c===card || !grid.contains(c) || !c.offsetParent) return;
+    var kids = grid.children, arr = [], i;
+    for(i=0;i<kids.length;i++){
+      if(kids[i]===card) continue;
+      if(kids[i].className.indexOf("card-ph")<0 && !kids[i].offsetParent) continue;
+      arr.push(kids[i]);
     }
+    var t = arr.indexOf(c);
+    if(t<0) return;
+    var ref = null;
+    for(i=0;i<arr.length;i++){
+      if(arr[i]===ph) continue;
+      if(t===0){ ref=arr[i]; break; }
+      t--;
+    }
+    grid.insertBefore(ph, ref);
+  }
+
+  function soltar(){
+    if(!card) return;
+    if(ph){
+      grid.insertBefore(card, ph);
+      ph.parentNode.removeChild(ph);
+      ph = null;
+    }
+    card.style.position = ""; card.style.left = ""; card.style.top = "";
+    card.style.width = ""; card.style.height = ""; card.style.transform = "";
+    card.style.zIndex = ""; card.style.margin = "";
+    card.classList.remove("dragging");
+    document.body.classList.remove("is-dragging");
+    suppressClick = true;
+    salvar();
+    card = null; active = false; armed = false;
+  }
+
+  function down(e){
+    if(card) return;
+    if(e.pointerType==="mouse" && e.button!==0) return;
+    if(!e.target || !e.target.closest) return;
+    var c = e.target.closest(".card:not(.card-ph)");
+    if(!c || !grid.contains(c)) return;
+    suppressClick = false;
+    card = c; startX = e.clientX; startY = e.clientY; active = false;
+    if(e.pointerType==="mouse"){ armed = true; }
+    else{ armed = false; clearTimeout(timer); timer = setTimeout(function(){ armed = true; }, 350); }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", up);
+    document.addEventListener("pointercancel", up);
+  }
+
+  function move(e){
+    if(!card) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if(!active){
+      if(!armed) return;
+      if(Math.abs(dx)<7 && Math.abs(dy)<7) return;
+      iniciar();
+    }
+    card.style.transform = "translate("+dx+"px,"+dy+"px)";
+    posicionarPh(e.clientX, e.clientY);
+  }
+
+  function up(){
+    clearTimeout(timer);
+    document.removeEventListener("pointermove", move);
+    document.removeEventListener("pointerup", up);
+    document.removeEventListener("pointercancel", up);
+    if(active) soltar();
+    else { card = null; armed = false; }
+  }
+
+  grid.addEventListener("pointerdown", down);
+  document.addEventListener("touchmove", function(e){
+    if(active || armed){ if(e.cancelable) e.preventDefault(); }
+  }, {passive:false});
+  document.addEventListener("contextmenu", function(e){
+    if(active || armed) e.preventDefault();
   });
-});
-var pedido=SLUG2CAT[(location.hash||"").slice(1)];
-if(pedido){
-  setFiltro(pedido);
-  var secaoFilmes=document.getElementById("filmes");
-  if(secaoFilmes)secaoFilmes.scrollIntoView();
-}
+})();
 
-/* lightbox */
-var lb=document.getElementById("lb"),
-    lbFrame=document.getElementById("lbFrame"),
-    lbTitle=document.getElementById("lbTitle"),
-    lbClose=document.getElementById("lbClose"),
-    lastFocus=null;
-
+/* ===== LIGHTBOX ===== */
 function openLb(v){
-  lastFocus=document.activeElement;
-  lbFrame.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0" title="'+v.t+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
-  lbTitle.textContent=v.t;
+  lastFocus = document.activeElement;
+  currentLightboxIndex = VIDEOS.findIndex(function(item){ return item.id === v.id; });
+  if(currentLightboxIndex === -1) currentLightboxIndex = 0;
+
+  lbFrame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0" title="'+v.t+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+  lbTitle.textContent = v.t;
   lb.classList.add("open");
-  document.body.style.overflow="hidden";
+  document.body.style.overflow = "hidden";
   lbClose.focus();
 }
+
 function closeLb(){
   lb.classList.remove("open");
-  lbFrame.innerHTML="";
-  document.body.style.overflow="";
-  if(lastFocus){lastFocus.focus();}
+  lbFrame.innerHTML = "";
+  document.body.style.overflow = "";
+  if(lastFocus){ lastFocus.focus(); }
+  currentLightboxIndex = -1;
 }
-lbClose.addEventListener("click",closeLb);
-lb.addEventListener("click",function(e){if(e.target===lb){closeLb();}});
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&lb.classList.contains("open")){closeLb();}});
 
-/* nav */
-var nav=document.getElementById("nav");
-var onScroll=function(){nav.classList.toggle("scrolled",window.scrollY>60);};
-window.addEventListener("scroll",onScroll,{passive:true});
-onScroll();
-
-/* reveal on scroll */
-if("IntersectionObserver" in window){
-  var io=new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}
-    });
-  },{threshold:.12});
-  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
-}else{
-  document.querySelectorAll(".reveal").forEach(function(el){el.classList.add("in");});
+function navLightbox(dir){
+  if(currentLightboxIndex === -1) return;
+  currentLightboxIndex = (currentLightboxIndex + dir + VIDEOS.length) % VIDEOS.length;
+  openLb(VIDEOS[currentLightboxIndex]);
 }
+
+/* ===== INICIAR ===== */
+loadVideos();
+
 })();
 </script>
 
