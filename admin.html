@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel · Pauleanderson Dr. Filmes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808; --card:#0f0f10; --ink:#F4F0E8; --muted:rgba(244,240,232,.62);
+    --gold:#C7A76C; --line:rgba(199,167,108,.18); --ok:#7BC08A; --warn:#E0A44A; --err:#D9736A;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;margin:0}
+  a{color:var(--gold)}
+  .topo{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(16px,4vw,40px);border-bottom:1px solid var(--line)}
+  .topo .marca{font-family:'Cormorant Garamond',serif;font-size:19px;letter-spacing:.06em}
+  .topo .marca small{display:block;font-family:Inter,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+  .topo .quem{display:flex;align-items:center;gap:14px;font-size:12.5px;color:var(--muted)}
+  main{padding:clamp(20px,4vw,44px);max-width:1180px;margin:0 auto}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(20px,3vw,30px)}
+  .login{max-width:400px;margin:8vh auto}
+  .login h1{font-size:30px;margin-bottom:6px}
+  .login p{color:var(--muted);font-size:13.5px;margin:0 0 22px}
+  label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  input,textarea,select{width:100%;background:#0b0b0c;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;font-size:14px}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
+  textarea{resize:vertical;min-height:52px;font-size:13px;color:var(--muted)}
+  .campo{margin-bottom:16px}
+  button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 16px;transition:.2s}
+  button:hover{border-color:var(--gold);color:var(--gold)}
+  button.primario{background:var(--gold);border-color:var(--gold);color:#17130e;font-weight:500;letter-spacing:.04em}
+  button.primario:hover{filter:brightness(1.08);color:#17130e}
+  button.mini{padding:5px 10px;font-size:12px}
+  button.largo{width:100%}
+  .abas{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .abas button[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#17130e;font-weight:500}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-weight:400;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:0 8px 8px}
+  td{padding:6px 8px;border-top:1px solid rgba(199,167,108,.1);vertical-align:top}
+  td.c{text-align:center}
+  td input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold)}
+  td.acoes{white-space:nowrap;text-align:right}
+  .bloco{margin-bottom:30px}
+  .bloco h2{font-size:22px;margin-bottom:4px}
+  .bloco .nota{font-size:12px;color:var(--muted);margin:0 0 12px}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+  .foto{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0b0b0c}
+  .foto img{display:block;width:100%;height:130px;object-fit:cover;background:#000}
+  .foto .info{padding:9px 10px;font-size:11.5px;color:var(--muted)}
+  .foto .info b{display:block;color:var(--ink);font-weight:400;font-size:12.5px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .foto .acoes{display:flex;gap:6px;padding:0 10px 10px}
+  .foto .acoes button{flex:1}
+  .aviso{border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:14px 16px;font-size:13.5px;color:var(--muted);margin-bottom:18px}
+  .aviso b{color:var(--ink);font-weight:500}
+  #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:#161513;border:1px solid var(--line);border-radius:10px;padding:11px 20px;font-size:13px;opacity:0;pointer-events:none;transition:.25s}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+  .muted{color:var(--muted)}
+  .linha{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  pre{background:#0b0b0c;border:1px solid var(--line);border-radius:10px;padding:14px;overflow:auto;max-height:340px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="marca">Pauleanderson · Dr. Filmes<small>Painel administrativo</small></div>
+  <div class="quem">
+    <span id="quemSou"></span>
+    <button id="btnSair" class="mini" hidden>Sair</button>
+  </div>
+</header>
+
+<main>
+  <section id="telaConfig" hidden class="card login">
+    <h1>Falta conectar o banco</h1>
+    <p>Edite o arquivo <code>admin-config.js</code> e preencha <code>supabaseUrl</code> e <code>supabaseAnonKey</code> com os dados do projeto (Supabase &gt; Project Settings &gt; API). Depois recarregue esta página.</p>
+    <p class="muted">Se você ainda não criou o projeto, siga <code>supabase/LEIA-ME.md</code>.</p>
+  </section>
+
+  <section id="telaLogin" hidden class="card login">
+    <h1>Entrar no painel</h1>
+    <p>Acesso restrito à equipe.</p>
+    <form id="formLogin">
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="username" required>
+      </div>
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="primario largo" type="submit" id="btnEntrar">Entrar</button>
+      <p id="erroLogin" class="muted" style="margin:14px 0 0;color:var(--err);display:none"></p>
+    </form>
+  </section>
+
+  <section id="telaPainel" hidden>
+    <div id="avisoAdmin" class="aviso" hidden></div>
+    <nav class="abas" role="tablist">
+      <button role="tab" data-aba="catalogo" aria-selected="true">Catálogo do orçamento</button>
+      <button role="tab" data-aba="midia" aria-selected="false">Fotos e mídia</button>
+      <button role="tab" data-aba="config" aria-selected="false">Gerar config</button>
+    </nav>
+
+    <section data-painel="catalogo">
+      <div class="bloco">
+        <h2>Catálogo do orçamento</h2>
+        <p class="nota">O que está aqui é o que aparece no configurador <code>/monte</code>. Alterar o preço e salvar muda a conta na hora em que o config for gerado.</p>
+      </div>
+      <div id="catalogo"></div>
+    </section>
+
+    <section data-painel="midia" hidden>
+      <div class="bloco">
+        <h2>Fotos e mídia</h2>
+        <p class="nota">Envie fotos para o bucket público <code>midia</code> e copie a URL para usar no site.</p>
+        <div class="linha" style="margin-bottom:14px">
+          <div style="flex:1 1 220px">
+            <label for="categoria">Categoria</label>
+            <select id="categoria">
+              <option value="geral">Geral</option>
+              <option value="casamento">Casamento</option>
+              <option value="quinze">15 anos</option>
+              <option value="corporativo">Corporativo</option>
+              <option value="bastidor">Bastidor</option>
+            </select>
+          </div>
+          <div style="flex:2 1 320px">
+            <label for="arquivos">Arquivos (JPG, PNG, WEBP — até 15 MB)</label>
+            <input id="arquivos" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple>
+          </div>
+        </div>
+        <p id="statusUpload" class="muted" style="font-size:12.5px"></p>
+      </div>
+      <div id="midias" class="grid"></div>
+    </section>
+
+    <section data-painel="config" hidden>
+      <div class="bloco">
+        <h2>Gerar o configurador</h2>
+        <p class="nota">Baixa o <code>monte-seu-filme.config.js</code> já com os preços deste banco. Substitua o arquivo no repositório e o site é atualizado no próximo deploy.</p>
+        <div class="linha">
+          <button class="primario" id="btnGerar">Baixar config atualizado</button>
+          <button id="btnConferir">Conferir preços</button>
+        </div>
+        <pre id="saida" style="margin-top:16px;display:none"></pre>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div id="toast"></div>
+
+<script src="admin-config.js"></script>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const CFG = window.ADMIN_CONFIG || {};
+const $ = (s, p = document) => p.querySelector(s);
+const $$ = (s, p = document) => Array.from(p.querySelectorAll(s));
+const esc = s => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const brl = v => 'R$ ' + Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+let toastTimer;
+function toast(msg, erro) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.style.borderColor = erro ? 'var(--err)' : 'var(--line)';
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 3200);
+}
+
+/* ---------------- conexão ---------------- */
+const conectado = !!(CFG.supabaseUrl && CFG.supabaseAnonKey &&
+  /^https?:\/\/.+\.supabase\./.test(CFG.supabaseUrl) && CFG.supabaseAnonKey.length > 20);
+
+let supa = null, usuario = null, itens = [], midias = [];
+const TIPOS = [
+  { id: 'evento',  titulo: 'Tipos de evento',    nota: 'O preço é o valor do filme curto (1 a 3 min). As durações somam em cima.' },
+  { id: 'duracao', titulo: 'Durações do filme',  nota: 'Acréscimo sobre a base do evento.' },
+  { id: 'estilo',  titulo: 'Estilos de edição',  nota: 'Acréscimo sobre a base + duração.' },
+  { id: 'extra',   titulo: 'Serviços adicionais', nota: 'Itens que o cliente marca na etapa de detalhes.' },
+  { id: 'entrega', titulo: 'Entregas',           nota: 'Os incluídos aparecem marcados por padrão no resumo.' }
+];
+
+if (!conectado) {
+  $('#telaConfig').hidden = false;
+} else {
+  supa = createClient(CFG.supabaseUrl, CFG.supabaseAnonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+  iniciar();
+}
+
+async function iniciar() {
+  const { data } = await supa.auth.getSession();
+  if (data.session) {
+    await abrirPainel(data.session.user);
+  } else {
+    $('#telaLogin').hidden = false;
+  }
+}
+
+$('#formLogin').addEventListener('submit', async e => {
+  e.preventDefault();
+  const botao = $('#btnEntrar');
+  const erro = $('#erroLogin');
+  erro.style.display = 'none';
+  botao.disabled = true;
+  botao.textContent = 'Entrando…';
+  const { data, error } = await supa.auth.signInWithPassword({
+    email: $('#email').value.trim(),
+    password: $('#senha').value
+  });
+  botao.disabled = false;
+  botao.textContent = 'Entrar';
+  if (error) {
+    erro.textContent = traduzErro(error.message);
+    erro.style.display = 'block';
+    return;
+  }
+  await abrirPainel(data.user);
+});
+
+function traduzErro(m) {
+  const s = String(m || '').toLowerCase();
+  if (s.includes('invalid login')) return 'E-mail ou senha incorretos.';
+  if (s.includes('email not confirmed')) return 'Confirme o e-mail antes de entrar (ou desligue a confirmação no Supabase).';
+  if (s.includes('rate limit')) return 'Muitas tentativas. Espere alguns minutos.';
+  return m;
+}
+
+async function abrirPainel(user) {
+  usuario = user;
+  const { data: perfil, error } = await supa.from('profiles').select('is_admin').eq('id', user.id).maybeSingle();
+  if (error) {
+    toast('Erro ao ler o perfil: ' + error.message, true);
+  }
+  const admin = !!(perfil && perfil.is_admin);
+
+  $('#telaLogin').hidden = true;
+  $('#telaPainel').hidden = false;
+  $('#quemSou').textContent = user.email;
+  $('#btnSair').hidden = false;
+
+  if (!admin) {
+    const av = $('#avisoAdmin');
+    av.hidden = false;
+    av.innerHTML = '<b>Este usuário ainda não é administrador.</b><br>No SQL Editor do Supabase rode:<br>' +
+      '<code>update public.profiles set is_admin = true where email = \'' + esc(user.email) + '\';</code>' +
+      '<br>Enquanto isso o painel abre só para leitura.';
+  }
+
+  await carregarCatalogo();
+  await carregarMidias();
+  pintarAbas('catalogo');
+}
+
+$('#btnSair').addEventListener('click', async () => {
+  await supa.auth.signOut();
+  location.reload();
+});
+
+/* ---------------- abas ---------------- */
+$$('[data-aba]').forEach(b => b.addEventListener('click', () => pintarAbas(b.dataset.aba)));
+function pintarAbas(qual) {
+  $$('[data-aba]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.aba === qual)));
+  $$('[data-painel]').forEach(s => { s.hidden = s.dataset.painel !== qual; });
+}
+
+/* ---------------- catálogo ---------------- */
+async function carregarCatalogo() {
+  const { data, error } = await supa.from('catalogo_itens')
+    .select('*').order('tipo').order('ordem').order('slug');
+  if (error) { toast('Erro ao carregar o catálogo: ' + error.message, true); return; }
+  itens = data || [];
+  renderCatalogo();
+}
+
+function renderCatalogo() {
+  const alvo = $('#catalogo');
+  if (!itens.length) {
+    alvo.innerHTML = '<div class="card">Nenhum item ainda. Rode o <code>supabase/schema.sql</code> para carregar o catálogo inicial.</div>';
+    return;
+  }
+  alvo.innerHTML = TIPOS.map(t => {
+    const lista = itens.filter(i => i.tipo === t.id);
+    return `<div class="bloco card">
+      <h2>${esc(t.titulo)}</h2>
+      <p class="nota">${esc(t.nota)}</p>
+      <table>
+        <thead><tr>
+          <th style="width:38%">Nome e descrição</th>
+          <th style="width:14%">Preço</th>
+          <th style="width:9%">Ordem</th>
+          <th style="width:7%">Ativo</th>
+          <th style="width:9%">Destaque</th>
+          <th style="width:11%">Sob consulta</th>
+          <th></th>
+        </tr></thead>
+        <tbody>
+        ${lista.map(i => `
+          <tr data-id="${i.id}">
+            <td>
+              <input data-campo="nome" value="${esc(i.nome)}" style="margin-bottom:4px">
+              <textarea data-campo="descricao" rows="2">${esc(i.descricao || '')}</textarea>
+            </td>
+            <td><input data-campo="preco" type="number" min="0" step="50" value="${Number(i.preco)}"></td>
+            <td><input data-campo="ordem" type="number" min="0" step="1" value="${Number(i.ordem)}"></td>
+            <td class="c"><input data-campo="ativo" type="checkbox" ${i.ativo ? 'checked' : ''}></td>
+            <td class="c"><input data-campo="destaque" type="checkbox" ${i.destaque ? 'checked' : ''}></td>
+            <td class="c"><input data-campo="sob_consulta" type="checkbox" ${i.sob_consulta ? 'checked' : ''}></td>
+            <td class="acoes">
+              <button class="mini" data-salvar>Salvar</button>
+              <button class="mini" data-apagar>Excluir</button>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <button class="mini" data-novo="${t.id}" style="margin-top:12px">+ Novo item</button>
+    </div>`;
+  }).join('');
+
+  $$('[data-salvar]', alvo).forEach(b => b.addEventListener('click', () => salvarLinha(b.closest('tr'))));
+  $$('[data-apagar]', alvo).forEach(b => b.addEventListener('click', () => apagarItem(b.closest('tr'))));
+  $$('[data-novo]', alvo).forEach(b => b.addEventListener('click', () => novoItem(b.dataset.novo)));
+}
+
+function lerLinha(tr) {
+  const campo = n => tr.querySelector(`[data-campo="${n}"]`);
+  return {
+    nome: campo('nome').value.trim(),
+    descricao: campo('descricao').value.trim() || null,
+    preco: Number(campo('preco').value) || 0,
+    ordem: Number(campo('ordem').value) || 0,
+    ativo: campo('ativo').checked,
+    destaque: campo('destaque').checked,
+    sob_consulta: campo('sob_consulta').checked
+  };
+}
+
+async function salvarLinha(tr) {
+  const dados = lerLinha(tr);
+  if (!dados.nome) { toast('O nome não pode ficar vazio.', true); return; }
+  const { error } = await supa.from('catalogo_itens')
+    .update(dados).eq('id', tr.dataset.id);
+  if (error) { toast('Não salvou: ' + error.message, true); return; }
+  toast('Salvo.');
+}
+
+async function apagarItem(tr) {
+  if (!confirm('Excluir este item do catálogo? O site deixa de mostrar.')) return;
+  const { error } = await supa.from('catalogo_itens').delete().eq('id', tr.dataset.id);
+  if (error) { toast('Não excluiu: ' + error.message, true); return; }
+  tr.remove();
+  toast('Item excluído.');
+}
+
+async function novoItem(tipo) {
+  const nome = prompt('Nome do novo item:');
+  if (!nome) return;
+  const slug = nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || ('item-' + Date.now());
+  const ordem = Math.max(0, ...itens.filter(i => i.tipo === tipo).map(i => Number(i.ordem) || 0)) + 1;
+  const { error } = await supa.from('catalogo_itens').insert({
+    tipo, slug, nome: nome.trim(), preco: 0, ordem, ativo: true
+  });
+  if (error) { toast('Não criou: ' + error.message, true); return; }
+  await carregarCatalogo();
+  toast('Item criado. Ajuste o preço e salve.');
+}
+
+/* ---------------- mídia ---------------- */
+async function carregarMidias() {
+  const { data, error } = await supa.from('midias').select('*').order('criado_em', { ascending: false }).limit(120);
+  if (error) { toast('Erro ao carregar a mídia: ' + error.message, true); return; }
+  midias = data || [];
+  renderMidias();
+}
+
+function renderMidias() {
+  const alvo = $('#midias');
+  if (!midias.length) {
+    alvo.innerHTML = '<p class="muted" style="font-size:13px">Nenhuma foto enviada ainda.</p>';
+    return;
+  }
+  alvo.innerHTML = midias.map(m => `
+    <div class="foto" data-id="${m.id}">
+      <img src="${esc(m.url)}" alt="${esc(m.titulo || '')}" loading="lazy">
+      <div class="info">
+        <b>${esc(m.titulo || m.caminho.split('/').pop())}</b>
+        ${esc(m.categoria || 'geral')} · ${m.bytes ? Math.round(m.bytes / 1024) + ' KB' : ''}
+      </div>
+      <div class="acoes">
+        <button class="mini" data-copiar="${esc(m.url)}">Copiar URL</button>
+        <button class="mini" data-remover>Excluir</button>
+      </div>
+    </div>`).join('');
+
+  $$('[data-copiar]', alvo).forEach(b => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copiar); toast('URL copiada.'); }
+    catch { prompt('Copie a URL:', b.dataset.copiar); }
+  }));
+  $$('[data-remover]', alvo).forEach(b => b.addEventListener('click', () => removerMidia(b.closest('.foto'))));
+}
+
+$('#arquivos').addEventListener('change', async e => {
+  const arquivos = Array.from(e.target.files || []);
+  if (!arquivos.length) return;
+  const categoria = $('#categoria').value;
+  const status = $('#statusUpload');
+  for (let i = 0; i < arquivos.length; i++) {
+    const f = arquivos[i];
+    status.textContent = `Enviando ${i + 1} de ${arquivos.length}: ${f.name}…`;
+    const limpo = f.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9.]+/g, '-');
+    const caminho = `${categoria}/${Date.now()}-${limpo}`;
+    const up = await supa.storage.from(CFG.bucket || 'midia')
+      .upload(caminho, f, { cacheControl: '3600', upsert: false, contentType: f.type });
+    if (up.error) { toast('Falha no envio de ' + f.name + ': ' + up.error.message, true); continue; }
+    const pub = supa.storage.from(CFG.bucket || 'midia').getPublicUrl(caminho);
+    const { error } = await supa.from('midias').insert({
+      titulo: f.name.replace(/\.[^.]+$/, ''),
+      caminho, url: pub.data.publicUrl, mime: f.type, bytes: f.size, categoria
+    });
+    if (error) toast('Foto enviada, mas não registrada: ' + error.message, true);
+  }
+  status.textContent = 'Envio concluído.';
+  e.target.value = '';
+  await carregarMidias();
+});
+
+async function removerMidia(card) {
+  const m = midias.find(x => x.id === card.dataset.id);
+  if (!m || !confirm('Excluir a foto do storage e do catálogo? Se ela estiver no site, o link quebra.')) return;
+  const { error: e1 } = await supa.storage.from(CFG.bucket || 'midia').remove([m.caminho]);
+  if (e1) toast('Aviso do storage: ' + e1.message, true);
+  const { error: e2 } = await supa.from('midias').delete().eq('id', m.id);
+  if (e2) { toast('Não excluiu: ' + e2.message, true); return; }
+  card.remove();
+  toast('Foto excluída.');
+}
+
+/* ---------------- gerar config ---------------- */
+async function montarConfig() {
+  const resp = await fetch('monte-seu-filme.config.js', { cache: 'no-store' });
+  if (!resp.ok) throw new Error('Não consegui ler o monte-seu-filme.config.js publicado.');
+  const texto = await resp.text();
+  const janela = {};
+  new Function('window', texto)(janela);
+  const base = janela.MSF_CONFIG;
+  if (!base) throw new Error('O arquivo do configurador não expôs MSF_CONFIG.');
+
+  const por = t => itens.filter(i => i.tipo === t && i.ativo !== false)
+    .sort((a, b) => (a.ordem - b.ordem) || a.slug.localeCompare(b.slug));
+
+  const novo = {
+    versao: (Number(base.versao) || 1) + 1,
+    marca: base.marca,
+    desconto: base.desconto,
+    pagamento: base.pagamento,
+    eventos: por('evento').map(i => ({
+      id: i.slug, nome: i.nome, base: Number(i.preco), ativo: true,
+      icone: i.icone || 'camera', desc: i.descricao || ''
+    })),
+    duracoes: por('duracao').map(i => ({
+      id: i.slug, nome: i.nome, faixa: i.faixa || '', preco: Number(i.preco),
+      ativo: true, destaque: !!i.destaque, desc: i.descricao || ''
+    })),
+    estilos: por('estilo').map(i => ({
+      id: i.slug, nome: i.nome, preco: Number(i.preco), ativo: true,
+      desc: i.descricao || '', inclui: i.inclui || '',
+      exemploYouTube: i.exemplo_youtube || ''
+    })),
+    extras: por('extra').map(i => ({
+      id: i.slug, grupo: i.grupo || 'durante', nome: i.nome, desc: i.descricao || '',
+      preco: Number(i.preco), ativo: true, sobConsulta: !!i.sob_consulta,
+      conflita: i.conflita || []
+    })),
+    entregas: por('entrega').map(i => ({
+      id: i.slug, nome: i.nome, desc: i.descricao || '', preco: Number(i.preco),
+      ativo: true, incluido: !!i.incluido
+    }))
+  };
+
+  const cabecalho = `/* Gerado pelo painel administrativo em ${new Date().toLocaleString('pt-BR')}.\n` +
+    `   Fonte: tabela public.catalogo_itens do Supabase. Não edite à mão. */\n`;
+
+  return cabecalho + 'window.MSF_CONFIG = ' + JSON.stringify(novo, null, 2) + ';\n';
+}
+
+$('#btnGerar').addEventListener('click', async () => {
+  try {
+    const texto = await montarConfig();
+    const blob = new Blob([texto], { type: 'text/javascript;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'monte-seu-filme.config.js';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Config baixado. Substitua o arquivo no repositório.');
+  } catch (e) {
+    toast(e.message, true);
+  }
+});
+
+$('#btnConferir').addEventListener('click', () => {
+  const out = $('#saida');
+  const por = t => itens.filter(i => i.tipo === t && i.ativo !== false).sort((a, b) => a.ordem - b.ordem);
+  const eventos = por('evento');
+  const duracoes = por('duracao');
+  const estilos = por('estilo');
+  const linhas = [];
+  for (const ev of eventos) {
+    const d = duracoes.find(x => x.slug === 'especial');
+    const c = estilos.find(x => x.slug === 'cinematografica');
+    if (!d) continue;
+    linhas.push(`${ev.nome.padEnd(22, ' ')} curto ${brl(ev.preco).padStart(11, ' ')}` +
+      ` · especial ${brl(Number(ev.preco) + Number(d.preco)).padStart(11, ' ')}` +
+      (c ? ` · especial + cinema ${brl(Number(ev.preco) + Number(d.preco) + Number(c.preco))}` : ''));
+  }
+  out.textContent = linhas.join('\n');
+  out.style.display = 'block';
+});
+</script>
+</body>
+</html>
