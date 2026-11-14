@@ -47,7 +47,10 @@ window.MSF_CONFIG = {
       desc: 'Uma história mais completa, com momentos importantes, emoções e detalhes.' },
     { id: 'completo',   nome: 'Filme Completo',   faixa: '15 a 20 minutos', preco: 2200, ativo: true, destaque: false,
       desc: 'Mais momentos registrados, permitindo reviver diferentes partes da celebração.' },
-    { id: 'documental', nome: 'Filme Documental', faixa: '25 a 45 minutos', preco: 3800, ativo: true, destaque: false,
+    /* 4.303 (e não 3.800) fecha em R$ 7.000 com base + Edição Documental —
+       é o preço do "Legado · Documentário" publicado na apresentação.
+       Ver monte-seu-filme.config.js: base 1.797 + 4.303 + 900 = 7.000. */
+    { id: 'documental', nome: 'Filme Documental', faixa: '25 a 45 minutos', preco: 4303, ativo: true, destaque: false,
       desc: 'Uma recordação extensa, com acontecimentos, falas, homenagens e momentos especiais.' }
   ],
 
