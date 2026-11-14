@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=4d3efaed-8639-4446-bd38-382c84121ec8
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Monte seu Filme · Orçamento interativo — Pauleanderson | Dr. Filmes</title>
+<meta name="description" content="Monte o filme do seu evento em 6 etapas simples: escolha o momento, a duração, o estilo de edição e os detalhes. Veja a estimativa na hora." />
+<meta name="theme-color" content="#080808" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080808;
+    --bg-2: #0f0f0f;
+    --card: #111111;
+    --card-2: #151515;
+    --line: rgba(199,167,108,.18);
+    --line-2: rgba(199,167,108,.34);
+    --text: #F4F0E8;
+    --muted: rgba(244,240,232,.55);
+    --accent: #C7A76C;
+    --accent-2: #B08F52;
+    --accent-soft: rgba(199,167,108,.10);
+    --wa: #25d366;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 24px 60px rgba(0,0,0,.55);
+    --shadow-sm: 0 10px 28px rgba(0,0,0,.4);
+    --transition: .28s cubic-bezier(.4,0,.2,1);
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  html { scroll-behavior: smooth; }
+  body { padding-bottom: 108px; }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0; z-index: 100;
+    background: var(--accent); color: #141414; padding: 12px 18px; border-radius: 0 0 8px 0;
+    font-weight: 600;
+  }
+  .skip:focus { left: 0; }
+
+  .page { max-width: 1060px; margin: 0 auto; padding: 0 28px 40px; }
+
+  /* ---------- HEADER ---------- */
+  header {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 30px 0 22px; border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+  .brand .logo {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-size: 20px; font-weight: 600; color: #17130e;
+  }
+  .brand h1 { font-family: var(--font-display); font-size: 19px; font-weight: 500; letter-spacing: .4px; line-height: 1.2; }
+  .brand small {
+    display: block; font-size: 10px; color: var(--muted);
+    letter-spacing: 2.4px; text-transform: uppercase; margin-top: 4px;
+  }
+  .doc-info { text-align: right; font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+  .doc-info strong { display: block; color: var(--text); font-size: 12.5px; font-weight: 600; }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 72px 0 44px; text-align: center; position: relative; }
+  .hero::after {
+    content: ''; display: block; width: 56px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 34px auto 0;
+  }
+  .kicker {
+    font-size: 11px; letter-spacing: 3.4px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 22px;
+  }
+  .hero h2 {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(40px, 7vw, 68px); line-height: 1.04; letter-spacing: -.5px;
+  }
+  .hero .sub {
+    font-family: var(--font-display); font-style: italic; font-weight: 400;
+    font-size: clamp(17px, 2.4vw, 22px); color: var(--muted);
+    margin-top: 20px; line-height: 1.45;
+  }
+  .hero .meta {
+    margin-top: 26px; font-size: 12px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .hero .meta span { white-space: nowrap; }
+  .hero .meta em { font-style: normal; color: var(--accent); margin: 0 10px; }
+
+  /* ---------- PROGRESSO ---------- */
+  .progresso {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -28px 40px; padding: 14px 28px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .progresso::-webkit-scrollbar { display: none; }
+  .progresso ol {
+    list-style: none; display: flex; gap: 8px; justify-content: center;
+    min-width: max-content; margin: 0 auto;
+  }
+  .progresso button {
+    display: flex; align-items: center; gap: 9px; background: none; border: 0;
+    color: var(--muted); font: inherit; font-size: 12.5px; cursor: pointer;
+    padding: 8px 12px; border-radius: 999px; transition: var(--transition);
+    white-space: nowrap;
+  }
+  .progresso button .num {
+    width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+    border: 1px solid var(--line-2); font-size: 11px; font-weight: 600; flex: none;
+  }
+  .progresso button[aria-current="step"] { color: var(--text); background: var(--card); }
+  .progresso button[aria-current="step"] .num { background: var(--accent); border-color: var(--accent); color: #17130e; }
+  .progresso button.feito .num { border-color: var(--accent); color: var(--accent); }
+  .progresso button:disabled { opacity: .38; cursor: not-allowed; }
+  .progresso button:not(:disabled):hover { color: var(--text); }
+
+  /* ---------- ETAPAS ---------- */
+  .etapa { display: none; animation: entrar .45s ease both; }
+  .etapa.ativa { display: block; }
+  @keyframes entrar { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .etapa-head { margin-bottom: 30px; }
+  .etapa-head .contador {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .etapa-head h2 {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(26px, 4vw, 36px); line-height: 1.15;
+  }
+  .etapa-head p { color: var(--muted); max-width: 62ch; margin-top: 12px; font-size: 14.5px; }
+
+  .grid { display: grid; gap: 14px; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+  /* ---------- CARDS SELECIONÁVEIS ---------- */
+  .card {
+    position: relative; display: block; text-align: left; width: 100%;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 20px; cursor: pointer;
+    color: inherit; font: inherit; transition: var(--transition);
+  }
+  .card:hover { border-color: var(--line-2); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .card[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: linear-gradient(160deg, var(--accent-soft), var(--card) 60%);
+  }
+  .card[aria-pressed="true"]::after {
+    content: ''; position: absolute; top: 16px; right: 16px;
+    width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .card .icone { color: var(--accent); margin-bottom: 14px; display: block; }
+  .card h3 {
+    font-family: var(--font-display); font-weight: 500; font-size: 19px;
+    line-height: 1.25; margin-bottom: 6px;
+  }
+  .card .desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .card .preco { font-size: 12.5px; color: var(--accent); margin-top: 12px; letter-spacing: .4px; }
+  .card .faixa {
+    display: inline-block; font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--muted); border: 1px solid var(--line-2); border-radius: 999px;
+    padding: 3px 10px; margin-bottom: 12px;
+  }
+  .card .inclui { font-size: 12px; color: var(--muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .selo {
+    position: absolute; top: -9px; left: 18px; background: var(--accent); color: #17130e;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .btn-exemplo {
+    margin-top: 14px; background: none; border: 1px solid var(--line-2); color: var(--text);
+    font: inherit; font-size: 11.5px; letter-spacing: .8px; text-transform: uppercase;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: var(--transition);
+  }
+  .btn-exemplo:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- GRUPOS DE EXTRAS ---------- */
+  .grupo-titulo {
+    font-family: var(--font-display); font-size: 13px; letter-spacing: 2.6px;
+    text-transform: uppercase; color: var(--muted);
+    margin: 34px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .grupo-titulo:first-child { margin-top: 0; }
+  .check-card {
+    position: relative; display: grid; grid-template-columns: 22px 1fr auto; gap: 14px;
+    align-items: start; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 16px 18px; cursor: pointer; transition: var(--transition);
+  }
+  .check-card:hover { border-color: var(--line-2); }
+  .check-card[aria-checked="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .check-card .box {
+    width: 19px; height: 19px; border: 1px solid var(--line-2); border-radius: 5px;
+    margin-top: 1px; display: grid; place-items: center; flex: none; transition: var(--transition);
+  }
+  .check-card[aria-checked="true"] .box { background: var(--accent); border-color: var(--accent); }
+  .check-card .box svg { opacity: 0; transition: var(--transition); }
+  .check-card[aria-checked="true"] .box svg { opacity: 1; }
+  .check-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; display: flex; align-items: center; gap: 7px; }
+  .check-card .desc { font-size: 12.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .check-card .valor { font-size: 13px; color: var(--accent); white-space: nowrap; padding-top: 1px; }
+  .check-card.conflitante { opacity: .55; }
+  .check-card.conflitante .valor { color: var(--muted); }
+  .check-card.conflitante:hover { opacity: .85; }
+  .info {
+    width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--line-2);
+    color: var(--muted); font-size: 9px; display: inline-grid; place-items: center;
+    font-style: normal; flex: none; cursor: help;
+  }
+  .aviso-tecnico {
+    font-size: 11.5px; color: var(--muted); border-left: 2px solid var(--accent);
+    padding: 2px 0 2px 10px; margin-top: 16px; display: none;
+  }
+  .aviso-tecnico.on { display: block; }
+
+  /* ---------- RESUMO ---------- */
+  .resumo-wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 26px; align-items: start; }
+  .resumo {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  .resumo-head { padding: 26px 26px 20px; border-bottom: 1px solid var(--line); }
+  .resumo-head .kicker { margin-bottom: 8px; }
+  .resumo-head h3 { font-family: var(--font-display); font-size: 25px; font-weight: 500; }
+  .resumo-linhas { padding: 8px 26px; }
+  .linha {
+    display: grid; grid-template-columns: 118px 1fr auto; gap: 14px; align-items: baseline;
+    padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 13.5px;
+  }
+  .linha:last-child { border-bottom: 0; }
+  .linha .rot { font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); }
+  .linha .val { line-height: 1.5; }
+  .linha .val em { font-style: normal; color: var(--muted); }
+  .linha .editar {
+    background: none; border: 0; color: var(--accent); font: inherit; font-size: 11px;
+    letter-spacing: .8px; text-transform: uppercase; cursor: pointer; padding: 2px 0;
+    border-bottom: 1px solid transparent; white-space: nowrap;
+  }
+  .linha .editar:hover { border-color: var(--accent); }
+  .totais { padding: 20px 26px 26px; background: var(--card-2); border-top: 1px solid var(--line); }
+  .totais .t-linha { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; color: var(--muted); padding: 5px 0; }
+  .totais .t-linha strong { color: var(--text); font-weight: 500; }
+  .totais .t-final {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line);
+  }
+  .totais .t-final span { font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); }
+  .totais .t-final strong { font-family: var(--font-display); font-size: 32px; font-weight: 500; color: var(--accent); line-height: 1; }
+  .totais .obs { font-size: 11.5px; color: var(--muted); margin-top: 14px; line-height: 1.55; }
+
+  .form { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .form h3 { font-family: var(--font-display); font-size: 21px; font-weight: 500; margin-bottom: 6px; }
+  .form > p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .campo { margin-bottom: 14px; }
+  .campo label { display: block; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .campo input, .campo textarea {
+    width: 100%; background: var(--bg-2); border: 1px solid var(--line); color: var(--text);
+    border-radius: var(--radius-sm); padding: 11px 13px; font: inherit; font-size: 14px;
+    transition: var(--transition);
+  }
+  .campo input:focus, .campo textarea:focus { outline: none; border-color: var(--accent); background: var(--card); }
+  .campo input::placeholder, .campo textarea::placeholder { color: var(--muted); opacity: .7; }
+  .campo.erro input { border-color: #d9534f; }
+  .campo textarea { resize: vertical; min-height: 78px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    background: var(--accent); color: #17130e; border: 1px solid var(--accent);
+    font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .9px; text-transform: uppercase;
+    padding: 14px 24px; border-radius: 999px; cursor: pointer; transition: var(--transition);
+    text-decoration: none;
+  }
+  .btn:hover { background: var(--accent-2); border-color: var(--accent-2); transform: translateY(-1px); }
+  .btn.ghost { background: none; color: var(--text); border-color: var(--line-2); }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: none; }
+  .btn.wa { background: var(--wa); border-color: var(--wa); color: #06240f; }
+  .btn.wa:hover { background: #1ebe5b; border-color: #1ebe5b; }
+  .btn.full { width: 100%; }
+  .btn[disabled] { opacity: .4; cursor: not-allowed; transform: none; }
+  .btn-mini {
+    background: none; border: 1px solid var(--line-2); color: var(--muted); font: inherit;
+    font-size: 11px; letter-spacing: .6px; padding: 7px 13px; border-radius: 999px; cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-mini:hover { color: var(--text); border-color: var(--accent); }
+
+  .navegacao { display: flex; justify-content: space-between; gap: 14px; margin-top: 36px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .navegacao .dica { font-size: 12px; color: var(--muted); align-self: center; }
+
+  .recuperar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+    background: var(--accent-soft); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 28px; font-size: 13px;
+  }
+  .recuperar[hidden] { display: none; }
+  .recuperar .acoes { display: flex; gap: 10px; }
+
+  /* ---------- BARRA FIXA ---------- */
+  .barra {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    background: color-mix(in srgb, var(--bg-2) 94%, transparent);
+    backdrop-filter: blur(16px); border-top: 1px solid var(--line);
+    padding: 14px 0 calc(14px + env(safe-area-inset-bottom));
+  }
+  .barra-in { max-width: 1060px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+  .barra .rot { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); display: block; }
+  .barra .valor { font-family: var(--font-display); font-size: 25px; line-height: 1.2; }
+  .barra .valor small { font-family: var(--font-body); font-size: 11px; color: var(--muted); letter-spacing: .5px; margin-left: 6px; }
+  .barra .acoes { display: flex; gap: 10px; align-items: center; }
+
+  /* ---------- MODAL ---------- */
+  .modal {
+    position: fixed; inset: 0; z-index: 90; display: none;
+    background: rgba(0,0,0,.72); backdrop-filter: blur(6px);
+    padding: 24px; place-items: center;
+  }
+  .modal.aberto { display: grid; }
+  .modal-cx {
+    width: min(760px, 100%); background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+  }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .modal-head h3 { font-family: var(--font-display); font-size: 20px; font-weight: 500; }
+  .modal-head button { background: none; border: 0; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
+  .modal-body { padding: 22px; font-size: 14px; color: var(--muted); }
+  .modal-body .video { position: relative; aspect-ratio: 16/9; background: #000; border-radius: var(--radius-sm); overflow: hidden; }
+  .modal-body .video iframe { width: 100%; height: 100%; border: 0; }
+
+  footer.rodape { margin-top: 60px; padding-top: 26px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+  footer.rodape a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+  footer.rodape a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- RESPONSIVO ---------- */
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .resumo-wrap { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .page { padding: 0 18px 30px; }
+    .progresso { margin: 0 -18px 30px; padding: 12px 18px; }
+    .progresso ol { justify-content: flex-start; }
+    .progresso button .rotulo { display: none; }
+    .progresso button[aria-current="step"] .rotulo { display: inline; }
+    .grid-3, .grid-4, .grid-2 { grid-template-columns: 1fr; }
+    .hero { padding: 48px 0 32px; }
+    .doc-info { display: none; }
+    .linha { grid-template-columns: 1fr auto; }
+    .linha .rot { grid-column: 1 / -1; margin-bottom: -6px; }
+    .barra .valor { font-size: 21px; }
+    .barra .acoes .btn { padding: 12px 16px; font-size: 11.5px; }
+    .navegacao { flex-direction: column-reverse; }
+    .navegacao .btn { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#passos">Ir para a personalização</a>
+
+<div class="page">
+
+  <header>
+    <a class="brand" href="index.html" aria-label="Voltar para o início">
+      <span class="logo" aria-hidden="true">P</span>
+      <span>
+        <h1>Pauleanderson | Dr. Filmes</h1>
+        <small>Cineasta Patrimonial</small>
+      </span>
+    </a>
+    <div class="doc-info">
+      <strong>Orçamento interativo</strong>
+      6 etapas · estimativa imediata<br>sem compromisso
+    </div>
+  </header>
+
+  <section class="hero">
+    <p class="kicker">Monte seu filme</p>
+    <h2>Cada história é única.<br>Escolha como quer guardar a sua.</h2>
+    <p class="sub">Sem termos técnicos. Você escolhe o resultado —<br>o valor aparece na hora.</p>
+    <p class="meta"><span>2 minutos</span><em>·</em><span>6 etapas</span><em>·</em><span>estimativa na hora</span></p>
+  </section>
+
+  <nav class="progresso" aria-label="Etapas da personalização">
+    <ol id="progresso"></ol>
+  </nav>
+
+  <main id="passos">
+    <div class="recuperar" id="recuperar" hidden>
+      <span>Encontramos uma seleção que você começou. Quer continuar de onde parou?</span>
+      <span class="acoes">
+        <button class="btn-mini" type="button" id="btnRecuperar">Continuar</button>
+        <button class="btn-mini" type="button" id="btnRecomecar">Começar de novo</button>
+      </span>
+    </div>
+
+    <section class="etapa" data-etapa="1" aria-labelledby="t1">
+      <div class="etapa-head">
+        <p class="contador">Etapa 1 de 6</p>
+        <h2 id="t1">Qual momento vamos registrar?</h2>
+        <p>Escolha o tipo de evento. Isso define o ponto de partida do seu orçamento.</p>
+      </div>
+      <div class="grid grid-4" id="listaEventos" role="group" aria-labelledby="t1"></div>
+      <div class="navegacao">
+        <span class="dica">Você pode mudar de ideia a qualquer momento.</span>
+        <button class="btn" type="button" data-ir="2">Continuar</button>
+      </div>
+    </section>
+
+    <section class="etapa" data-etapa="2" aria-labelledby="t2">
+      <div class="etapa-head">
+        <p class="contador">Etapa 2 de 6</p>
+        <h2 id="t2">Quanto tempo você deseja de vídeo?</h2>
+        <p>É a duração do filme pronto, não as horas de filmagem. Quanto mais tempo, mais momentos cabem na história.</p>
+      </div>
+      <div class="grid" id="listaDuracoes" role="group" aria-labelledby="t2"></div>
+      <div class="navegacao">
+        <button class="btn ghost" type="button" data-ir="1">Voltar</button>
+        <button class="btn" type="button" data-ir="3">Continuar</button>
+      </div>
+    </section>
+
+    <section class="etapa" data-etapa="3" aria-labelledby="t3">
+      <div class="etapa-head">
+        <p class="contador">Etapa 3 de 6</p>
+        <h2 id="t3">Qual estilo de vídeo você prefere?</h2>
+        <p>A diferença está no jeito de contar a história — não na qualidade do registro.</p>
+      </div>
+      <div class="grid grid-3" id="listaEstilos" role="group" aria-labelledby="t3"></div>
+      <div class="navegacao">
+        <button class="btn ghost" type="button" data-ir="2">Voltar</button>
+        <button class="btn" type="button" data-ir="4">Continuar</button>
+      </div>
+    </section>
+
+    <section class="etapa" data-etapa="4" aria-labelledby="t4">
+      <div class="etapa-head">
+        <p class="contador">Etapa 4 de 6</p>
+        <h2 id="t4">O que você deseja incluir no seu filme?</h2>
+        <p>Tudo aqui é opcional. Marque só o que faz sentido para a sua história — o valor se atualiza sozinho.</p>
+      </div>
+      <div id="listaExtras"></div>
+      <p class="aviso-tecnico" id="avisoTecnico"></p>
+      <div class="navegacao">
+        <button class="btn ghost" type="button" data-ir="3">Voltar</button>
+        <button class="btn" type="button" data-ir="5">Continuar</button>
+      </div>
+    </section>
+
+    <section class="etapa" data-etapa="5" aria-labelledby="t5">
+      <div class="etapa-head">
+        <p class="contador">Etapa 5 de 6</p>
+        <h2 id="t5">Como você deseja receber seu filme?</h2>
+        <p>A entrega digital já está incluída. Marque também o que quiser acrescentar.</p>
+      </div>
+      <div class="grid" id="listaEntregas" role="group" aria-labelledby="t5"></div>
+      <div class="navegacao">
+        <button class="btn ghost" type="button" data-ir="4">Voltar</button>
+        <button class="btn" type="button" data-ir="6">Ver meu resumo</button>
+      </div>
+    </section>
+
+    <section class="etapa" data-etapa="6" aria-labelledby="t6">
+      <div class="etapa-head">
+        <p class="contador">Etapa 6 de 6</p>
+        <h2 id="t6">Seu Filme Personalizado</h2>
+        <p>Confira as escolhas, ajuste o que quiser e envie para receber a confirmação da equipe.</p>
+      </div>
+
+      <div class="resumo-wrap">
+        <div>
+          <div class="resumo">
+            <div class="resumo-head">
+              <p class="kicker">Resumo</p>
+              <h3 id="resumoTitulo">Seu filme</h3>
+            </div>
+            <div class="resumo-linhas" id="resumoLinhas"></div>
+            <div class="totais" id="resumoTotais"></div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+            <button class="btn-mini" type="button" id="btnLink">Copiar link da minha seleção</button>
+            <button class="btn-mini" type="button" id="btnReiniciar">Recomeçar do zero</button>
+          </div>
+        </div>
+
+        <form class="form" id="formContato" novalidate>
+          <h3>Para quem é esse filme?</h3>
+          <p>Esses dados vão junto na mensagem — não guardamos nada em servidor.</p>
+
+          <div class="campo">
+            <label for="nome">Seu nome</label>
+            <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como podemos te chamar" required />
+          </div>
+          <div class="campo">
+            <label for="whats">WhatsApp</label>
+            <input id="whats" name="whats" type="tel" inputmode="tel" autocomplete="tel" placeholder="(92) 99999-9999" required />
+          </div>
+          <div class="campo">
+            <label for="data">Data do evento</label>
+            <input id="data" name="data" type="date" />
+          </div>
+          <div class="campo">
+            <label for="local">Local do evento</label>
+            <input id="local" name="local" type="text" placeholder="Cidade, espaço ou ainda não sei" />
+          </div>
+          <div class="campo">
+            <label for="obs">Observações</label>
+            <textarea id="obs" name="obs" placeholder="Conte o que é importante para você nesse dia."></textarea>
+          </div>
+
+          <button class="btn wa full" type="submit" id="btnEnviar">
+            Solicitar meu orçamento personalizado
+          </button>
+          <p style="font-size:11px; color:var(--muted); margin-top:12px; line-height:1.5;">
+            Valor estimado. A confirmação final é feita pela equipe depois de conversarmos.
+          </p>
+        </form>
+      </div>
+
+      <div class="navegacao">
+        <button class="btn ghost" type="button" data-ir="5">Voltar e ajustar</button>
+        <span class="dica" id="dicaResumo"></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span>Pauleanderson | Dr. Filmes · CNPJ 20.805.712/0001-95</span>
+    <span>
+      <a href="#" id="linkWhats">WhatsApp</a> ·
+      <a href="apresentacao.html">Portfólio</a> ·
+      <a href="produtos.html">Produtos</a>
+    </span>
+  </footer>
+</div>
+
+<div class="barra" role="region" aria-label="Estimativa do orçamento">
+  <div class="barra-in">
+    <div>
+      <span class="rot" id="barraRot">Estimativa parcial</span>
+      <span class="valor" id="barraValor">R$ 0<small id="barraObs"></small></span>
+    </div>
+    <div class="acoes">
+      <button class="btn-mini" type="button" id="btnBarraVoltar" style="display:none;">Voltar</button>
+      <button class="btn" type="button" id="btnBarra">Continuar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+  <div class="modal-cx">
+    <div class="modal-head">
+      <h3 id="modalTitulo">Exemplo</h3>
+      <button type="button" id="modalFechar" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script src="monte-seu-filme.config.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const CFG = window.MSF_CONFIG;
+  if (!CFG) {
+    document.getElementById('passos').innerHTML =
+      '<p style="padding:40px 0">Não foi possível carregar a configuração de preços ' +
+      '(<code>monte-seu-filme.config.js</code>). Verifique se o arquivo está na mesma pasta desta página.</p>';
+    return;
+  }
+
+  const $  = (q, p = document) => p.querySelector(q);
+  const $$ = (q, p = document) => Array.from(p.querySelectorAll(q));
+  const KEY = 'msf_selecao_v2';
+
+  const fmt = v => 'R$ ' + Math.round(Number(v) || 0).toLocaleString('pt-BR');
+  const fmtCampo = v => (Number(v) || 0) === 0 ? 'Incluído' : '+ ' + fmt(v);
+  const esc = s => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  const ativos = list => (list || []).filter(i => i.ativo !== false);
+  const EVENTOS   = ativos(CFG.eventos);
+  const DURACOES  = ativos(CFG.duracoes);
+  const ESTILOS   = ativos(CFG.estilos);
+  const EXTRAS    = ativos(CFG.extras);
+  const ENTREGAS  = ativos(CFG.entregas);
+
+  const estado = {
+    evento: null,
+    duracao: null,
+    estilo: null,
+    extras: [],
+    entregas: ENTREGAS.filter(e => e.incluido).map(e => e.id),
+    etapa: 1
+  };
+
+  const achar = (lista, id) => lista.find(i => i.id === id) || null;
+
+  /* ---------- ícones ---------- */
+  const ICONS = {
+    alianca:   '<circle cx="10" cy="14" r="5.5"/><circle cx="18" cy="14" r="5.5"/><path d="M14 8l2-4h-4l2 4"/>',
+    quinze:    '<path d="M8 6v12M16 6v3a3 3 0 0 0 3 3h1M16 12v3a3 3 0 0 1-3 3h-1"/>',
+    bolo:      '<path d="M4 20h16M5 20v-6h14v6M12 8v3M12 5v1M8 9c1-1 7-1 8 0"/>',
+    brinde:    '<path d="M8 4h8l-1 6a3 3 0 0 1-6 0L8 4zM12 16v4M9 20h6"/>',
+    capelo:    '<path d="M2 9l10-5 10 5-10 5L2 9zM6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/>',
+    predio:    '<path d="M4 20h16M6 20V7h7v13M13 11h5v9M9 10h1M9 14h1"/>',
+    camera:    '<rect x="2" y="7" width="13" height="10" rx="2"/><path d="M15 11l6-3v8l-6-3z"/>',
+    calendario:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
+  };
+  const icone = id => `<svg class="icone" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id] || ICONS.camera}</svg>`;
+  const check = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#17130e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+
+  /* ---------- etapa 1 ---------- */
+  $('#listaEventos').innerHTML = EVENTOS.map(e => `
+    <button type="button" class="card" data-evento="${esc(e.id)}" aria-pressed="false">
+      ${icone(e.icone)}
+      <h3>${esc(e.nome)}</h3>
+      <p class="desc">${esc(e.desc || '')}</p>
+      <p class="preco">a partir de ${fmt(e.base)}</p>
+    </button>`).join('');
+
+  /* ---------- etapa 2 ---------- */
+  $('#listaDuracoes').innerHTML = DURACOES.map(d => `
+    <button type="button" class="card" data-duracao="${esc(d.id)}" aria-pressed="false">
+      ${d.destaque ? '<span class="selo">Mais escolhido</span>' : ''}
+      <span class="faixa">${esc(d.faixa)}</span>
+      <h3>${esc(d.nome)}</h3>
+      <p class="desc">${esc(d.desc)}</p>
+      <p class="preco">${d.preco > 0 ? '+ ' + fmt(d.preco) : 'sem acréscimo'}</p>
+    </button>`).join('');
+
+  /* ---------- etapa 3 ---------- */
+  $('#listaEstilos').innerHTML = ESTILOS.map(s => `
+    <button type="button" class="card" data-estilo="${esc(s.id)}" aria-pressed="false">
+      <h3>${esc(s.nome)}</h3>
+      <p class="desc">${esc(s.desc)}</p>
+      <p class="inclui">${esc(s.inclui || '')}</p>
+      <p class="preco">${s.preco > 0 ? '+ ' + fmt(s.preco) : 'sem acréscimo'}</p>
+      <span class="btn-exemplo" data-exemplo="${esc(s.id)}" role="button" tabindex="0">Ver exemplo</span>
+    </button>`).join('');
+
+  /* ---------- etapa 4 ---------- */
+  const GRUPOS = [
+    { id: 'antes',    titulo: 'Antes do evento' },
+    { id: 'durante',  titulo: 'Durante o evento' },
+    { id: 'depois',   titulo: 'Depois do evento' }
+  ];
+  $('#listaExtras').innerHTML = GRUPOS.map(g => {
+    const itens = EXTRAS.filter(x => x.grupo === g.id);
+    if (!itens.length) return '';
+    return `<h3 class="grupo-titulo">${esc(g.titulo)}</h3>
+      <div class="grid grid-2" role="group" aria-label="${esc(g.titulo)}">
+      ${itens.map(x => `
+        <div class="check-card" role="checkbox" aria-checked="false" tabindex="0" data-extra="${esc(x.id)}">
+          <span class="box">${check}</span>
+          <span>
+            <h4>${esc(x.nome)}${x.sobConsulta ? ' <em class="info" title="Depende de avaliação técnica da equipe">i</em>' : ''}</h4>
+            <span class="desc">${esc(x.desc)}</span>
+          </span>
+          <span class="valor">${fmtCampo(x.preco)}</span>
+        </div>`).join('')}
+      </div>`;
+  }).join('');
+
+  /* ---------- etapa 5 ---------- */
+  $('#listaEntregas').innerHTML = ENTREGAS.map(e => `
+    <div class="check-card" role="checkbox" aria-checked="false" tabindex="0" data-entrega="${esc(e.id)}">
+      <span class="box">${check}</span>
+      <span>
+        <h4>${esc(e.nome)}</h4>
+        <span class="desc">${esc(e.desc)}</span>
+      </span>
+      <span class="valor">${fmtCampo(e.preco)}</span>
+    </div>`).join('');
+
+  /* ---------- progresso ---------- */
+  const ETAPAS = ['Momento', 'Duração', 'Estilo', 'Detalhes', 'Entrega', 'Resumo'];
+  $('#progresso').innerHTML = ETAPAS.map((n, i) => `
+    <li><button type="button" data-etapa-btn="${i + 1}" aria-current="false">
+      <span class="num">${i + 1}</span><span class="rotulo">${n}</span>
+    </button></li>`).join('');
+
+  /* ---------- cálculo ---------- */
+  function calcular() {
+    const ev = achar(EVENTOS, estado.evento);
+    const du = achar(DURACOES, estado.duracao);
+    const es = achar(ESTILOS, estado.estilo);
+
+    const base = ev ? ev.base : 0;
+    const vDur = du ? du.preco : 0;
+    const vEst = es ? es.preco : 0;
+    const selExtras = estado.extras.map(id => achar(EXTRAS, id)).filter(Boolean);
+    const vExtras = selExtras.reduce((t, x) => t + (Number(x.preco) || 0), 0);
+    const selEntregas = estado.entregas.map(id => achar(ENTREGAS, id)).filter(Boolean);
+    const vEntregas = selEntregas.reduce((t, x) => t + (Number(x.preco) || 0), 0); // incluídos custam 0
+
+    const bruto = base + vDur + vEst + vExtras + vEntregas;
+    const descPct = Math.max(0, Math.min(100, Number(CFG.desconto && CFG.desconto.percentual) || 0));
+    const desconto = Math.round(bruto * descPct / 100);
+    const total = Math.max(0, bruto - desconto);
+
+    return { ev, du, es, selExtras, selEntregas, base, vDur, vEst, vExtras, vEntregas, bruto, descPct, desconto, total };
+  }
+
+  const temSobConsulta = () => estado.extras
+    .map(id => achar(EXTRAS, id)).filter(Boolean).some(x => x.sobConsulta);
+
+  /* ---------- barra ---------- */
+  function pintarBarra() {
+    const c = calcular();
+    $('#barraValor').innerHTML = fmt(c.total) +
+      (estado.etapa === 6 ? '' : '<small>estimativa</small>');
+    $('#barraRot').textContent = estado.etapa === 6 ? 'Valor estimado' : 'Estimativa parcial';
+    const btn = $('#btnBarra');
+    btn.textContent = estado.etapa === 6 ? 'Solicitar orçamento' : 'Continuar';
+    $('#btnBarraVoltar').style.display = estado.etapa > 1 ? 'inline-flex' : 'none';
+    // bloqueio de avanço sem escolha obrigatória
+    let pronto = true;
+    if (estado.etapa === 1) pronto = !!estado.evento;
+    if (estado.etapa === 2) pronto = !!estado.duracao;
+    if (estado.etapa === 3) pronto = !!estado.estilo;
+    btn.disabled = !pronto && estado.etapa < 6;
+  }
+
+  /* ---------- estado visual ---------- */
+  function pintarSelecoes() {
+    $$('[data-evento]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.evento === estado.evento)));
+    $$('[data-duracao]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.duracao === estado.duracao)));
+    $$('[data-estilo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.estilo === estado.estilo)));
+    $$('[data-extra]').forEach(b => {
+      b.setAttribute('aria-checked', String(estado.extras.includes(b.dataset.extra)));
+    });
+    $$('[data-entrega]').forEach(b => {
+      b.setAttribute('aria-checked', String(estado.entregas.includes(b.dataset.entrega)));
+    });
+    bloquearConflitos();
+  }
+
+  /* extras equivalentes ficam esmaecidos: clicar troca a escolha em vez de bloquear */
+  function bloquearConflitos() {
+    const marcados = new Set(estado.extras);
+    $$('[data-extra]').forEach(b => {
+      const item = achar(EXTRAS, b.dataset.extra);
+      if (!item) return;
+      const idConflitante = (item.conflita || []).find(id => marcados.has(id));
+      const conflitoMarcado = !!idConflitante && !marcados.has(item.id);
+      b.classList.toggle('conflitante', conflitoMarcado);
+      b.title = conflitoMarcado
+        ? 'Substitui "' + ((achar(EXTRAS, idConflitante) || {}).nome || '') + '" se você marcar'
+        : '';
+    });
+  }
+
+  /* ---------- etapas ---------- */
+  function irPara(n) {
+    n = Math.max(1, Math.min(6, n));
+    estado.etapa = n;
+    $$('.etapa').forEach(s => s.classList.toggle('ativa', Number(s.dataset.etapa) === n));
+    $$('#progresso button').forEach(b => {
+      const num = Number(b.dataset.etapaBtn);
+      b.setAttribute('aria-current', num === n ? 'step' : 'false');
+      b.classList.toggle('feito', num < n);
+      b.disabled = num > n && !podeIr(num);
+    });
+    if (n === 6) pintarResumo();
+    pintarBarra();
+    salvar();
+    const alvo = $('.progresso');
+    if (alvo && alvo.getBoundingClientRect().top < 0) alvo.scrollIntoView({ block: 'start' });
+    else window.scrollTo({ top: Math.max(0, $('.hero').offsetHeight - 20), behavior: 'smooth' });
+  }
+
+  function podeIr(n) {
+    if (n <= 1) return true;
+    if (n <= 2) return !!estado.evento;
+    if (n <= 3) return !!estado.evento && !!estado.duracao;
+    if (n <= 4) return !!estado.evento && !!estado.duracao && !!estado.estilo;
+    if (n <= 5) return !!estado.evento && !!estado.duracao && !!estado.estilo;
+    return !!estado.evento && !!estado.duracao && !!estado.estilo;
+  }
+
+  /* ---------- resumo ---------- */
+  function pintarResumo() {
+    const c = calcular();
+    const nomeEvento = c.ev ? c.ev.nome : '—';
+    $('#resumoTitulo').textContent = c.ev ? c.ev.nome + (c.du ? ' · ' + c.du.faixa : '') : 'Seu filme';
+
+    const linhas = [
+      { rot: 'Momento', val: c.ev ? esc(c.ev.nome) : '<em>não escolhido</em>', etapa: 1 },
+      { rot: 'Duração', val: c.du ? esc(c.du.nome) + ' <em>· ' + esc(c.du.faixa) + '</em>' : '<em>não escolhido</em>', etapa: 2 },
+      { rot: 'Estilo', val: c.es ? esc(c.es.nome) : '<em>não escolhido</em>', etapa: 3 },
+      {
+        rot: 'Adicionais',
+        val: c.selExtras.length ? c.selExtras.map(x => esc(x.nome)).join(' · ') : '<em>nenhum</em>',
+        etapa: 4
+      },
+      {
+        rot: 'Entrega',
+        val: c.selEntregas.length ? c.selEntregas.map(x => esc(x.nome)).join(' · ') : '<em>padrão</em>',
+        etapa: 5
+      }
+    ];
+
+    $('#resumoLinhas').innerHTML = linhas.map(l => `
+      <div class="linha">
+        <span class="rot">${l.rot}</span>
+        <span class="val">${l.val}</span>
+        <button class="editar" type="button" data-ir="${l.etapa}">editar</button>
+      </div>`).join('');
+
+    const totais = [];
+    totais.push(['Base do evento', c.base]);
+    if (c.vDur) totais.push(['Duração do filme', c.vDur]);
+    if (c.vEst) totais.push(['Estilo de edição', c.vEst]);
+    if (c.vExtras) totais.push(['Adicionais', c.vExtras]);
+    if (c.vEntregas) totais.push(['Entrega', c.vEntregas]);
+    if (c.desconto) totais.push([(CFG.desconto.rotulo || 'Desconto') + ' (' + c.descPct + '%)', -c.desconto]);
+
+    $('#resumoTotais').innerHTML = totais.map(([r, v]) => `
+      <div class="t-linha"><span>${esc(r)}</span><strong>${v < 0 ? '− ' + fmt(Math.abs(v)) : fmt(v)}</strong></div>
+    `).join('') + `
+      <div class="t-final"><span>Valor estimado</span><strong>${fmt(c.total)}</strong></div>
+      ${temSobConsulta() ? '<p class="obs">' + esc(CFG.marca.avisoTecnico) + '</p>' : ''}
+      <p class="obs">${esc(CFG.pagamento || '')}</p>
+      <p class="obs">Orçamento estimado, sem compromisso. A confirmação depende da data e da agenda da equipe.</p>`;
+
+    $('#dicaResumo').textContent = temSobConsulta()
+      ? 'Há itens que dependem de confirmação da equipe.'
+      : '';
+  }
+
+  /* ---------- persistência ---------- */
+  function salvar() {
+    try { localStorage.setItem(KEY, JSON.stringify(estado)); } catch (e) {}
+  }
+  function carregar() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      const s = JSON.parse(raw);
+      if (!s || !s.evento) return null;
+      return s;
+    } catch (e) { return null; }
+  }
+  function aplicar(s) {
+    estado.evento = s.evento || null;
+    estado.duracao = s.duracao || null;
+    estado.estilo = s.estilo || null;
+    estado.extras = Array.isArray(s.extras) ? s.extras.filter(id => achar(EXTRAS, id)) : [];
+    const entregasOk = Array.isArray(s.entregas) ? s.entregas.filter(id => achar(ENTREGAS, id)) : [];
+    estado.entregas = entregasOk.length ? entregasOk : ENTREGAS.filter(e => e.incluido).map(e => e.id);
+    estado.etapa = Number(s.etapa) || 1;
+  }
+  function reiniciar() {
+    estado.evento = null; estado.duracao = null; estado.estilo = null;
+    estado.extras = [];
+    estado.entregas = ENTREGAS.filter(e => e.incluido).map(e => e.id);
+    estado.etapa = 1;
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    pintarSelecoes(); irPara(1);
+  }
+
+  /* link compartilhável */
+  function codificar() {
+    const s = { e: estado.evento, d: estado.duracao, s: estado.estilo, x: estado.extras, t: estado.entregas };
+    return btoa(unescape(encodeURIComponent(JSON.stringify(s)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodificar(str) {
+    try {
+      const b = str.replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(decodeURIComponent(escape(atob(b))));
+    } catch (e) { return null; }
+  }
+
+  /* ---------- interação ---------- */
+  document.addEventListener('click', ev => {
+    const t = ev.target;
+
+    const btnIr = t.closest('[data-ir]');
+    if (btnIr) { irPara(Number(btnIr.dataset.ir)); return; }
+
+    const btnEtapa = t.closest('[data-etapa-btn]');
+    if (btnEtapa && !btnEtapa.disabled) { irPara(Number(btnEtapa.dataset.etapaBtn)); return; }
+
+    const evCard = t.closest('[data-evento]');
+    if (evCard) {
+      estado.evento = evCard.dataset.evento;
+      pintarSelecoes(); salvar(); pintarBarra();
+      setTimeout(() => irPara(2), 180);
+      return;
+    }
+
+    const duCard = t.closest('[data-duracao]');
+    if (duCard) {
+      estado.duracao = duCard.dataset.duracao;
+      pintarSelecoes(); salvar(); pintarBarra();
+      setTimeout(() => irPara(3), 180);
+      return;
+    }
+
+    const exBtn = t.closest('[data-exemplo]');
+    if (exBtn) { ev.stopPropagation(); abrirExemplo(exBtn.dataset.exemplo); return; }
+
+    const esCard = t.closest('[data-estilo]');
+    if (esCard) {
+      estado.estilo = esCard.dataset.estilo;
+      pintarSelecoes(); salvar(); pintarBarra(); pintarResumo();
+      return;
+    }
+
+    const extra = t.closest('[data-extra]');
+    if (extra) { alternarExtra(extra.dataset.extra); return; }
+
+    const entrega = t.closest('[data-entrega]');
+    if (entrega) { alternarEntrega(entrega.dataset.entrega); return; }
+
+    if (t.closest('#btnBarra')) {
+      if (estado.etapa === 6) {
+        $('#formContato').requestSubmit();
+      } else {
+        irPara(estado.etapa + 1);
+      }
+      return;
+    }
+    if (t.closest('#btnBarraVoltar')) { irPara(estado.etapa - 1); return; }
+    if (t.closest('#btnRecuperar')) {
+      $('#recuperar').hidden = true;
+      return;
+    }
+    if (t.closest('#btnRecomecar')) { $('#recuperar').hidden = true; reiniciar(); return; }
+    if (t.closest('#btnReiniciar')) { reiniciar(); return; }
+    if (t.closest('#btnLink')) { copiarLink(t.closest('#btnLink')); return; }
+    if (t.closest('#modalFechar') || t.id === 'modal') { fecharModal(); return; }
+  });
+
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') fecharModal();
+    if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.matches('[role="checkbox"], [data-exemplo]')) {
+      ev.preventDefault(); ev.target.click();
+    }
+  });
+
+  function alternarExtra(id) {
+    const item = achar(EXTRAS, id);
+    if (!item) return;
+    const marcados = new Set(estado.extras);
+    if (marcados.has(id)) {
+      estado.extras = estado.extras.filter(x => x !== id);
+    } else {
+      // remove os conflitantes antes de marcar
+      const conflitos = (item.conflita || []).filter(cid => marcados.has(cid));
+      if (conflitos.length) {
+        estado.extras = estado.extras.filter(x => !conflitos.includes(x));
+        const nome = (achar(EXTRAS, conflitos[0]) || {}).nome || 'item equivalente';
+        aviso('“' + nome + '” foi substituído por “' + item.nome + '”.');
+      }
+      estado.extras.push(id);
+    }
+    pintarSelecoes(); salvar(); pintarBarra(); pintarResumo();
+  }
+
+  function alternarEntrega(id) {
+    const item = achar(ENTREGAS, id);
+    if (!item) return;
+    if (item.incluido) return; // entrega padrão não pode ser removida
+    estado.entregas = estado.entregas.includes(id)
+      ? estado.entregas.filter(x => x !== id)
+      : estado.entregas.concat(id);
+    pintarSelecoes(); salvar(); pintarBarra(); pintarResumo();
+  }
+
+  /* ---------- modal de exemplo ---------- */
+  function abrirExemplo(id) {
+    const s = achar(ESTILOS, id);
+    if (!s) return;
+    $('#modalTitulo').textContent = s.nome;
+    const yt = (s.exemploYouTube || '').trim();
+    $('#modalBody').innerHTML = yt
+      ? `<div class="video"><iframe src="https://www.youtube.com/embed/${esc(yt)}?rel=0" title="Exemplo de ${esc(s.nome)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+         <p style="margin-top:14px">${esc(s.desc)}</p>
+         <p style="margin-top:10px; font-size:12px">
+           <a href="https://www.youtube.com/watch?v=${esc(yt)}" target="_blank" rel="noopener" style="color:var(--accent)">Assistir no YouTube ↗</a>
+         </p>`
+      : `<p>O exemplo em vídeo de <strong>${esc(s.nome)}</strong> ainda está sendo selecionado.</p>
+         <p style="margin-top:10px">Enquanto isso, os filmes do portfólio mostram bem a diferença entre os estilos.</p>
+         <p style="margin-top:18px"><a class="btn ghost" href="${esc(CFG.marca.site || '#')}" target="_blank" rel="noopener">Ver o portfólio</a></p>`;
+    $('#modal').classList.add('aberto');
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharModal() {
+    const m = $('#modal');
+    if (!m.classList.contains('aberto')) return;
+    m.classList.remove('aberto');
+    $('#modalBody').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  /* ---------- avisos ---------- */
+  function aviso(txt) {
+    let el = $('#toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'toast';
+      el.style.cssText = 'position:fixed;left:50%;bottom:120px;transform:translateX(-50%);z-index:95;' +
+        'background:var(--card);border:1px solid var(--accent);color:var(--text);padding:12px 18px;' +
+        'border-radius:999px;font-size:12.5px;box-shadow:var(--shadow-sm);max-width:90vw;text-align:center;' +
+        'opacity:0;transition:opacity .25s, transform .25s;pointer-events:none;';
+      document.body.appendChild(el);
+    }
+    el.textContent = txt;
+    requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateX(-50%) translateY(-6px)'; });
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(-50%)'; }, 3200);
+  }
+
+  /* ---------- cópia do link ---------- */
+  function copiarLink(btn) {
+    const url = location.origin + location.pathname + '?s=' + codificar() + '#resumo';
+    const done = () => {
+      const antigo = btn.textContent;
+      btn.textContent = 'Link copiado';
+      setTimeout(() => { btn.textContent = antigo; }, 2200);
+      aviso('Link copiado. Quem abrir vê a mesma seleção.');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, () => { prompt('Copie o link:', url); });
+    } else {
+      prompt('Copie o link:', url);
+    }
+  }
+
+  /* ---------- formulário → WhatsApp ---------- */
+  function protocoloWhats(valor) {
+    const only = String(valor || '').replace(/\D/g, '');
+    if (only.length >= 12) return only;
+    if (only.length === 11) return '55' + only;
+    if (only.length === 10) return '55' + only;
+    return '';
+  }
+
+  $('#formContato').addEventListener('submit', ev => {
+    ev.preventDefault();
+    const nome = $('#nome'), whats = $('#whats');
+    let ok = true;
+    [nome, whats].forEach(inp => {
+      const vazio = !inp.value.trim();
+      inp.closest('.campo').classList.toggle('erro', vazio);
+      if (vazio) ok = false;
+    });
+    if (!ok) { aviso('Preencha seu nome e WhatsApp para continuar.'); return; }
+    if (!protocoloWhats(whats.value)) {
+      whats.closest('.campo').classList.add('erro');
+      aviso('Confira o número do WhatsApp com DDD.');
+      return;
+    }
+
+    const c = calcular();
+    const linhas = [
+      'Olá! Montei meu filme no site e gostaria de solicitar o orçamento.',
+      '',
+      '• Momento: ' + (c.ev ? c.ev.nome : '—'),
+      '• Duração: ' + (c.du ? c.du.nome + ' (' + c.du.faixa + ')' : '—'),
+      '• Estilo: ' + (c.es ? c.es.nome : '—'),
+      '• Adicionais: ' + (c.selExtras.length ? c.selExtras.map(x => x.nome).join(', ') : 'nenhum'),
+      '• Entrega: ' + c.selEntregas.map(x => x.nome).join(', '),
+      '• Estimativa: ' + fmt(c.total),
+      '',
+      'Nome: ' + nome.value.trim(),
+      'WhatsApp: ' + whats.value.trim(),
+      $('#data').value ? 'Data do evento: ' + $('#data').value : '',
+      $('#local').value.trim() ? 'Local: ' + $('#local').value.trim() : '',
+      $('#obs').value.trim() ? 'Observações: ' + $('#obs').value.trim() : ''
+    ].filter(Boolean);
+
+    const numero = CFG.marca.whatsapp || '5592999870427';
+    window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(linhas.join('\n')), '_blank', 'noopener');
+    aviso('Abrindo o WhatsApp com sua seleção.');
+  });
+
+  $('#linkWhats').addEventListener('click', ev => {
+    ev.preventDefault();
+    window.open('https://wa.me/' + (CFG.marca.whatsapp || '5592999870427'), '_blank', 'noopener');
+  });
+
+  /* ---------- inicialização ---------- */
+  const params = new URLSearchParams(location.search);
+  const comp = params.get('s');
+  const doLink = comp ? decodificar(comp) : null;
+
+  if (doLink) {
+    aplicar({
+      evento: doLink.e, duracao: doLink.d, estilo: doLink.s,
+      extras: doLink.x, entregas: doLink.t, etapa: 6
+    });
+    pintarSelecoes(); irPara(6);
+  } else {
+    const salvo = carregar();
+    if (salvo) {
+      const etapaSalva = Math.min(6, Math.max(1, Number(salvo.etapa) || 1));
+      aplicar(salvo);
+      pintarSelecoes();
+      irPara(etapaSalva);
+      $('#recuperar').hidden = false;
+    } else {
+      irPara(1);
+    }
+  }
+
+  if (!CFG.desconto || !CFG.desconto.percentual) { /* sem selo de desconto */ }
+})();
+</script>
+</body>
+</html>
