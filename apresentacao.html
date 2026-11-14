@@ -8,7 +8,7 @@
 <meta property="og:title" content="Apresentação · Catálogo de Casamento — Dr. Filmes">
 <meta property="og:description" content="17 experiências de filme e memória para o seu casamento. Amamos memórias.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://i.ytimg.com/vi/HG2aAqjltCQ/maxresdefault.jpg">
+<meta property="og:image" content="https://pauleanderson-dr-filmes.netlify.app/assets/media/img/casal-noite.webp">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23080808'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23C7A76C' text-anchor='middle'%3EPD%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,6 +70,11 @@ nav{
   border-bottom:1px solid var(--hairline);
 }
 @media(max-width:720px){nav{padding:14px 20px}}
+@media(max-width:480px){
+  .brand-name{font-size:.95rem}
+  .brand-name small{display:none}
+  .nav-cta{padding:8px 12px;font-size:.6rem;letter-spacing:.1em}
+}
 .brand{display:flex;align-items:center;gap:14px}
 .brand-mono{
   width:38px;height:38px;border:1px solid var(--champagne);border-radius:50%;
@@ -112,6 +117,59 @@ nav{
 /* ---------- COVER ---------- */
 .cover{text-align:center;border-bottom:none}
 .cover .wrap{max-width:900px}
+
+/* capa com filme ao fundo */
+.cover-media{padding:0;overflow:hidden}
+.cover-media .wrap{position:relative;z-index:2;max-width:900px}
+.cover-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.cover-veil{
+  position:absolute;inset:0;z-index:1;
+  background:
+    radial-gradient(ellipse at 50% 42%,rgba(8,8,8,.22),rgba(8,8,8,.8) 84%),
+    linear-gradient(180deg,rgba(8,8,8,.72),rgba(8,8,8,.28) 42%,rgba(8,8,8,.93));
+}
+.cover-media h1{text-shadow:0 18px 50px rgba(0,0,0,.55)}
+
+/* ---------- GALERIA ---------- */
+.galeria .wrap{max-width:1180px}
+.galeria h2{
+  font-family:var(--serif);font-weight:300;font-size:clamp(1.9rem,4vw,3rem);
+  line-height:1.1;color:var(--white);text-wrap:balance;
+}
+.galeria .lede{color:var(--ivory-dim);margin-top:18px;max-width:56ch;line-height:1.85}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:dense;gap:12px;margin-top:38px}
+.tile{
+  position:relative;overflow:hidden;border-radius:var(--radius-sm);
+  border:1px solid var(--hairline);background:var(--opera-elevated);aspect-ratio:3/4;
+}
+.tile img,.tile video{width:100%;height:100%;object-fit:cover;display:block}
+.tile img{transition:transform .9s var(--transition-normal)}
+.tile:hover img{transform:scale(1.05)}
+.tile.wide{grid-column:span 2;aspect-ratio:16/10}
+.tile.tag::after{
+  content:attr(data-tag);position:absolute;left:0;bottom:0;
+  padding:8px 14px;font-size:.55rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ivory);background:linear-gradient(0deg,rgba(8,8,8,.88),transparent);
+  width:100%;pointer-events:none;
+}
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .tile.wide{grid-column:span 2}
+}
+
+/* ---------- MÍDIA DO ITEM ---------- */
+.item-media{
+  position:relative;border:1px solid var(--hairline);border-radius:var(--radius-md);
+  overflow:hidden;aspect-ratio:4/5;max-height:calc(100svh - 210px);
+  box-shadow:var(--shadow-medium);background:var(--opera-elevated);
+}
+.item-media img{width:100%;height:100%;object-fit:cover;display:block}
+.item-media figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:26px 20px 14px;
+  font-size:.55rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ivory-dim);
+  background:linear-gradient(0deg,rgba(8,8,8,.85),transparent);
+}
+@media(max-width:900px){.item-media{aspect-ratio:4/3}}
 .cover-card{
   border:1px solid var(--hairline);border-radius:var(--radius-md);
   padding:clamp(36px,6vw,72px) clamp(24px,5vw,64px);
@@ -122,11 +180,11 @@ nav{
 }
 .cover h1{
   font-family:var(--serif);font-weight:300;font-style:italic;
-  font-size:clamp(2.6rem,7vw,5.4rem);line-height:1.05;color:var(--white);
+  font-size:clamp(2rem,7vw,5.4rem);line-height:1.05;color:var(--white);
   margin:10px 0 0;text-wrap:balance;
 }
 .cover .lede{
-  max-width:560px;margin:26px auto 0;color:var(--ivory-dim);
+  max-width:min(560px,100%);margin:26px auto 0;color:var(--ivory-dim);
   font-size:clamp(.95rem,1.1vw,1.05rem);line-height:1.85;
 }
 .cover-rule{width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--champagne),transparent);margin:32px auto}
@@ -144,8 +202,8 @@ nav{
 
 /* ---------- ITEM SLIDE ---------- */
 .item .wrap{
-  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  gap:clamp(32px,6vw,88px);align-items:center;
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:clamp(28px,5vw,72px);align-items:center;
 }
 @media(max-width:900px){
   .item .wrap{grid-template-columns:1fr;gap:32px}
@@ -232,8 +290,9 @@ nav{
 
 /* ---------- DECK UI ---------- */
 .rail{
-  position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:55;
-  display:flex;flex-direction:column;gap:9px;
+  position:fixed;right:26px;left:auto;top:50%;transform:translateY(-50%);z-index:55;
+  width:auto;padding:0;border:none;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
 }
 @media(max-width:1100px){.rail{display:none}}
 .rail button{
@@ -296,19 +355,47 @@ nav{
 
 <main id="deck" aria-label="Apresentação do catálogo de casamento">
 
-  <section class="slide cover" id="slide-cover">
+  <section class="slide cover cover-media" id="slide-cover">
+    <video class="cover-video" id="coverVideo" autoplay muted loop playsinline preload="auto"
+           poster="assets/media/video/capa.jpg" aria-hidden="true" tabindex="-1">
+      <source src="assets/media/video/capa.mp4" type="video/mp4">
+    </video>
+    <div class="cover-veil"></div>
     <div class="wrap">
-      <div class="cover-card">
-        <p class="eyebrow">Pauleanderson · Dr. Filmes</p>
-        <h1>Amamos memórias.</h1>
-        <p class="lede">Catálogo de casamento. Filmes, documentários e peças de memória para o dia que você vai querer reviver todos os anos.</p>
-        <div class="cover-rule"></div>
-        <div class="cover-meta">
-          <div><b>17</b>experiências</div>
-          <div><b>08</b>serviços de filme</div>
-          <div><b>09</b>peças e produtos</div>
-        </div>
-        <p class="cover-hint"><i></i>Role ou use as setas para navegar</p>
+      <p class="eyebrow">Pauleanderson · Dr. Filmes</p>
+      <h1>Amamos memórias.</h1>
+      <p class="lede">Catálogo de casamento. Filmes, documentários e peças de memória para o dia que você vai querer reviver todos os anos.</p>
+      <div class="cover-rule"></div>
+      <div class="cover-meta">
+        <div><b>17</b>experiências</div>
+        <div><b>08</b>serviços de filme</div>
+        <div><b>09</b>peças e produtos</div>
+      </div>
+      <p class="cover-hint"><i></i>Role ou use as setas para navegar</p>
+    </div>
+  </section>
+
+  <section class="slide galeria" id="slide-galeria">
+    <div class="wrap">
+      <p class="eyebrow anim">Registros</p>
+      <h2 class="anim anim-1">Do detalhe ao abraço.</h2>
+      <p class="lede anim anim-2">Imagens e filmes de casamentos que realizamos em Manaus e no Amazonas. Toque nos filmes para assistir.</p>
+      <div class="grid anim anim-2">
+        <figure class="tile tag" data-tag="Detalhes"><img src="assets/media/img/noiva-candeias.webp" alt="Noiva sob as lâmpadas do salão, antes da cerimônia" loading="lazy" decoding="async"></figure>
+        <figure class="tile"><img src="assets/media/img/terno-detalhe.webp" alt="Detalhe do terno do noivo em preto e branco" loading="lazy" decoding="async"></figure>
+        <figure class="tile tag" data-tag="Pré-wedding">
+          <video src="assets/media/video/pre-wedding.mp4" poster="assets/media/video/pre-wedding.jpg"
+                 muted loop playsinline autoplay preload="none" controls></video>
+        </figure>
+        <figure class="tile"><img src="assets/media/img/noivo-arco.webp" alt="Noivo aguardando no arco de flores" loading="lazy" decoding="async"></figure>
+        <figure class="tile"><img src="assets/media/img/cerimonia-pergolado.webp" alt="Cerimônia realizada sob o pergolado" loading="lazy" decoding="async"></figure>
+        <figure class="tile"><img src="assets/media/img/mesa-posta.webp" alt="Mesa posta com menu e louça" loading="lazy" decoding="async"></figure>
+        <figure class="tile"><img src="assets/media/img/bolo-detalhe.webp" alt="Bolo de casamento de três andares" loading="lazy" decoding="async"></figure>
+        <figure class="tile tag wide" data-tag="Cerimônia">
+          <video src="assets/media/video/cerimonia.mp4" poster="assets/media/video/cerimonia.jpg"
+                 muted loop playsinline preload="none" controls></video>
+        </figure>
+        <figure class="tile"><img src="assets/media/img/noivo-retrato.webp" alt="Retrato do noivo de terno azul" loading="lazy" decoding="async"></figure>
       </div>
     </div>
   </section>
@@ -429,19 +516,31 @@ var waLink = function(title){
   );
 };
 
-function slideHTML(it){
+var PHOTOS = [
+  "casal-entrada.webp", "retrato-noiva-1.webp", "cerimonia-casal.webp", "preparacao.webp",
+  "veu.webp", "cerimonia-arco.webp", "drone.jpg", "convidados.webp", "cadeira.webp",
+  "retrato-noiva-2.webp", "mesa-bolo.webp", "buque.webp", "noiva-buque.webp",
+  "convite.webp", "casal-noite.webp", "alianca.webp", "docinhos.webp"
+];
+
+function slideHTML(it, i){
+  var foto = PHOTOS[i] || PHOTOS[0];
   return '<section class="slide item" id="item-' + it.n + '">'
     + '<div class="wrap">'
-    +   '<div class="left">'
+    +   '<figure class="item-media anim">'
+    +     '<img src="assets/media/img/' + foto + '" alt="' + esc(it.title) + ' — registro de casamento Pauleanderson Dr. Filmes" loading="lazy" decoding="async">'
+    +     '<figcaption>' + esc(it.kind) + ' · ' + esc(it.n) + '</figcaption>'
+    +   '</figure>'
+    +   '<div class="right">'
     +     '<p class="kicker anim"><span class="num">' + esc(it.n) + '</span><span>' + esc(it.kind) + '</span><span class="bar"></span></p>'
     +     '<h2 class="anim anim-1">' + esc(it.title) + '</h2>'
     +     '<p class="lede anim anim-2">' + esc(it.desc) + '</p>'
-    +   '</div>'
-    +   '<div class="detail anim anim-2">'
-    +     '<p class="detail-label">O que está incluído</p>'
-    +     '<ul>' + it.inc.map(function(b){ return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>'
-    +     '<p class="price"><span>Investimento</span><strong>' + esc(it.price) + '</strong></p>'
-    +     '<a class="btn btn-ghost" href="' + waLink(it.title) + '" target="_blank" rel="noopener" aria-label="Falar sobre ' + esc(it.title) + ' no WhatsApp">Falar sobre este item</a>'
+    +     '<div class="detail anim anim-2">'
+    +       '<p class="detail-label">O que está incluído</p>'
+    +       '<ul>' + it.inc.map(function(b){ return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>'
+    +       '<p class="price"><span>Investimento</span><strong>' + esc(it.price) + '</strong></p>'
+    +       '<a class="btn btn-ghost" href="' + waLink(it.title) + '" target="_blank" rel="noopener" aria-label="Falar sobre ' + esc(it.title) + ' no WhatsApp">Falar sobre este item</a>'
+    +     '</div>'
     +   '</div>'
     + '</div>'
     + '</section>';
@@ -487,26 +586,18 @@ function setActive(i){
   slides.forEach(function(s, k){ s.classList.toggle('is-active', k === i); });
 }
 
-if ('IntersectionObserver' in window) {
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting && e.intersectionRatio > 0.5) {
-        setActive(slides.indexOf(e.target));
-      }
-    });
-  }, {root: deck, threshold: [0.5, 0.75]});
-  slides.forEach(function(s){ io.observe(s); });
-} else {
-  var onScroll = function(){
-    var closest = 0, min = Infinity;
-    slides.forEach(function(s, k){
-      var d = Math.abs(s.offsetTop - deck.scrollTop);
-      if (d < min) { min = d; closest = k; }
-    });
-    setActive(closest);
-  };
-  deck.addEventListener('scroll', onScroll, {passive: true});
-}
+// o slide ativo é o que está mais próximo do topo da janela de rolagem
+// (funciona também em seções mais altas que a tela, como a galeria)
+var onScroll = function(){
+  var closest = 0, min = Infinity;
+  slides.forEach(function(s, k){
+    var d = Math.abs(s.offsetTop - deck.scrollTop);
+    if (d < min) { min = d; closest = k; }
+  });
+  if (closest !== index) setActive(closest);
+};
+deck.addEventListener('scroll', onScroll, {passive: true});
+onScroll();
 
 prevBtn.addEventListener('click', function(){ go(index - 1); });
 nextBtn.addEventListener('click', function(){ go(index + 1); });
@@ -526,6 +617,33 @@ document.addEventListener('keydown', function(e){
 });
 
 setActive(0);
+
+// ---------- vídeos: toca só quando visível, respeita "menos movimento" ----------
+var videos = Array.prototype.slice.call(document.querySelectorAll('video'));
+var semMovimento = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+videos.forEach(function(v){
+  if (semMovimento) {
+    v.removeAttribute('autoplay');
+    v.autoplay = false;
+    try { v.pause(); } catch (e) {}
+  }
+});
+
+if (!semMovimento && 'IntersectionObserver' in window) {
+  var vio = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) {
+        var p = v.play();
+        if (p && p.catch) p.catch(function(){});
+      } else {
+        v.pause();
+      }
+    });
+  }, {threshold: 0.25});
+  videos.forEach(function(v){ vio.observe(v); });
+}
 })();
 </script>
 </body>
