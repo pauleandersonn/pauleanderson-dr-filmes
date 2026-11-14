@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apresentação · Catálogo de Casamento — Pauleanderson Dr. Filmes</title>
+<meta name="description" content="Apresentação do catálogo de casamento da Pauleanderson Dr. Filmes: filmes, documentário, teaser, making of, drone, álbum, quadro de assinaturas e lembranças. Amamos memórias.">
+<meta property="og:title" content="Apresentação · Catálogo de Casamento — Dr. Filmes">
+<meta property="og:description" content="17 experiências de filme e memória para o seu casamento. Amamos memórias.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://i.ytimg.com/vi/HG2aAqjltCQ/maxresdefault.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23080808'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23C7A76C' text-anchor='middle'%3EPD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --opera:#080808;
+  --opera-elevated:#0f0f0f;
+  --champagne:#C7A76C;
+  --champagne-dim:rgba(199,167,108,.6);
+  --champagne-bright:#E8D4A0;
+  --ivory:#F4F0E8;
+  --ivory-dim:rgba(244,240,232,.7);
+  --ivory-muted:rgba(244,240,232,.45);
+  --taupe:#8A7A68;
+  --white:#FAFAF7;
+  --hairline:rgba(199,167,108,.18);
+  --hairline-strong:rgba(199,167,108,.35);
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --shadow-soft:0 4px 24px rgba(0,0,0,.35);
+  --shadow-medium:0 12px 48px rgba(0,0,0,.45);
+  --radius-sm:6px;
+  --transition-fast:180ms cubic-bezier(0.2,0.8,0.2,1);
+  --transition-normal:320ms cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+body{
+  background:var(--opera);color:var(--ivory);font-family:var(--sans);
+  font-weight:300;font-size:16px;line-height:1.7;
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--champagne);outline-offset:3px}
+::selection{background:var(--champagne);color:var(--opera)}
+.skip-link{
+  position:absolute;top:-100%;left:16px;z-index:100;background:var(--champagne);color:var(--opera);
+  padding:10px 18px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
+  transition:top .3s;
+}
+.skip-link:focus{top:16px}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;
+  background-image:radial-gradient(rgba(255,255,255,.4) .5px,transparent .5px);
+  background-size:3px 3px;
+}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  background:rgba(8,8,8,.9);backdrop-filter:blur(16px) saturate(180%);
+  border-bottom:1px solid var(--hairline);
+}
+@media(max-width:720px){nav{padding:14px 20px}}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mono{
+  width:38px;height:38px;border:1px solid var(--champagne);border-radius:50%;
+  display:grid;place-items:center;font-family:var(--serif);font-size:1rem;color:var(--champagne);
+}
+.brand-name{font-family:var(--serif);font-size:1.1rem;color:var(--white);line-height:1.1}
+.brand-name small{display:block;font-family:var(--sans);font-size:.5rem;letter-spacing:.32em;text-transform:uppercase;color:var(--taupe);margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ivory);opacity:.7;transition:opacity var(--transition-fast),color var(--transition-fast)}
+.nav-links a:hover{opacity:1;color:var(--champagne)}
+.nav-links a[aria-current="page"]{opacity:1;color:var(--champagne)}
+.nav-cta{border:1px solid var(--champagne);color:var(--champagne);padding:9px 20px;border-radius:var(--radius-sm);font-weight:500}
+.nav-cta:hover{background:var(--champagne);color:var(--opera)!important}
+@media(max-width:860px){.nav-links a:not(.nav-cta){display:none}}
+
+/* ---------- DECK ---------- */
+#deck{
+  position:relative;z-index:1;
+  height:100svh;overflow-y:auto;overflow-x:hidden;
+  scroll-snap-type:y proximity;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+@media(min-width:901px){#deck{scroll-snap-type:y mandatory}}
+.slide{
+  min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;align-items:center;
+  padding:120px 0 100px;
+  position:relative;
+  border-bottom:1px solid rgba(199,167,108,.07);
+}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 32px}
+@media(max-width:720px){.wrap{padding:0 20px}}
+
+.eyebrow{
+  font-size:.6rem;font-weight:500;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--champagne);margin-bottom:18px;
+}
+
+/* ---------- COVER ---------- */
+.cover{text-align:center;border-bottom:none}
+.cover .wrap{max-width:900px}
+.cover-card{
+  border:1px solid var(--hairline);border-radius:var(--radius-md);
+  padding:clamp(36px,6vw,72px) clamp(24px,5vw,64px);
+  background:
+    radial-gradient(ellipse 100% 90% at 50% 0%,rgba(199,167,108,.07),transparent 65%),
+    var(--opera-elevated);
+  box-shadow:var(--shadow-medium);
+}
+.cover h1{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(2.6rem,7vw,5.4rem);line-height:1.05;color:var(--white);
+  margin:10px 0 0;text-wrap:balance;
+}
+.cover .lede{
+  max-width:560px;margin:26px auto 0;color:var(--ivory-dim);
+  font-size:clamp(.95rem,1.1vw,1.05rem);line-height:1.85;
+}
+.cover-rule{width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--champagne),transparent);margin:32px auto}
+.cover-meta{
+  display:flex;justify-content:center;gap:clamp(18px,4vw,44px);flex-wrap:wrap;
+  font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--taupe);
+}
+.cover-meta b{display:block;font-family:var(--serif);font-size:1.6rem;font-weight:400;letter-spacing:0;color:var(--champagne);text-transform:none;margin-bottom:4px}
+.cover-hint{
+  margin-top:40px;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ivory-muted);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.cover-hint i{display:block;width:1px;height:26px;background:linear-gradient(180deg,var(--champagne),transparent);animation:hintPulse 2.4s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ---------- ITEM SLIDE ---------- */
+.item .wrap{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(32px,6vw,88px);align-items:center;
+}
+@media(max-width:900px){
+  .item .wrap{grid-template-columns:1fr;gap:32px}
+  .item{align-items:flex-start;padding-top:104px}
+}
+.kicker{
+  display:flex;align-items:center;gap:14px;
+  font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--champagne-dim);
+  margin-bottom:22px;
+}
+.kicker .num{
+  font-family:var(--serif);font-size:.95rem;letter-spacing:.06em;color:var(--champagne);
+  border:1px solid var(--hairline-strong);border-radius:50%;
+  width:34px;height:34px;display:grid;place-items:center;
+}
+.kicker .bar{flex:1;height:1px;background:linear-gradient(90deg,var(--hairline),transparent)}
+.item h2{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.08;color:var(--white);
+  text-wrap:balance;
+}
+.item .lede{
+  margin-top:20px;color:var(--ivory-dim);line-height:1.85;
+  font-size:clamp(.95rem,1.1vw,1.05rem);max-width:44ch;
+}
+
+.detail{
+  border:1px solid var(--hairline);border-radius:var(--radius-md);
+  padding:clamp(24px,3vw,36px);
+  background:linear-gradient(160deg,rgba(255,255,255,.028),rgba(255,255,255,0));
+  box-shadow:var(--shadow-soft);
+}
+.detail-label{
+  font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--champagne);
+  margin-bottom:18px;
+}
+.detail ul{list-style:none;display:grid;gap:12px}
+.detail li{
+  position:relative;padding-left:20px;color:var(--ivory-dim);
+  font-size:.9rem;line-height:1.65;
+}
+.detail li::before{
+  content:"";position:absolute;left:0;top:.62em;width:9px;height:1px;
+  background:var(--champagne-dim);
+}
+.price{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--hairline);
+}
+.price span{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--taupe)}
+.price strong{
+  font-family:var(--serif);font-weight:400;font-size:1.3rem;color:var(--champagne-bright);
+  letter-spacing:.01em;
+}
+.detail .btn{margin-top:22px;width:100%}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  padding:15px 32px;border-radius:var(--radius-sm);
+  transition:all var(--transition-normal);cursor:pointer;border:none;
+}
+.btn-solid{background:var(--champagne);color:var(--opera)}
+.btn-solid:hover{background:var(--champagne-bright);transform:translateY(-2px);box-shadow:var(--shadow-medium)}
+.btn-ghost{background:transparent;color:var(--ivory);border:1px solid var(--hairline)}
+.btn-ghost:hover{border-color:var(--champagne);color:var(--champagne);background:rgba(199,167,108,.06);transform:translateY(-2px)}
+
+/* ---------- FINALE ---------- */
+.finale{text-align:center;border-bottom:none}
+.finale .wrap{max-width:820px}
+.finale h2{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(2.2rem,5.5vw,4.2rem);line-height:1.1;color:var(--white);text-wrap:balance;
+}
+.finale p{color:var(--ivory-dim);margin-top:22px;line-height:1.85;max-width:54ch;margin-inline:auto}
+.finale .actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.finale .sig{
+  margin-top:56px;font-family:var(--serif);font-style:italic;font-size:1.4rem;color:var(--champagne);
+}
+.finale .foot{
+  margin-top:14px;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--taupe);
+}
+
+/* ---------- DECK UI ---------- */
+.rail{
+  position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:55;
+  display:flex;flex-direction:column;gap:9px;
+}
+@media(max-width:1100px){.rail{display:none}}
+.rail button{
+  width:9px;height:9px;border-radius:50%;border:1px solid var(--hairline-strong);
+  background:transparent;cursor:pointer;padding:0;
+  transition:all var(--transition-fast);
+}
+.rail button:hover{border-color:var(--champagne);transform:scale(1.25)}
+.rail button[aria-current="true"]{background:var(--champagne);border-color:var(--champagne);box-shadow:0 0 12px rgba(199,167,108,.5)}
+
+.deck-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:55;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:16px 32px;
+  background:linear-gradient(180deg,transparent,rgba(8,8,8,.92) 55%);
+  pointer-events:none;
+}
+@media(max-width:720px){.deck-bar{padding:12px 20px}}
+.deck-bar>*{pointer-events:auto}
+.counter{
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ivory-muted);
+  font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:10px;
+}
+.counter b{color:var(--champagne);font-weight:500}
+.counter .track{width:80px;height:1px;background:rgba(244,240,232,.15);position:relative;overflow:hidden}
+.counter .track i{position:absolute;inset:0;background:var(--champagne);transform-origin:left;transform:scaleX(0);transition:transform var(--transition-normal)}
+.arrows{display:flex;gap:9px}
+.arrows button{
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--hairline);
+  color:var(--ivory);display:grid;place-items:center;font-size:1rem;
+  transition:all var(--transition-fast);background:rgba(8,8,8,.4);
+}
+.arrows button:hover:not(:disabled){border-color:var(--champagne);color:var(--champagne);background:rgba(199,167,108,.1)}
+.arrows button:disabled{opacity:.25;cursor:default}
+
+/* ---------- ACTIVE SLIDE ANIMATION ---------- */
+.slide .anim{opacity:0;transform:translateY(22px);transition:opacity .8s var(--transition-normal),transform .8s var(--transition-normal)}
+.slide.is-active .anim{opacity:1;transform:none}
+.slide.is-active .anim-1{transition-delay:80ms}
+.slide.is-active .anim-2{transition-delay:160ms}
+.slide.is-active .anim-3{transition-delay:240ms}
+</style>
+</head>
+<body>
+
+<a href="#deck" class="skip-link">Pular para o conteúdo</a>
+
+<nav aria-label="Navegação principal">
+  <a class="brand" href="index.html">
+    <span class="brand-mono" aria-hidden="true">PD</span>
+    <span class="brand-name">Pauleanderson Dr. Filmes<small>Cineasta Patrimonial</small></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Filmes</a>
+    <a href="produtos.html">Produtos</a>
+    <a href="apresentacao.html" aria-current="page">Apresentação</a>
+    <a class="nav-cta" href="https://wa.me/5592999870427?text=Ol%C3%A1%2C%20Pauleanderson%21%20Vi%20a%20apresenta%C3%A7%C3%A3o%20do%20cat%C3%A1logo%20e%20quero%20falar%20sobre%20meu%20casamento." target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</nav>
+
+<main id="deck" aria-label="Apresentação do catálogo de casamento">
+
+  <section class="slide cover" id="slide-cover">
+    <div class="wrap">
+      <div class="cover-card">
+        <p class="eyebrow">Pauleanderson · Dr. Filmes</p>
+        <h1>Amamos memórias.</h1>
+        <p class="lede">Catálogo de casamento. Filmes, documentários e peças de memória para o dia que você vai querer reviver todos os anos.</p>
+        <div class="cover-rule"></div>
+        <div class="cover-meta">
+          <div><b>17</b>experiências</div>
+          <div><b>08</b>serviços de filme</div>
+          <div><b>09</b>peças e produtos</div>
+        </div>
+        <p class="cover-hint"><i></i>Role ou use as setas para navegar</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide finale" id="slide-finale">
+    <div class="wrap">
+      <p class="eyebrow anim">Próximo passo</p>
+      <h2 class="anim anim-1">Vamos contar a história<br>do seu casamento.</h2>
+      <p class="anim anim-2">Conte a data, o local e o que você imagina para o filme. Montamos a proposta com os itens deste catálogo que fazem sentido para vocês.</p>
+      <div class="actions anim anim-3">
+        <a class="btn btn-solid" href="https://wa.me/5592999870427?text=Ol%C3%A1%2C%20Pauleanderson%21%20Vi%20a%20apresenta%C3%A7%C3%A3o%20do%20cat%C3%A1logo%20e%20quero%20falar%20sobre%20meu%20casamento." target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn btn-ghost" href="produtos.html">Ver produtos</a>
+      </div>
+      <p class="sig anim anim-3">Amamos memórias.</p>
+      <p class="foot anim anim-3">Manaus · Amazonas · (92) 99987-0427</p>
+    </div>
+  </section>
+
+</main>
+
+<nav class="rail" id="rail" aria-label="Navegação dos slides"></nav>
+
+<div class="deck-bar">
+  <div class="counter" aria-live="polite">
+    <b id="cur">01</b><span>/</span><span id="total">19</span>
+    <span class="track" aria-hidden="true"><i id="bar"></i></span>
+  </div>
+  <div class="arrows">
+    <button id="prev" aria-label="Slide anterior">‹</button>
+    <button id="next" aria-label="Próximo slide">›</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var ITEMS = [
+  {n:"01", kind:"Serviço", title:"Filmes de Casamento",
+   desc:"Uma narrativa audiovisual para reviver a emoção do grande dia.",
+   inc:["Planejamento da cobertura conforme o roteiro do casal","Registro de cerimônia, votos e celebração conforme o pacote","Edição com trilha sonora e entrega digital"],
+   price:"Pacotes sob consulta"},
+  {n:"02", kind:"Serviço", title:"Legado · Documentário",
+   desc:"A história do casal, de suas origens e das pessoas que fazem parte dela.",
+   inc:["Desenvolvimento de uma narrativa documental autoral","Entrevistas planejadas com casal e familiares","Captação do casamento e montagem do documentário"],
+   price:"R$ 7.000"},
+  {n:"03", kind:"Serviço", title:"Teaser de Casamento",
+   desc:"Os momentos mais emocionantes em um filme curto para compartilhar.",
+   inc:["Seleção dos melhores momentos da celebração","Edição dinâmica com trilha sonora","Arquivo digital para compartilhar com familiares"],
+   price:"Sob consulta"},
+  {n:"04", kind:"Serviço", title:"Making of dos Noivos",
+   desc:"Os preparativos, os detalhes e a expectativa antes do sim.",
+   inc:["Registro da preparação e dos detalhes","Momentos espontâneos com familiares e padrinhos","Cenas integradas ao filme principal ou vídeo próprio"],
+   price:"Sob consulta"},
+  {n:"05", kind:"Serviço", title:"Pré-Wedding em Vídeo",
+   desc:"Um capítulo da história do casal antes do casamento.",
+   inc:["Planejamento de locação e proposta visual","Captação cinematográfica do casal","Vídeo editado para guardar ou exibir no evento"],
+   price:"Sob consulta"},
+  {n:"06", kind:"Serviço", title:"Cerimônia Completa",
+   desc:"Votos, entradas e momentos que merecem ser revividos.",
+   inc:["Registro das entradas e dos ritos principais","Captação dos votos e falas quando possível","Edição da cerimônia em vídeo digital"],
+   price:"Sob consulta"},
+  {n:"07", kind:"Serviço", title:"Cobertura Aérea com Drone",
+   desc:"Uma perspectiva especial do cenário e da celebração.",
+   inc:["Imagens aéreas do local do casamento","Planos de ambientação para o filme","Operação sujeita ao clima e às autorizações"],
+   price:"Sob consulta"},
+  {n:"08", kind:"Serviço", title:"Depoimentos e Homenagens",
+   desc:"As vozes de quem faz parte da história do casal.",
+   inc:["Depoimentos dos noivos e familiares","Mensagens espontâneas de pessoas queridas","Edição integrada ao filme ou documentário"],
+   price:"Sob consulta"},
+  {n:"09", kind:"Produto", title:"Quadro de Assinaturas",
+   desc:"Mensagens dos convidados em uma recordação do casamento.",
+   inc:["Quadro em MDF personalizado com foto ou nome","Tamanhos 40×40, 60×40, 60×80 e 80×120 cm","Área reservada para assinaturas dos convidados"],
+   price:"Sob consulta"},
+  {n:"10", kind:"Produto", title:"Álbum de Casamento",
+   desc:"As fotografias do grande dia em um álbum para revisitar.",
+   inc:["Diagramação personalizada das páginas","Opções Essencial e Signature","Acabamento, quantidade de páginas e formato sob escolha"],
+   price:"Sob consulta"},
+  {n:"11", kind:"Produto", title:"Wedding Film Box",
+   desc:"O filme do casamento em uma caixa personalizada.",
+   inc:["Caixa de apresentação personalizada","Pendrive com arquivos digitais contratados","Possibilidade de incluir fotografias impressas"],
+   price:"Sob consulta"},
+  {n:"12", kind:"Produto", title:"Caixa de Memórias",
+   desc:"Um lugar para guardar cartas e recordações dos noivos.",
+   inc:["Caixa em MDF com personalização do evento","Compartimentos para recordações físicas","Opções de acabamento e composição sob orçamento"],
+   price:"Sob consulta"},
+  {n:"13", kind:"Produto", title:"Fotografias do Casamento",
+   desc:"As imagens favoritas do casamento fora da tela.",
+   inc:["Seleção de fotos pelo cliente","Kits em tamanhos e quantidades a definir","Opção de embalagem para presente"],
+   price:"Sob consulta"},
+  {n:"14", kind:"Produto", title:"Convite Interativo",
+   desc:"Um convite digital para organizar a celebração do casal.",
+   inc:["Data, horário e local da celebração","Acesso a localização e confirmação de presença","Link para lista de presentes, quando disponível"],
+   price:"Sob consulta"},
+  {n:"15", kind:"Produto", title:"Quadro do Casal",
+   desc:"Uma fotografia do casamento para decorar a casa.",
+   inc:["Foto escolhida e composição personalizada","Produção em MDF e formatos sob orçamento","Acabamento adequado ao ambiente escolhido"],
+   price:"Sob consulta"},
+  {n:"16", kind:"Produto", title:"Cápsula do Tempo do Casal",
+   desc:"Mensagens dos convidados para rever em futuros aniversários.",
+   inc:["Coleta de vídeos e mensagens por convite ou QR code","Organização das memórias digitais do evento","Acesso e formato de entrega definidos na contratação"],
+   price:"Sob consulta"},
+  {n:"17", kind:"Produto", title:"Lembranças para Convidados",
+   desc:"Presentes personalizados para padrinhos e convidados.",
+   inc:["Canecas, canetas e agendas personalizadas","Arte com nomes, data e identidade do evento","Produção sob encomenda e quantidade mínima a confirmar"],
+   price:"Sob consulta"}
+];
+
+var esc = function(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+};
+
+var waLink = function(title){
+  return "https://wa.me/5592999870427?text=" + encodeURIComponent(
+    "Olá! Vi a apresentação do catálogo e quero saber mais sobre " + title + "."
+  );
+};
+
+function slideHTML(it){
+  return '<section class="slide item" id="item-' + it.n + '">'
+    + '<div class="wrap">'
+    +   '<div class="left">'
+    +     '<p class="kicker anim"><span class="num">' + esc(it.n) + '</span><span>' + esc(it.kind) + '</span><span class="bar"></span></p>'
+    +     '<h2 class="anim anim-1">' + esc(it.title) + '</h2>'
+    +     '<p class="lede anim anim-2">' + esc(it.desc) + '</p>'
+    +   '</div>'
+    +   '<div class="detail anim anim-2">'
+    +     '<p class="detail-label">O que está incluído</p>'
+    +     '<ul>' + it.inc.map(function(b){ return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>'
+    +     '<p class="price"><span>Investimento</span><strong>' + esc(it.price) + '</strong></p>'
+    +     '<a class="btn btn-ghost" href="' + waLink(it.title) + '" target="_blank" rel="noopener" aria-label="Falar sobre ' + esc(it.title) + ' no WhatsApp">Falar sobre este item</a>'
+    +   '</div>'
+    + '</div>'
+    + '</section>';
+}
+
+var deck = document.getElementById('deck');
+var finale = document.getElementById('slide-finale');
+finale.insertAdjacentHTML('beforebegin', ITEMS.map(slideHTML).join(''));
+
+var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+var rail = document.getElementById('rail');
+var cur = document.getElementById('cur');
+var total = document.getElementById('total');
+var bar = document.getElementById('bar');
+var prevBtn = document.getElementById('prev');
+var nextBtn = document.getElementById('next');
+var index = 0;
+
+var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+total.textContent = pad(slides.length);
+
+slides.forEach(function(s, i){
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.setAttribute('aria-label', 'Ir para o slide ' + (i + 1));
+  b.addEventListener('click', function(){ go(i); });
+  rail.appendChild(b);
+});
+var dots = Array.prototype.slice.call(rail.children);
+
+function go(i){
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  slides[i].scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function setActive(i){
+  index = i;
+  cur.textContent = pad(i + 1);
+  bar.style.transform = 'scaleX(' + ((i + 1) / slides.length) + ')';
+  prevBtn.disabled = i === 0;
+  nextBtn.disabled = i === slides.length - 1;
+  dots.forEach(function(d, k){ d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+  slides.forEach(function(s, k){ s.classList.toggle('is-active', k === i); });
+}
+
+if ('IntersectionObserver' in window) {
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting && e.intersectionRatio > 0.5) {
+        setActive(slides.indexOf(e.target));
+      }
+    });
+  }, {root: deck, threshold: [0.5, 0.75]});
+  slides.forEach(function(s){ io.observe(s); });
+} else {
+  var onScroll = function(){
+    var closest = 0, min = Infinity;
+    slides.forEach(function(s, k){
+      var d = Math.abs(s.offsetTop - deck.scrollTop);
+      if (d < min) { min = d; closest = k; }
+    });
+    setActive(closest);
+  };
+  deck.addEventListener('scroll', onScroll, {passive: true});
+}
+
+prevBtn.addEventListener('click', function(){ go(index - 1); });
+nextBtn.addEventListener('click', function(){ go(index + 1); });
+
+document.addEventListener('keydown', function(e){
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  var k = e.key;
+  if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown' || k === ' ') {
+    e.preventDefault(); go(index + 1);
+  } else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp') {
+    e.preventDefault(); go(index - 1);
+  } else if (k === 'Home') {
+    e.preventDefault(); go(0);
+  } else if (k === 'End') {
+    e.preventDefault(); go(slides.length - 1);
+  }
+});
+
+setActive(0);
+})();
+</script>
+</body>
+</html>
