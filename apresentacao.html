@@ -199,6 +199,7 @@ nav{
 }
 .cover-hint i{display:block;width:1px;height:26px;background:linear-gradient(180deg,var(--champagne),transparent);animation:hintPulse 2.4s ease-in-out infinite}
 @keyframes hintPulse{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+.cover-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:32px}
 
 /* ---------- ITEM SLIDE ---------- */
 .item .wrap{
@@ -372,6 +373,9 @@ nav{
         <div><b>08</b>serviços de filme</div>
         <div><b>09</b>peças e produtos</div>
       </div>
+      <div class="cover-actions anim">
+        <a class="btn btn-ghost" href="assets/catalogo-casamento-dr-filmes.pdf" target="_blank" rel="noopener">Catálogo em PDF</a>
+      </div>
       <p class="cover-hint"><i></i>Role ou use as setas para navegar</p>
     </div>
   </section>
@@ -409,6 +413,7 @@ nav{
       <div class="actions anim anim-3">
         <a class="btn btn-solid" href="https://wa.me/5592999870427?text=Ol%C3%A1%2C%20Pauleanderson%21%20Vi%20a%20apresenta%C3%A7%C3%A3o%20do%20cat%C3%A1logo%20e%20quero%20falar%20sobre%20meu%20casamento." target="_blank" rel="noopener">Falar no WhatsApp</a>
         <a class="btn btn-ghost" href="monte.html">Montar meu orçamento</a>
+        <a class="btn btn-ghost" href="assets/catalogo-casamento-dr-filmes.pdf" target="_blank" rel="noopener">Catálogo em PDF</a>
       </div>
       <p class="sig anim anim-3">Amamos memórias.</p>
       <p class="foot anim anim-3">Manaus · Amazonas · (92) 99987-0427</p>
@@ -442,7 +447,7 @@ var ITEMS = [
   {n:"02", kind:"Serviço", title:"Legado · Documentário",
    desc:"A história do casal, de suas origens e das pessoas que fazem parte dela.",
    inc:["Desenvolvimento de uma narrativa documental autoral","Entrevistas planejadas com casal e familiares","Captação do casamento e montagem do documentário"],
-   price:"R$ 7.000"},
+   price:"Sob consulta"},
   {n:"03", kind:"Serviço", title:"Teaser de Casamento",
    desc:"Os momentos mais emocionantes em um filme curto para compartilhar.",
    inc:["Seleção dos melhores momentos da celebração","Edição dinâmica com trilha sonora","Arquivo digital para compartilhar com familiares"],
