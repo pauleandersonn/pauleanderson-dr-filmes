@@ -402,6 +402,7 @@ nav.scrolled{
 .sub-tab:focus-visible{outline:1px solid var(--champagne);outline-offset:2px}
 .sub-tab[aria-pressed="true"]{color:var(--champagne);border-color:var(--champagne);background:rgba(199,167,108,.08)}
 .sub-tab .n{margin-left:8px;font-size:.56rem;letter-spacing:.1em;color:var(--champagne-dim);font-weight:500}
+.sub-tab[hidden]{display:none}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 @media(max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.grid{grid-template-columns:1fr}}
@@ -767,7 +768,7 @@ footer p{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:va
       <button class="tab" data-cat="outros" aria-pressed="false">Outros<span class="n"></span></button>
     </div>
 
-    <div class="sub-tabs" id="subTabs" role="group" aria-label="Filtrar casamentos por formato" hidden>
+    <div class="sub-tabs" id="subTabs" role="group" aria-label="Filtrar vídeos por formato" hidden>
       <button class="sub-tab" data-sub="todos" aria-pressed="true">Todos<span class="n"></span></button>
       <button class="sub-tab" data-sub="teaser" aria-pressed="false">Teasers<span class="n"></span></button>
       <button class="sub-tab" data-sub="filme" aria-pressed="false">Filmes completos<span class="n"></span></button>
@@ -901,6 +902,9 @@ var currentLightboxIndex = -1;
 var filters = document.querySelectorAll(".tab");
 var subFilters = document.querySelectorAll(".sub-tab");
 var subTabs = document.getElementById("subTabs");
+var CAT2SLUG = {"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
+var SLUG2CAT = {};
+Object.keys(CAT2SLUG).forEach(function(k){ SLUG2CAT[CAT2SLUG[k]]=k; });
 var gridEmpty = document.getElementById("gridEmpty");
 var loadMoreBtn = document.getElementById("loadMore");
 var lb = document.getElementById("lb");
@@ -1053,13 +1057,13 @@ function initApp(){
     renderChunk(currentFilter);
   });
 
-  /* filtro por hash na URL */
-  var CAT2SLUG = {"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
-  var SLUG2CAT = {};
-  Object.keys(CAT2SLUG).forEach(function(k){ SLUG2CAT[CAT2SLUG[k]]=k; });
+  /* filtro por hash na URL: #<nicho>, #<nicho>-teaser ou #<nicho>-completo */
   var hashAtual = (location.hash||"").slice(1);
-  var pedidoSub = hashAtual==="casamento-teaser" ? "teaser" : (hashAtual==="casamento-completo" ? "filme" : null);
-  var pedido = pedidoSub ? "casamento" : SLUG2CAT[hashAtual];
+  var pedidoSub = null, slugBase = hashAtual;
+  if(/-completo$/.test(slugBase)){ pedidoSub="filme"; slugBase = slugBase.replace(/-completo$/,""); }
+  else if(/-teaser$/.test(slugBase)){ pedidoSub="teaser"; slugBase = slugBase.replace(/-teaser$/,""); }
+  var pedido = SLUG2CAT[slugBase];
+  if(pedido && pedidoSub && slugBase===""){ pedido=undefined; pedidoSub=null; }
   if(pedido){
     setFiltro(pedido, pedidoSub);
     var secaoFilmes = document.getElementById("filmes");
@@ -1067,30 +1071,33 @@ function initApp(){
   }
 }
 
-/* ===== SUB-FILTRO DO NICHO CASAMENTO (TEASER / FILME COMPLETO) ===== */
-function subtipoCasamento(v){
-  if(v.c!=="casamento") return "";
+/* ===== SUB-FILTRO POR FORMATO (TEASER / FILME COMPLETO) EM TODOS OS NICHOS ===== */
+function subtipo(v){
   var s = (v.cat||"")+" "+(v.t||"");
-  if(/teaser|divulga/i.test(s)) return "teaser";
+  if(/teaser|divulga|trailer/i.test(s)) return "teaser";
   return "filme";
 }
 
-function listaFiltrada(cat){
+function videosDoNicho(cat){
   var c = (cat===undefined) ? currentFilter : cat;
-  return VIDEOS.filter(function(v){
-    if(c!=="todos" && v.c!==c) return false;
-    if(c==="casamento" && currentSub!=="todos" && subtipoCasamento(v)!==currentSub) return false;
-    return true;
-  });
+  return c==="todos" ? VIDEOS.slice() : VIDEOS.filter(function(v){ return v.c===c; });
+}
+
+function listaFiltrada(cat){
+  var doNicho = videosDoNicho(cat);
+  if(currentSub==="todos") return doNicho;
+  return doNicho.filter(function(v){ return subtipo(v)===currentSub; });
 }
 
 function atualizaSubContadores(){
-  var doNicho = VIDEOS.filter(function(v){ return v.c==="casamento"; });
+  var doNicho = videosDoNicho();
   subFilters.forEach(function(f){
     var n = f.querySelector(".n");
-    if(!n) return;
-    if(f.dataset.sub==="todos") n.textContent = doNicho.length;
-    else n.textContent = doNicho.filter(function(v){ return subtipoCasamento(v)===f.dataset.sub; }).length;
+    var qtd = (f.dataset.sub==="todos") ? doNicho.length
+            : doNicho.filter(function(v){ return subtipo(v)===f.dataset.sub; }).length;
+    if(n) n.textContent = qtd;
+    /* formato sem nenhum vídeo no nicho não vira aba */
+    f.hidden = (f.dataset.sub!=="todos" && qtd===0);
   });
 }
 
@@ -1134,7 +1141,7 @@ function renderChunk(cat){
 /* ===== FILTRO E RESET PAGINAÇÃO ===== */
 function setFiltro(cat, sub){
   currentFilter = cat;
-  currentSub = (cat==="casamento" && sub) ? sub : "todos";
+  currentSub = (cat!=="todos" && sub) ? sub : "todos";
   renderedCount = 0;
   grid.innerHTML = "";
 
@@ -1142,9 +1149,14 @@ function setFiltro(cat, sub){
     o.setAttribute("aria-pressed", o.dataset.cat===cat ? "true" : "false");
   });
 
-  /* sub-abas só existem no nicho Casamento */
-  subTabs.hidden = cat!=="casamento";
+  /* sub-abas aparecem em todos os nichos, menos em "Todos" */
+  subTabs.hidden = cat==="todos";
   atualizaSubContadores();
+
+  /* formato pedido sem vídeos no nicho: cai para "Todos" */
+  if(currentSub!=="todos" && !VIDEOS.some(function(v){ return (cat==="todos"||v.c===cat) && subtipo(v)===currentSub; })){
+    currentSub = "todos";
+  }
   subFilters.forEach(function(o){
     o.setAttribute("aria-pressed", o.dataset.sub===currentSub ? "true" : "false");
   });
@@ -1156,6 +1168,9 @@ function setFiltro(cat, sub){
 
   if(!gridEmpty.hidden){
     var msg = emptyMsgs[cat] || "Este nicho ainda não tem vídeos publicados aqui.";
+    if(currentSub!=="todos"){
+      msg = (currentSub==="teaser" ? "Ainda não há teaser publicado aqui. " : "Ainda não há filme completo publicado aqui. ") + msg;
+    }
     var link = gridEmpty.querySelector("a");
     link.textContent = "Solicitar orçamento";
     link.href = "https://wa.me/5592999870427?text=" + encodeURIComponent("Olá, Pauleanderson! " + msg);
@@ -1169,7 +1184,6 @@ filters.forEach(function(f){
   f.addEventListener("click", function(){
     var cat = f.dataset.cat;
     setFiltro(cat);
-    var CAT2SLUG = {"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
     var slug = CAT2SLUG[cat];
     if(history.replaceState){
       if(slug) history.replaceState(null, "", "#"+slug);
@@ -1180,9 +1194,11 @@ filters.forEach(function(f){
 
 subFilters.forEach(function(f){
   f.addEventListener("click", function(){
+    var nicho = (currentFilter==="todos") ? "casamento" : currentFilter;
     var sub = f.dataset.sub;
-    setFiltro("casamento", sub);
-    var slug = sub==="teaser" ? "casamento-teaser" : (sub==="filme" ? "casamento-completo" : "casamento");
+    setFiltro(nicho, sub);
+    var base = CAT2SLUG[nicho] || nicho;
+    var slug = (sub==="todos") ? base : base + (sub==="teaser" ? "-teaser" : "-completo");
     if(history.replaceState) history.replaceState(null, "", "#"+slug);
   });
 });
