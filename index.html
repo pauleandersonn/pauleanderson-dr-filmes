@@ -391,6 +391,17 @@ nav.scrolled{
 .tab:focus-visible{outline:1px solid var(--champagne);outline-offset:-3px;border-radius:var(--radius-sm)}
 .tab[aria-pressed="true"]{color:var(--champagne);border-bottom-color:var(--champagne);background:rgba(199,167,108,.06)}
 .tab .n{display:block;margin-top:4px;font-size:.56rem;letter-spacing:.1em;color:var(--champagne-dim);font-weight:500}
+.sub-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:-28px 0 36px}
+.sub-tabs[hidden]{display:none}
+.sub-tab{
+  border:1px solid var(--hairline);background:rgba(8,8,8,.6);border-radius:999px;
+  font-family:inherit;padding:9px 18px;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--taupe);transition:color var(--transition-fast),border-color var(--transition-fast),background var(--transition-fast);
+}
+.sub-tab:hover{color:var(--champagne);border-color:rgba(199,167,108,.4)}
+.sub-tab:focus-visible{outline:1px solid var(--champagne);outline-offset:2px}
+.sub-tab[aria-pressed="true"]{color:var(--champagne);border-color:var(--champagne);background:rgba(199,167,108,.08)}
+.sub-tab .n{margin-left:8px;font-size:.56rem;letter-spacing:.1em;color:var(--champagne-dim);font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 @media(max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.grid{grid-template-columns:1fr}}
@@ -756,6 +767,12 @@ footer p{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:va
       <button class="tab" data-cat="outros" aria-pressed="false">Outros<span class="n"></span></button>
     </div>
 
+    <div class="sub-tabs" id="subTabs" role="group" aria-label="Filtrar casamentos por formato" hidden>
+      <button class="sub-tab" data-sub="todos" aria-pressed="true">Todos<span class="n"></span></button>
+      <button class="sub-tab" data-sub="teaser" aria-pressed="false">Teasers<span class="n"></span></button>
+      <button class="sub-tab" data-sub="filme" aria-pressed="false">Filmes completos<span class="n"></span></button>
+    </div>
+
     <div class="grid reveal reveal-delay-3" id="grid"></div>
 
     <button class="load-more" id="loadMore" hidden>Carregar mais</button>
@@ -877,10 +894,13 @@ var EDICAO = location.hash==="#editar"||/[?&]editar=1(&|$)/.test(location.search
 var PAGE_SIZE = 24;
 var renderedCount = 0;
 var currentFilter = "todos";
+var currentSub = "todos";
 var currentLightboxIndex = -1;
 
 /* ===== ELEMENTOS DOM ===== */
 var filters = document.querySelectorAll(".tab");
+var subFilters = document.querySelectorAll(".sub-tab");
+var subTabs = document.getElementById("subTabs");
 var gridEmpty = document.getElementById("gridEmpty");
 var loadMoreBtn = document.getElementById("loadMore");
 var lb = document.getElementById("lb");
@@ -1037,17 +1057,46 @@ function initApp(){
   var CAT2SLUG = {"todos":"","doc-casamento":"doc-de-casamento","casamento":"casamento","quinze":"15-anos","aniversarios":"aniversarios","clipes":"clipes-musicais","cinema":"cinema","publicidade":"publicidade","outros":"outros"};
   var SLUG2CAT = {};
   Object.keys(CAT2SLUG).forEach(function(k){ SLUG2CAT[CAT2SLUG[k]]=k; });
-  var pedido = SLUG2CAT[(location.hash||"").slice(1)];
+  var hashAtual = (location.hash||"").slice(1);
+  var pedidoSub = hashAtual==="casamento-teaser" ? "teaser" : (hashAtual==="casamento-completo" ? "filme" : null);
+  var pedido = pedidoSub ? "casamento" : SLUG2CAT[hashAtual];
   if(pedido){
-    setFiltro(pedido);
+    setFiltro(pedido, pedidoSub);
     var secaoFilmes = document.getElementById("filmes");
     if(secaoFilmes) secaoFilmes.scrollIntoView();
   }
 }
 
+/* ===== SUB-FILTRO DO NICHO CASAMENTO (TEASER / FILME COMPLETO) ===== */
+function subtipoCasamento(v){
+  if(v.c!=="casamento") return "";
+  var s = (v.cat||"")+" "+(v.t||"");
+  if(/teaser|divulga/i.test(s)) return "teaser";
+  return "filme";
+}
+
+function listaFiltrada(cat){
+  var c = (cat===undefined) ? currentFilter : cat;
+  return VIDEOS.filter(function(v){
+    if(c!=="todos" && v.c!==c) return false;
+    if(c==="casamento" && currentSub!=="todos" && subtipoCasamento(v)!==currentSub) return false;
+    return true;
+  });
+}
+
+function atualizaSubContadores(){
+  var doNicho = VIDEOS.filter(function(v){ return v.c==="casamento"; });
+  subFilters.forEach(function(f){
+    var n = f.querySelector(".n");
+    if(!n) return;
+    if(f.dataset.sub==="todos") n.textContent = doNicho.length;
+    else n.textContent = doNicho.filter(function(v){ return subtipoCasamento(v)===f.dataset.sub; }).length;
+  });
+}
+
 /* ===== RENDERIZAÇÃO DE CARDS ===== */
 function renderChunk(cat){
-  var filtered = cat==="todos" ? VIDEOS : VIDEOS.filter(function(v){ return v.c===cat; });
+  var filtered = listaFiltrada(cat);
   var chunk = filtered.slice(renderedCount, renderedCount + PAGE_SIZE);
 
   chunk.forEach(function(v){
@@ -1083,8 +1132,9 @@ function renderChunk(cat){
 }
 
 /* ===== FILTRO E RESET PAGINAÇÃO ===== */
-function setFiltro(cat){
+function setFiltro(cat, sub){
   currentFilter = cat;
+  currentSub = (cat==="casamento" && sub) ? sub : "todos";
   renderedCount = 0;
   grid.innerHTML = "";
 
@@ -1092,9 +1142,16 @@ function setFiltro(cat){
     o.setAttribute("aria-pressed", o.dataset.cat===cat ? "true" : "false");
   });
 
+  /* sub-abas só existem no nicho Casamento */
+  subTabs.hidden = cat!=="casamento";
+  atualizaSubContadores();
+  subFilters.forEach(function(o){
+    o.setAttribute("aria-pressed", o.dataset.sub===currentSub ? "true" : "false");
+  });
+
   renderChunk(cat);
 
-  var visiveis = cat==="todos" ? VIDEOS.length : VIDEOS.filter(function(v){ return v.c===cat; }).length;
+  var visiveis = listaFiltrada(cat).length;
   gridEmpty.hidden = visiveis > 0;
 
   if(!gridEmpty.hidden){
@@ -1118,6 +1175,15 @@ filters.forEach(function(f){
       if(slug) history.replaceState(null, "", "#"+slug);
       else history.replaceState(null, "", location.pathname+location.search);
     }
+  });
+});
+
+subFilters.forEach(function(f){
+  f.addEventListener("click", function(){
+    var sub = f.dataset.sub;
+    setFiltro("casamento", sub);
+    var slug = sub==="teaser" ? "casamento-teaser" : (sub==="filme" ? "casamento-completo" : "casamento");
+    if(history.replaceState) history.replaceState(null, "", "#"+slug);
   });
 });
 
